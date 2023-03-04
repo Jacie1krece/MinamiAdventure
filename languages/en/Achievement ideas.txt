@@ -5,10 +5,13 @@ The Land of Cold and Auroras - Enter the Ice Nation.
 The Land of Flügel and Beer - Enter the Cloud Nation.
 The Land of Warmth and Regime - Enter the Boiling Nation.
 REINCARNATION! - Resurrect Telar.
+Punching out - Take a brawler as an ally.
 The blood drinker herself - Take a vampire as an ally.
-Messed up necromancy - Take a zombie as an ally.
+Bloom or doom - Take a zombie as an ally.
 Dear Doppelgänger - Take a shapeshifter as an ally.
+Alchemy major - Take an alchemist as an ally.
 Bandit trouble - Defeat Sasin on the desert.
+An open pit mine in the middle of the pavement - Defeat Sasin in the Mineral Nation.
 Only for the worthy - Show your worth to the Mineral Mayor.
 Crimpaganda - Defeat the Crimson General and her part of the Crimson Army.
 Why? Why? Why? Why? - Beat the Boiling Queen.
@@ -40,5 +43,4 @@ Wishing For A Good Loot - Use a Gacha for the first time.
 Wishes Came True - Get a Special item from a Gacha.
 A Five-Star Collection - Get all Special items from Gachas.
 C100 - Get a total of 100 Rare items from Gachas.
-The extreme challenge - Beat Calamitas on Bad End mode with at least one character having the Withering Curse and without using Nishi.
 No Entry (Special) - I thought that I banned entry to that place? (Get to a place where you definitely shouldn't be.)

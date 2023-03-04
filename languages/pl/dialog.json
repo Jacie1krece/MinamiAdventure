@@ -265,6 +265,8 @@
 	"MineWay10":"Nie wiem, chociaż wyglądacie na dość sprytnych. Na pewno coś wymyślicie!",
 	"MineWay11":"Proszę bardzo!",
 	"MineWay12":"A, i przy okazji - weźcie to, może wam się to przydać.",
+	"MineWay13":"To są notatki, jakie znalazłem w kopalniach. Myślę, że ich użycie doda trochę EXPa całej twojej drużynie.",
+	"MineWay14":"Uważajcie na siebie w tych kopalniach!",
 	
 	"ForestChest1":"Hmm? Czy coś się pojawiło w okolicy wejścia?",
 	"ForestChest2":"Skąd to wiedziałaś, Minami?",
@@ -273,6 +275,27 @@
 	"ForestChest5":"Hmm? Czy coś się pojawiło w okolicy jeziorka?",
 	
 	"AuctionIntroduction":"Witajcie w moim domu aukcyjnym! Tutaj ludzie sprzedają jedne z najbardziej prestiżowych przedmiotów na świecie, a nawet wy możecie zarówno kupować, jak i sprzedawać!",
+	"AuctionLightbulbsBane":"To jest ${Weapon.LightbulbsBane}. To de facto nie jest broń, ale jej możliwość oślepienia wrogów przydaje się w bitwie!",
+	"AuctionEmeraldStaff":"To jest ${Weapon.EmeraldStaff}. Jego wolframowa rączka i szmaragdowa główka sprawiają, że jest to ciężka, ale potężna broń!",
+	"AuctionStatBattle":"To jest ${Item.AuctionNote1}. Nauczysz się z niej, jak rzucić wyzwanie samym statystykom przeciwnika!",
+	"AuctionCounterTrophy":"To jest ${Armor.CounterTrophy}. Pozwoli on całej druzynie na kontratak!",
+	"AuctionCharm1":"To jest ${Armor.AmberCharm}. Sprzedający powiedział, że powiększa on zwinność!",
+	"AuctionCharm2":"To jest ${Armor.AmethystCharm}. Sprzedający powiedział, że powiększa on obronę!",
+	"AuctionCharm3":"To jest ${Armor.JadeCharm}. Sprzedający powiedział, że powiększa on szczęście!",
+	"AuctionCharm4":"To jest ${Armor.SapphireCharm}. Sprzedający powiedział, że powiększa on manę!",
+	"AuctionEvasionBoots":"To są ${Armor.EvasionBoots}. Mogą powiększyć szansę na unik!",
+	"AuctionBuy1":"Czy chcesz to kupić? Kosztuje 500G.",
+	"AuctionBuy2":"Czy chcesz to kupić? Kosztuje 1250G.",
+	"AuctionBuy3":"Czy chcesz to kupić? Kosztuje 1500G.",
+	"AuctionBuy4":"Czy chcesz to kupić? Kosztuje 2500G.",
+	"AuctionBuy5":"Czy chcesz to kupić? Kosztuje 1000G.",
+	"AuctionBuy6":"Czy chcesz to kupić? Kosztuje 750G.",
+	"AuctionBought":"Dziękuję za zakup!",
+	"AuctionNotEnough":"Chyba nie masz na to pieniędzy. Może coś sprzedasz?",
+	
+	"Sign.Debowiec1":"Na lewo jest dom aukcyjny. W górę jest dojazd do kopalni.",
+	
+	"NPC1":"Nie jestem do końca pewna, co robić. Usiąść na ławce, na huśtawce, czy pójść do domu?",
 	
 	"Phone.Ring":"Dzyń... Dzyń...",
 	"Phone.Start":"Wybierz aplikację.",

@@ -266,6 +266,8 @@
 	"MineWay10":"I don't know, but you look pretty clever to me. You'll definitely think of something!",
 	"MineWay11":"You're welcome!",
 	"MineWay12":"Ah, by the way - take this, it might be useful for you.",
+	"MineWay13":"These are notes that I found scattered across the mines. I think that using them will give some EXP for your whole team.",
+	"MineWay13":"Take care in these mines!",
 	
 	"ForestChest1":"Hmm? Did something appear near the place where we entered here?",
 	"ForestChest2":"How did you know that, Minami?",
@@ -293,6 +295,8 @@
 	"AuctionNotEnough":"You look like you don't have enough money for that. Maybe you could sell something?",
 	
 	"Sign.Debowiec1":"On the left is the auction house. Up is an shortcut back to the mine.",
+	
+	"NPC1":"I'm not exactly sure what to do. Sit on a bench, on a swing, or go home?",
 	
 	"Phone.Ring":"Ring... Ring...",
 	"Phone.Start":"Select an app.",
