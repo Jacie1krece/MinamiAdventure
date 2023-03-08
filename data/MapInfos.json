@@ -2,11 +2,11 @@
 null,
 {"id":1,"expanded":true,"name":"ReferenceWorldMap","order":1,"parentId":0,"scrollX":785.5,"scrollY":482},
 {"id":2,"expanded":false,"name":"Story","order":2,"parentId":1,"scrollX":777.5,"scrollY":468},
-{"id":3,"expanded":true,"name":"Minami's Room","order":7,"parentId":4,"scrollX":1036.6666666666667,"scrollY":624},
+{"id":3,"expanded":true,"name":"Minami's Room","order":7,"parentId":4,"scrollX":848.1818181818182,"scrollY":510.54545454545456},
 {"id":4,"expanded":true,"name":"Okimoto Villa F2","order":6,"parentId":5,"scrollX":1166.25,"scrollY":702},
 {"id":5,"expanded":true,"name":"Okimoto Villa F1","order":5,"parentId":7,"scrollX":777.5,"scrollY":468},
 {"id":6,"expanded":false,"name":"Okimoto Kitchen","order":9,"parentId":5,"scrollX":1166.25,"scrollY":702},
-{"id":7,"expanded":true,"name":"Nijisaki City","order":3,"parentId":0,"scrollX":2051.5,"scrollY":901},
+{"id":7,"expanded":true,"name":"Nijisaki City","order":3,"parentId":0,"scrollX":2051.4545454545455,"scrollY":901.0909090909091},
 {"id":8,"expanded":false,"name":"Shop","order":4,"parentId":7,"scrollX":777.5,"scrollY":468},
 {"id":9,"expanded":true,"name":"The Great Desert","order":11,"parentId":0,"scrollX":848.1818181818182,"scrollY":918.5454545454546},
 {"id":10,"expanded":true,"name":"The Infinite Desert","order":12,"parentId":9,"scrollX":777.5,"scrollY":468},
@@ -24,5 +24,6 @@ null,
 {"id":22,"expanded":true,"name":"Mine 1","order":18,"parentId":0,"scrollX":1290,"scrollY":510.54545454545456},
 {"id":23,"expanded":true,"name":"Mine 2","order":20,"parentId":21,"scrollX":2775.75,"scrollY":1962},
 {"id":24,"expanded":false,"name":"The Coal Forest","order":23,"parentId":20,"scrollX":2410.3636363636365,"scrollY":714.5454545454546},
-{"id":25,"expanded":true,"name":"Dębowiec City","order":24,"parentId":0,"scrollX":856.909090909091,"scrollY":968.7272727272727}
+{"id":25,"expanded":true,"name":"Dębowiec City","order":24,"parentId":0,"scrollX":1347.818181818182,"scrollY":859.6363636363636},
+{"id":26,"expanded":false,"name":"7th Floor","order":26,"parentId":25,"scrollX":848.1818181818182,"scrollY":510.54545454545456}
 ]
