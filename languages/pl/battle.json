@@ -92,7 +92,7 @@
 	"Armor.EvasionBoots":"Buty uniku",
 	"Armor.EvasionBootsDesc":"Zaklęta para butów pozwalająca tobie lepiej unikać ataków zarówno fizycznych, jak i magicznych.",
 	"Armor.CounterTrophy":"Artefakt furii",
-	"Armor.CounterTrophyDesc":"Artefakt dający małą szansę na kontratak."
+	"Armor.CounterTrophyDesc":"Artefakt dający małą szansę na kontratak.",
 	
 	"Skill.DesertWindstorm":"Pustynny wicher",
 	"Skill.DesertWindstormDesc":"Przywołuje burzę piaskową, zadając obrażenia wszystkim przeciwnikom.\n„Czy pustynny wicher to nie po prostu burza piaskowa?”",
@@ -131,6 +131,10 @@
 	"Skill.ValadiumShotDesc":"Strzela we wroga waladem, ogłuszając i pomniejszając atak.\n„Jeszcze jeden strzał i odwiedzisz księżyc!”",
 	"Skill.StatBattle":"Bitwa na statystyki",
 	"Skill.StatBattleDesc":"Zadaje obrażenia równe twoim statystykom minus statystyki wroga.\n„Nawet nie waż się mówić, że Szczęście jest bezużyteczne!”",
+	"Skill.PunchCombo":"Kombo ciosów",
+	"Skill.PunchComboDesc":"Uderza wroga dwa razy.\n„Dobre ciosy są wymagane do wygranej na ringu.”",
+	"Skill.PunchOfFire":"Ognista pięść",
+	"Skill.PunchOfFireDesc":"Podpala swoje pięści, przez co parę następnych ataków jest ognistych. Może się jednak też podpalić.\n„Moja bitwa z tę czerwonowłosą laską zainspirowała mnie do próby podpalenia swoich pięści.”",
 	
 	"Item.Breakfast":"Zapakowane śniadanie",
 	"Item.BreakfastDesc":"Parę kanapek z kurczkiem.",
@@ -176,7 +180,7 @@
 	"State.Silence":"Blokada many",
 	"State.SilenceDesc":"Blokuje używanie zaklęć.\n„Zostałem zmugolowany. To nie fair.”",
 	"State.Rage":"Rozwścieczenie",
-	"State.SilenceDesc":"Wymusza atakowanie, nie pozwalajając na inne rzeczy.\n„*ekstremalnie wkurwiony ryk*”",
+	"State.RageDesc":"Wymusza atakowanie, nie pozwalajając na inne rzeczy.\n„*ekstremalnie wkurwiony ryk*”",
 	"State.Confusion":"Dezorientacja",
 	"State.ConfusionDesc":"Wymusza atakowanie losowo kogokolwiek, bez znaczenia na stronę bitwy.\n„Gdzie jestem? Kim jestem? Czym jestem? Czemu jestem? Jaki jestem?”",
 	"State.Charm":"Zauroczenie",
@@ -188,7 +192,7 @@
 	"State.Freeze":"Zamrożenie",
 	"State.FreezeDesc":"Nie pozwala na zrobienie czegokolwiek aż lód nie zostanie rozbity przez atak.\n„Masz szczęście, że to nie Snowgrave.”",
 	"State.Stun":"Ogłuszenie",
-	"State.FreezeDesc":"Ogłusza na małą chwilę preciwnika, nie dając mu nic zrobić.\n„auć moje uszy”",
+	"State.StunDesc":"Ogłusza na małą chwilę preciwnika, nie dając mu nic zrobić.\n„auć moje uszy”",
 	"State.Berylliosis":"Beryloza",
 	"State.BerylliosisDesc":"Otruwa przeciwnika berylem, zadając 2.5% HP jako obrażenia co turę.\n„Sapię, jakby mi płonęły płuca…”",
 	"State.Curse":"Klątwa",
@@ -211,6 +215,8 @@
 	"State.WetMinamiDesc":"Zmniejsza wszystkie podstawowe statystyki o 7.5%.\n\"Po prostu nienawidzę być mokra.\"",
 	"State.Trapped":"W pułapce",
 	"State.TrappedDesc":"Powoduje wejście w pułapkę, zadając sobie duże obrażenia.\n„Jak można wpaść w tak oczywistą pułapkę?”",
+	"State.FireFists":"Ogniste pięści",
+	"State.FireFistsDesc":"Zadaje ogniste obrażenia, które mogą nawet podpalić wrogów.\n„Jedyny powód, dla którego nie boję się tego, to fakt, że to moja sprawka.”",
 	
 	"Enemy.DesertBandit":"Pustynny bandyta",
 	"Enemy.DesertBanditMage":"Pustynna czarownica",

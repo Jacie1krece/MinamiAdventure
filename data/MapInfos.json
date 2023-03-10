@@ -24,6 +24,6 @@ null,
 {"id":22,"expanded":true,"name":"Mine 1","order":18,"parentId":0,"scrollX":1290,"scrollY":510.54545454545456},
 {"id":23,"expanded":true,"name":"Mine 2","order":20,"parentId":21,"scrollX":2775.75,"scrollY":1962},
 {"id":24,"expanded":false,"name":"The Coal Forest","order":23,"parentId":20,"scrollX":2410.3636363636365,"scrollY":714.5454545454546},
-{"id":25,"expanded":true,"name":"Dębowiec City","order":24,"parentId":0,"scrollX":1347.818181818182,"scrollY":859.6363636363636},
+{"id":25,"expanded":true,"name":"Dębowiec City","order":24,"parentId":0,"scrollX":1339.5,"scrollY":851},
 {"id":26,"expanded":false,"name":"7th Floor","order":26,"parentId":25,"scrollX":848.1818181818182,"scrollY":510.54545454545456}
 ]
