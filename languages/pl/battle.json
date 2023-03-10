@@ -124,7 +124,7 @@
 	"Skill.Cooling":"Chłodzenie",
 	"Skill.CoolingDesc":"Zadaje małą ilość lodowych obrażeń i zamraża wroga.\n„Szczególnie przydatne, gdy twojego komputera dałoby się użyć jako kaloryfera.”",
 	"Skill.BrickThrow":"Rzut cegłą",
-	"Skill.BrickThrowDesc":"Rzuca cegłą we wroga, zadając duże obrażenia.\n„Darmowa cegłówka! Z dostawą prosto w twoją twarz!”",
+	"Skill.BrickThrowDesc":"Rzuca cegłą we wroga, zadając duże obrażenia omijające połowę defensywy wroga.\n„Darmowa cegłówka! Z dostawą prosto w twoją twarz!”",
 	"Skill.Discharge":"Rozładowanie",
 	"Skill.DischargeDesc":"Rozładowuje trochę energi z akumulatora na przeciwników.\n„Nie martw się Genjiro szybko mnie naładuje.”",
 	"Skill.ValadiumShot":"Strzał waladu",
