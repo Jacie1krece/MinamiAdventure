@@ -22,5 +22,6 @@ null,
 {"id":20,"atypeId":9,"description":"${Armor.EvasionBootsDesc}","etypeId":4,"traits":[{"code":22,"dataId":1,"value":0.05},{"code":22,"dataId":3,"value":0.05},{"code":22,"dataId":4,"value":0.05}],"iconIndex":140,"name":"${Armor.EvasionBoots}","note":"","params":[0,0,0,0,0,0,0,0],"price":0},
 {"id":21,"atypeId":0,"description":"${Armor.CounterTrophyDesc}","etypeId":7,"traits":[{"code":22,"dataId":6,"value":0.025}],"iconIndex":21,"name":"${Armor.CounterTrophy}","note":"","params":[0,0,0,0,0,0,0,0],"price":0},
 {"id":22,"atypeId":4,"description":"It was used by various forest rangers. Now you can also wield it.","etypeId":2,"traits":[{"code":22,"dataId":1,"value":0}],"iconIndex":150,"name":"Forest Headband","note":"<Dealt Element 2 Rate: 110%>","params":[0,0,0,0,0,0,0,0],"price":200},
-{"id":23,"atypeId":5,"description":"It has decorative wings on the back. Some say that they're inspired by Flügel.","etypeId":2,"traits":[{"code":22,"dataId":1,"value":0.05}],"iconIndex":137,"name":"Hussar Armor","note":"","params":[0,0,0,10,0,10,5,5],"price":200}
+{"id":23,"atypeId":5,"description":"It has decorative wings on the back. Some say that they're inspired by Flügel.","etypeId":2,"traits":[{"code":22,"dataId":1,"value":0.05}],"iconIndex":137,"name":"Hussar Armor","note":"","params":[0,0,0,10,0,10,5,5],"price":200},
+{"id":24,"atypeId":10,"description":"${Armor.SilverPouchDesc}","etypeId":4,"traits":[{"code":22,"dataId":1,"value":0}],"iconIndex":208,"name":"${Armor.SilverPouch}","note":"","params":[0,0,5,0,0,0,0,0],"price":0}
 ]

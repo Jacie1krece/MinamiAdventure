@@ -93,6 +93,8 @@
 	"Armor.EvasionBootsDesc":"An enchanted pair of boots that allows you to evade both physical and magical attacks more.",
 	"Armor.CounterTrophy":"Artefact of Fury",
 	"Armor.CounterTrophyDesc":"An artefact that gives a small chance to counterattack.",
+	"Armor.SilverPouch":"Silver Bullet Pouch",
+	"Armor.SilverPouchDesc":"These shiny bullets make your damage slightly higher, but only if you're using a gun. Some say that it's good against werewolves, but luckily they don't exist.",
 	
 	"Skill.DesertWindstorm":"Desert Windstorm",
 	"Skill.DesertWindstormDesc":"Summons a sandstorm, dealing damage to every enemy.\n\"Isn't Desert Windstorm just a more verbose way of saying Sandstorm?\"",
@@ -220,11 +222,11 @@
 	"State.FireFists":"Fire Fists",
 	"State.FireFistsDesc":"Deals fire damage with the possibility of burning enemies.\n\"The only reason why I don't freak out seeing that, is that I made this myself.\"",
 	"State.Charge1":"Charge - Tier 1",
-	"State.Charge1Desc":"Increased attack, electrical damage, agility, evasion, TP charge, and healing from electrical damage.\n\"Electricity powers were passed down my family line since forever...\"",
+	"State.Charge1Desc":"Increases attack, electrical damage, agility, evasion, TP charge, and healing from electrical damage.\n\"Electricity powers were passed down my family line since forever...\"",
 	"State.Charge2":"Charge - Tier 2",
-	"State.Charge2Desc":"Increased attack, electrical damage, agility, evasion, TP charge, and healing from electrical damage.\n\"...but in my case, they are really potent.\"",
+	"State.Charge2Desc":"Increases attack, electrical damage, agility, evasion, TP charge, and healing from electrical damage.\n\"...but in my case, they are really potent.\"",
 	"State.Charge3":"Charge - Tier 3",
-	"State.Charge3Desc":"Increased attack, electrical damage, agility, evasion, TP charge, and healing from electrical damage. Normal attack deals electrical damage.\n\"Overall, don't underestimate my electricity, as you might get shocked.\"",
+	"State.Charge3Desc":"Increases attack, electrical damage, agility, evasion, TP charge, and healing from electrical damage. Normal attack deals electrical damage.\n\"Overall, don't underestimate my electricity, as you might get shocked.\"",
 	
 	"Enemy.DesertBandit":"Desert Bandit",
 	"Enemy.DesertBanditMage":"Desert Witch",
