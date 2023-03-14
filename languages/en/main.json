@@ -385,6 +385,8 @@
 	"Save24":"Mineral Nation\nThe Coal Forest",
 	"Save25":"Dębowiec City",
 	"Save26":"Dębowiec City\n7th Floor",
+	"Save27":"${Save.Unknown}",
+	"Save28":"${Save.Unknown}",
 	
 	"Drone.SelectLocation":"Select the place where you want to travel.",
 	"Drone.Nowhere":"how did you click that",
@@ -400,5 +402,10 @@
 	"World.Nothing":"There's nothing useful...",
 	"World.Detonate":"This rock pile looks like something that I could detonate.",
 	"World.DetonateNoBombs":"This rock pile looks like something that I could detonate... but I'm outta bombs.",
-	"World.DetonateQuestion":"(Detonate the rocks?)"
+	"World.DetonateQuestion":"(Detonate the rocks?)",
+	
+	"Reid":"Reid",
+	"Priscilla":"Priscilla",
+	"Bandit":"Bandit",
+	"LeaderBandit":"Bandit Leader"
 }
