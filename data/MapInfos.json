@@ -27,5 +27,5 @@ null,
 {"id":25,"expanded":true,"name":"Dębowiec City","order":24,"parentId":0,"scrollX":779.5,"scrollY":1446.5},
 {"id":26,"expanded":true,"name":"7th Floor","order":26,"parentId":25,"scrollX":779.5,"scrollY":473.5},
 {"id":27,"expanded":true,"name":"Maximilian's Home","order":27,"parentId":26,"scrollX":935.4,"scrollY":577.8},
-{"id":28,"expanded":false,"name":"The Game","order":28,"parentId":27,"scrollX":933,"scrollY":580.8}
+{"id":28,"expanded":false,"name":"The Game","order":28,"parentId":27,"scrollX":942.5999999999999,"scrollY":580.8}
 ]
