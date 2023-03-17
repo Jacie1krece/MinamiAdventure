@@ -268,7 +268,7 @@
 	"MineWay11":"You're welcome!",
 	"MineWay12":"Ah, by the way - take this, it might be useful for you.",
 	"MineWay13":"These are notes that I found scattered across the mines. I think that using them will give some EXP for your whole team.",
-	"MineWay13":"Take care in these mines!",
+	"MineWay14":"Take care in these mines!",
 	
 	"ForestChest1":"Hmm? Did something appear near the place where we entered here?",
 	"ForestChest2":"How did you know that, Minami?",
@@ -330,9 +330,9 @@
 	"MaximilianScarlet2":"Hmm... does she have bright red hair?",
 	"MaximilianScarlet3":"Yes, she has red hair.",
 	"MaximilianScarlet4":"Then I fought her recently on a ring. As for a new contender, she was fighting really well. And, oh, she left a few cosmetic burns on my gloves.",
-	"MaximilianScarlet5":"That is typical of her. We are on our way to find her, so if you join, you will be able to fight her again!",
+	"MaximilianScarlet5":"Well, we are on our way to find her, so if you join, you will be able to fight her again!",
 	"MaximilianScarlet6":"And, considering how I lost against her with a 1-2 score, it will be a great rematch! Let's go!",
-	"MaximilianScarlet7":"<center><b>NEW CHARACTER UNLOCKED</b></center>\n<center>Maximilian the Brawler<\center>",
+	"MaximilianScarlet7":"<center><b>NEW CHARACTER UNLOCKED</b><br>Maximilian the Brawler</center>",
 	
 	"AuctionIntroduction":"Welcome to my auction house! Here, people sell some of the most prestigious items in the world, and you can both buy and sell stuff!",
 	"AuctionLightbulbsBane":"This is the ${Weapon.LightbulbsBane}. It couldn't be considered a weapon, if it wasn't for its ability to make the lights go out for enemies!",
