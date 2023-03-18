@@ -285,6 +285,7 @@
 	"MaximilianPoster6":"Let's go then!",
 	"MaximilianDoor1":"Entering someone's house without any reason isn't appropriate.",
 	"MaximilianDoor2":"Come in!",
+	"MaximilianDoor3":"I decided to adventure with you, Minami.",
 	"MaximilianWelcome1":"Hello, I'm Minami.",
 	"MaximilianWelcome2":"Nice to meet you. I'm Maximilian.",
 	"MaximilianWelcome3":"I watched many of your matches before and, honestly, I didn't think of you as someone who doesn't know how to play a game.",
@@ -333,6 +334,7 @@
 	"MaximilianScarlet5":"Well, we are on our way to find her, so if you join, you will be able to fight her again!",
 	"MaximilianScarlet6":"And, considering how I lost against her with a 1-2 score, it will be a great rematch! Let's go!",
 	"MaximilianScarlet7":"<center><b>NEW CHARACTER UNLOCKED</b><br>Maximilian the Brawler</center>",
+	"MaximilianScarlet8":"Oh, and also, I have found something recently. Maybe we'll find the use for that later.",
 	
 	"AuctionIntroduction":"Welcome to my auction house! Here, people sell some of the most prestigious items in the world, and you can both buy and sell stuff!",
 	"AuctionLightbulbsBane":"This is the ${Weapon.LightbulbsBane}. It couldn't be considered a weapon, if it wasn't for its ability to make the lights go out for enemies!",
