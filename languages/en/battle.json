@@ -139,6 +139,12 @@
 	"Skill.PunchOfFireDesc":"Sets his fists on fire, making a few next attacks use fire. Might burn himself.\n\"My battle with that red-haired woman inspired me to try to make my fists on fire.\"",
 	"Skill.ChargeRefresh":"Charge Refresh",
 	"Skill.ChargeRefreshDesc":"Refreshes the built-up charge so it won't dissipate.\n\"Don't come close to me if you don't want to get electrocuted.\"",
+	"Skill.StrongAttack":"Strong Attack",
+	"Skill.StrongAttackDesc":"Performs a powerful attack on an enemy.",
+	"Skill.Slash":"Slash",
+	"Skill.SlashDesc":"Attacks all enemies.",
+	"Skill.Willpower":"Willpower",
+	"Skill.WillpowerDesc":"Rouses the user’s fighting spirit and increases Attack. Usable up to 2 times in a row.",
 	
 	"Item.Breakfast":"Packed Breakfast",
 	"Item.BreakfastDesc":"Some chicken sandwiches.",
