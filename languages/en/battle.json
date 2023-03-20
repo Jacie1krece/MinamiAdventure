@@ -239,6 +239,11 @@
 	"Enemy.DesertBanditLeader":"Bandit Leader",
 	"Enemy.TrainingDummy":"Training Dummy",
 	"Enemy.MineBandit":"Mine Bandit",
+	"Enemy.MineBanditPhysical":"Mine Bandit (Fortified)",
+	"Enemy.MineBanditFire":"Mine Bandit (Heatworker)",
+	"Enemy.MineBanditIce":"Mine Bandit (Iceworker)",
+	"Enemy.MineBanditElectricity":"Mine Bandit (Electrican)",
+	"Enemy.MineBanditWater":"Mine Bandit (Waterworker)",
 	"Enemy.MineBanditLeader":"Mine Bandit Leader",
 	"Enemy.MineBanditSasin":"Mine Bandit"
 }
