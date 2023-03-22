@@ -24,7 +24,7 @@ null,
 {"id":22,"expanded":true,"name":"Mine 1","order":18,"parentId":0,"scrollX":2295,"scrollY":2761.2},
 {"id":23,"expanded":true,"name":"Mine 2","order":20,"parentId":21,"scrollX":2347.7999999999997,"scrollY":1890.6},
 {"id":24,"expanded":false,"name":"The Coal Forest","order":23,"parentId":20,"scrollX":1701.5,"scrollY":2429},
-{"id":25,"expanded":true,"name":"Dębowiec City","order":24,"parentId":0,"scrollX":3998.5,"scrollY":1184},
+{"id":25,"expanded":true,"name":"Dębowiec City","order":24,"parentId":0,"scrollX":3990.5,"scrollY":1216},
 {"id":26,"expanded":true,"name":"7th Floor","order":26,"parentId":25,"scrollX":777.5,"scrollY":476},
 {"id":27,"expanded":true,"name":"Maximilian's Home","order":27,"parentId":26,"scrollX":785.5,"scrollY":484},
 {"id":28,"expanded":false,"name":"The Game","order":28,"parentId":27,"scrollX":777.5,"scrollY":476}

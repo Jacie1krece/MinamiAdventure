@@ -146,6 +146,8 @@
 	"Skill.Willpower":"Willpower",
 	"Skill.WillpowerDesc":"Rouses the user’s fighting spirit and increases Attack. Usable up to 2 times in a row.",
 	
+	"Item.SpellNote":"Spell Note",
+	"Item.SkillNote":"Skill Note",
 	"Item.Breakfast":"Packed Breakfast",
 	"Item.BreakfastDesc":"Some chicken sandwiches.",
 	"Item.Phone":"Telephone",
@@ -158,7 +160,6 @@
 	"Item.ManaPotionDesc":"A carefully mass-produced mana potion.",
 	"Item.BrokenDrone":"Broken Drone",
 	"Item.BrokenDroneDesc":"Packed drone parts with the addition of sand. Best to return it to Stephen.",
-	"Item.DesertNote":"Spell Note",
 	"Item.DesertNoteDesc":"A note containing a powerful spell - Desert Windstorm.",
 	"Item.Cake":"Cake",
 	"Item.CakeDesc":"Sweet for Minami, not extremely sweet for others.",
@@ -180,8 +181,12 @@
 	"Item.LuckSakuraDesc":"Can you call Luck useless? It increases your crit damage, so probably not...",
 	"Item.AgilityPoppy":"Poppy of Agility",
 	"Item.AgilityPoppyDesc":"After witnessing so many war casualities, this little flower could be called an less omnious-looking manjushage.",
-	"Item.AuctionNote1":"Skill Note",
 	"Item.AuctionNote1Desc":"A note containing a powerful skill - Stat Battle.",
+	"Item.BantitNote1Desc":"A note containing a powerful spell - Anti-Fortification.",
+	"Item.BantitNote2Desc":"A note containing a powerful spell - Intense Heat.",
+	"Item.BantitNote3Desc":"A note containing a powerful spell - Ice Shock.",
+	"Item.BantitNote4Desc":"A note containing a powerful spell - Lightning Summon.",
+	"Item.BantitNote5Desc":"A note containing a powerful spell - Water Spring.",
 	
 	"State.Poison":"Posion",
 	"State.PoisonDesc":"Deals 2.5% of your HP as damage per turn.\n\"Unless you find an antidote, poison is a harbinger of death.\"",
@@ -245,5 +250,10 @@
 	"Enemy.MineBanditElectricity":"Mine Bandit (Electrican)",
 	"Enemy.MineBanditWater":"Mine Bandit (Waterworker)",
 	"Enemy.MineBanditLeader":"Mine Bandit Leader",
-	"Enemy.MineBanditSasin":"Mine Bandit"
+	"Enemy.MineBanditSasin":"Mine Bandit",
+	"Enemy.BanditPhysical":"Fortified Bandit",
+	"Enemy.BanditFire":"Heatworker Bandit",
+	"Enemy.BanditIce":"Iceworker Bandit",
+	"Enemy.BanditElectricity":"Electrican Bandit",
+	"Enemy.BanditWater":"Waterworker Bandit"
 }
