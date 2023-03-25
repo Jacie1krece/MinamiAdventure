@@ -255,5 +255,8 @@
 	"Enemy.BanditFire":"Heatworker Bandit",
 	"Enemy.BanditIce":"Iceworker Bandit",
 	"Enemy.BanditElectricity":"Electrican Bandit",
-	"Enemy.BanditWater":"Waterworker Bandit"
+	"Enemy.BanditWater":"Waterworker Bandit",
+	"Enemy.ForestBandit":"Forest Bandit",
+	
+	"Cap":""
 }
