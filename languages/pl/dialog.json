@@ -363,6 +363,7 @@
 	"Phone.Call":"Telefon",
 	"Phone.Shop":"Sklep",
 	"Phone.Calculator":"Kalkulator",
+	"Phone.Credits":"Autorzy",
 	"Phone.NoNews1":"Brak nowych wiadomości.",
 	"Phone.NoNews2":"Nic prócz clickbaitu i reklam.",
 	"Phone.Number1":"Wprowadź pierwszą liczbę.",
@@ -432,5 +433,7 @@
 	"Credits.Tiles":"Płytki: Gotcha Gotcha Games",
 	"Credits.Icons":"Ikony: CadWolf",
 	"Credits.Music":"Muzyka: Gotcha Gotcha Games",
-	"Credits.ThankYa":"Dzięki za grę!"
+	"Credits.ThankYa":"Dzięki za grę!",
+	
+	"Cap":""
 }

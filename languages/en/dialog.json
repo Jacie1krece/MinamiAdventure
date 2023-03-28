@@ -108,6 +108,7 @@
 	"OkimotoChen9":"Don't forget your breakfast!",
 	"OkimotoLeave1":"Where are you going Minami?",
 	"OkimotoLeave2":"Don't tell me that you are so eager to do some mischief that you'll rather eat cat food than breakfast only to save time!",
+	"OkimotoLeave3":"I'm not a fan of cold food, and the cake is still warm.",
 	"OkimotoReturn1":"Finally, you're here!",
 	"OkimotoReturn2":"Happy birthday, Minami!",
 	"OkimotoReturn3":"Thanks, Genji~!",
@@ -365,6 +366,7 @@
 	"Phone.Call":"Phone",
 	"Phone.Shop":"Shop",
 	"Phone.Calculator":"Calculator",
+	"Phone.Credits":"Credits",
 	"Phone.NoNews1":"No new news.",
 	"Phone.NoNews2":"Nothing but clickbait and ads.",
 	"Phone.Number1":"Type the first number.",
@@ -434,5 +436,7 @@
 	"Credits.Tiles":"Tilesets: Gotcha Gotcha Games",
 	"Credits.Icons":"Icons: CadWolf",
 	"Credits.Music":"Music: Gotcha Gotcha Games",
-	"Credits.ThankYa":"Thanks for playing!"
+	"Credits.ThankYa":"Thanks for playing!",
+	
+	"Cap":""
 }

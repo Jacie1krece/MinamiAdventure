@@ -13,6 +13,10 @@
 	"Info":"Proszę nie zmieniać tych tagów poniżej, ponieważ zepsuje to tekst",
 	"W":"<WordWrap>",
 	"Text.PissedOff":"\\{\\C[18]",
+	"Text.Normal":"\\C[0]",
+	"Text.Calamity":"\\C[18]",
+	"Text.Dystopia":"\\C[23]",
+	"Text.BadEnd":"\\C[30]",
 	
 	"Param.Level":"Poziom",
 	"Param.Experience":"Doświadczenie",
@@ -409,5 +413,7 @@
 	"Reid":"Reid",
 	"Priscilla":"Priscilla",
 	"Bandit":"Bandyta",
-	"LeaderBandit":"Lider bandytów"
+	"LeaderBandit":"Lider bandytów",
+	
+	"Cap":""
 }

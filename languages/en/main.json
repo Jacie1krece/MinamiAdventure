@@ -24,9 +24,9 @@
 	"Param.MaxHP":"Max HP",
 	"Param.MaxMP":"Max MP",
 	"Param.Attack":"Attack",
-	"Param.Defense":"Defense",
+	"Param.defence":"Defence",
 	"Param.MagicAttack":"M.Attack",
-	"Param.MagicDefense":"M.Defense",
+	"Param.Magicdefence":"M.Defence",
 	"Param.Agility":"Agility",
 	"Param.Luck":"Luck",
 	"Param.HitRate":"Hit Chance",
@@ -412,5 +412,7 @@
 	"Reid":"Reid",
 	"Priscilla":"Priscilla",
 	"Bandit":"Bandit",
-	"LeaderBandit":"Bandit Leader"
+	"LeaderBandit":"Bandit Leader",
+	
+	"Cap":""
 }
