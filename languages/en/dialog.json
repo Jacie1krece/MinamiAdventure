@@ -341,7 +341,7 @@
 	"AuctionLightbulbsBane":"This is the ${Weapon.LightbulbsBane}. It couldn't be considered a weapon, if it wasn't for its ability to make the lights go out for enemies!",
 	"AuctionEmeraldStaff":"This is the ${Weapon.EmeraldStaff}. Its tungsten handle and emerald head make it a heavy but powerful weapon!",
 	"AuctionStatBattle":"This is the ${Item.AuctionNote1}. You can learn how to challenge your opponent's statistics from it!",
-	"AuctionCounterTrophy":"This is the ${Armor.CounterTrophy}. It will allow the entire team to counter attack!",
+	"AuctionCounterTrophy":"This is the ${Armor.CounterTrophy}. It will grant the entire party a boost to crit chance!",
 	"AuctionCharm1":"This is the ${Armor.AmberCharm}. The seller said that it increases your agility!",
 	"AuctionCharm2":"This is the ${Armor.AmethystCharm}. The seller said that it increases your defence!",
 	"AuctionCharm3":"This is the ${Armor.JadeCharm}. The seller said that it increases your luck!",
@@ -359,6 +359,12 @@
 	"Sign.Debowiec1":"On the left is the auction house. Up is an shortcut back to the mine.",
 	
 	"NPC1":"I'm not exactly sure what to do. Sit on a bench, on a swing, or go home?",
+	
+	"Aster1":"Hello, Minami. I'm Aster, one of the scientists here.",
+	"Aster2":"I needed some eggs for my next experiment, but I miscalculated and bought one too much.",
+	"Aster3":"Do you want an egg?",
+	"Aster4":"Thanks. This next experiment seems very, very interesting.",
+	"Aster5":"...that's a shame. Well, at least it won't be wasted if I use it to make my lunch.",
 	
 	"Phone.Ring":"Ring... Ring...",
 	"Phone.Start":"Select an app.",

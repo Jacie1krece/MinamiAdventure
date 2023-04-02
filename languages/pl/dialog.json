@@ -338,7 +338,7 @@
 	"AuctionLightbulbsBane":"To jest ${Weapon.LightbulbsBane}. To de facto nie jest broń, ale jej możliwość oślepienia wrogów przydaje się w bitwie!",
 	"AuctionEmeraldStaff":"To jest ${Weapon.EmeraldStaff}. Jego wolframowa rączka i szmaragdowa główka sprawiają, że jest to ciężka, ale potężna broń!",
 	"AuctionStatBattle":"To jest ${Item.AuctionNote1}. Nauczysz się z niej, jak rzucić wyzwanie samym statystykom przeciwnika!",
-	"AuctionCounterTrophy":"To jest ${Armor.CounterTrophy}. Pozwoli on całej druzynie na kontratak!",
+	"AuctionCounterTrophy":"To jest ${Armor.CounterTrophy}. Dzięki niemu cała drużyna będzie częściej zadawać obrażenia krytyczne!",
 	"AuctionCharm1":"To jest ${Armor.AmberCharm}. Sprzedający powiedział, że powiększa on zwinność!",
 	"AuctionCharm2":"To jest ${Armor.AmethystCharm}. Sprzedający powiedział, że powiększa on obronę!",
 	"AuctionCharm3":"To jest ${Armor.JadeCharm}. Sprzedający powiedział, że powiększa on szczęście!",
@@ -356,6 +356,12 @@
 	"Sign.Debowiec1":"Na lewo jest dom aukcyjny. W górę jest dojazd do kopalni.",
 	
 	"NPC1":"Nie jestem do końca pewna, co robić. Usiąść na ławce, na huśtawce, czy pójść do domu?",
+	
+	"Aster1":"Witaj, Minami. Jestem Aster, jeden z tutejszych naukowców.",
+	"Aster2":"Potrzebuję kilku jajek do mojego eksperymentu, ale niechcący kupiłem o jedno za dużo.",
+	"Aster3":"Chcesz je wziąść?",
+	"Aster4":"Dzięki. Ten eksperyment wygląda na bardzo, bardzo interesujący.",
+	"Aster5":"...szkoda. Cóż, przynajmniej się nie zmarnuje, jak zamiast do eksperymentu użyję go do zrobienia jedzenia.",
 	
 	"Phone.Ring":"Dzyń... Dzyń...",
 	"Phone.Start":"Wybierz aplikację.",
