@@ -155,6 +155,8 @@
 	"Skill.LightningSummonDesc":"Przywołuje kilka piorunów, które też paraliżują przeciwnika.\n\"Słyszałeś ten grzom? Zrobię go ZNOWU I ZNOWU I ZNOWU!\"",
 	"Skill.WaterSpring":"Źródło wody",
 	"Skill.WaterSpringDesc":"Przywołuje źródło wody, zadając obrażenia jednemu wrogowi i oblewając wszystkich pozostałych.\n\"Nie lekceważ źródełka wody, które zaraz wystrzeli...\"",
+	"Skill.Shotgun":"Shotgun",
+	"Skill.Snipe":"Zestrzelenie",
 	
 	"Item.SpellNote":"Notatka z zaklęciem",
 	"Item.SkillNote":"Notatka z umiejętnością",

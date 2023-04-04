@@ -155,6 +155,8 @@
 	"Skill.LightningSummonDesc":"Summons some lightning bolts that also paralyse the opponent.\n\"Hear that thunder? I'm gonna do it OVER AND OVER AND OVER!\"",
 	"Skill.WaterSpring":"Water Spring",
 	"Skill.WaterSpringDesc":"Summons a water spring, damaging one enemy and making all others wet.\n\"Don't underestimate a water spring that's about to burst...\"",
+	"Skill.Shotgun":"Shotgun",
+	"Skill.Snipe":"Snipe",
 	
 	"Item.SpellNote":"Spell Note",
 	"Item.SkillNote":"Skill Note",
