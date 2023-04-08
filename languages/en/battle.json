@@ -201,6 +201,8 @@
 	"Item.BantitNote5Desc":"A note containing a powerful spell - Water Spring.",
 	"Item.Egg":"Egg",
 	"Item.EggDesc":"A normal-sized chicken egg. Wonder why Aster needs it for his experiment...",
+	"Item.Berry":"Berries",
+	"Item.BerryDesc":"This kind of berries grows mostly in gardens and the Amber Mountains. They have a ridiculously quick growth rate - a bush can grow in just a few hours.",
 	
 	"State.Poison":"Posion",
 	"State.PoisonDesc":"Deals 2.5% of your HP as damage per turn.\n\"Unless you find an antidote, poison is a harbinger of death.\"",
