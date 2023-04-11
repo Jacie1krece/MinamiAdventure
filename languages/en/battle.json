@@ -54,6 +54,8 @@
 	"Weapon.EmeraldStaffDesc":"Made of highest quality emeralds and tungsten, it can defeat many enemies with ease.",
 	"Weapon.PunchingGloves":"Punching Gloves",
 	"Weapon.PunchingGlovesDesc":"Heavy gloves used for boxing. They're slightly burnt, but that's only cosmetic damage.",
+	"Weapon.WaterGun":"Water Gun",
+	"Weapon.WaterGunDesc":"If things went slightly differently, then this could be the main weapon of this world.",
 	
 	"Armor.TelarNecklace":"Amber necklace",
 	"Armor.TelarNecklaceDesc":"A mysterious necklace with enormous power that is passed down for generations in the Jriaed family.",
@@ -202,7 +204,7 @@
 	"Item.Egg":"Egg",
 	"Item.EggDesc":"A normal-sized chicken egg. Wonder why Aster needs it for his experiment...",
 	"Item.Berry":"Berries",
-	"Item.BerryDesc":"This kind of berries grows mostly in gardens and the Amber Mountains. They have a ridiculously quick growth rate - a bush can grow in just a few hours.",
+	"Item.BerryDesc":"This kind of berries grows mostly in gardens and the Amber Peaks. They have a ridiculously quick growth rate - a handful can grow in just a few hours.",
 	
 	"State.Poison":"Posion",
 	"State.PoisonDesc":"Deals 2.5% of your HP as damage per turn.\n\"Unless you find an antidote, poison is a harbinger of death.\"",

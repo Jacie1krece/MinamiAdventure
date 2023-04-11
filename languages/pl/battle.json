@@ -54,6 +54,8 @@
 	"Weapon.EmeraldStaffDesc":"Zrobiony z najwyższej jakości wolframu i szmaragdów, jest w stanie bez problemu pokonać każdego wroga.",
 	"Weapon.PunchingGloves":"Rękawice bokserskie",
 	"Weapon.PunchingGlovesDesc":"Ciężkie rękawice używane do boksowania. Są lekko spalone, ale to tylko kosmetyczne uszkodzenia.",
+	"Weapon.WaterGun":"Pistolet na wodę",
+	"Weapon.WaterGunDesc":"Gdyby sprawy potoczyły się nieco inaczej, mogłaby to być główna broń tego świata.",
 	
 	"Armor.TelarNecklace":"Bursztynowy naszyjnik",
 	"Armor.TelarNecklaceDesc":"Tajemniczy naszyjnik z olbrzymią mocą, przekazywany przez rodzinę Jriaed z pokolenia na pokolenie.",
@@ -200,7 +202,7 @@
 	"Item.BantitNote4Desc":"Notatka zawierająca potężne zaklęcie, a mianowicie „Przyzwanie pioruna”.",
 	"Item.BantitNote5Desc":"Notatka zawierająca potężne zaklęcie, a mianowicie „Źródło wody”.",
 	"Item.Berry":"Jagody",
-	"Item.BerryDesc":"Ten gatunek jagód rośnie głównie w ogrodach i Bursztynowych Szczytach. Cechują się absurdalnie szybkim tempem wzrostu - krzew jest w stanie wyrosnąć w ciągu kilku godzin.",
+	"Item.BerryDesc":"Ten gatunek jagód rośnie głównie w ogrodach i Bursztynowych Szczytach. Cechują się absurdalnie szybkim tempem wzrostu - cała garść jest w stanie wyrosnąć w ciągu kilku godzin.",
 	
 	
 	"State.Poison":"Otrucie",
