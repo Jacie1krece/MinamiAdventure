@@ -255,6 +255,8 @@
 	"State.Charge2Desc":"Powiększa atak, elektryczne obrażenia, zwinność, szansę na unik, ładowanie TP, i leczenie od elektrycznych obrażeń.\n„...ale w mym przypadku są one niezwykle silne.”",
 	"State.Charge3":"Naładowanie - Poziom 3",
 	"State.Charge3Desc":"Powiększa atak, elektryczne obrażenia, zwinność, szansę na unik, ładowanie TP, i leczenie od elektrycznych obrażeń. Normalny atak zadaje elektryczne obrażenia.\n„Podsumowując, nie lekceważ mojej elektryczności - mogę cię zszokować.”",
+	"State.Anxious":"Niepokój",
+	"State.AnxiousDesc":"Lekko zmniejsza podstawowe statystyki oraz efektywność obrony, używania zaklęć i zdobywania TP.\n\"Dobrze, że się to skończyło, ale teraz ciężko mi jest przestać o tym myśleć...\"",
 	
 	"Enemy.DesertBandit":"Pustynny bandyta",
 	"Enemy.DesertBanditMage":"Pustynna czarownica",

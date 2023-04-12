@@ -362,6 +362,7 @@
 	"NPC.Sasin":"Sasin the Bandit Leader",
 	"NPC.OldMiner":"Old Miner",
 	"NPC.Dorothy":"Dorothy the Auction Supervisor",
+	"NPC.Aster":"Aster",
 	
 	"Save.Unknown":"GOD FUCKING damnit PLAYER where the FUCK are you!?",
 	"Save1":"${Save.Unknown}",
@@ -392,6 +393,10 @@
 	"Save26":"Dębowiec City\n7th Floor",
 	"Save27":"${Save.Unknown}",
 	"Save28":"${Save.Unknown}",
+	"Save29":"Amber Peaks",
+	"Save30":"Amber Peaks\nCavern",
+	"Save31":"Amber Peaks\nPassage",
+	"Save32":"${Save.Unknown}",
 	
 	"Drone.SelectLocation":"Select the place where you want to travel.",
 	"Drone.Nowhere":"how did you click that",

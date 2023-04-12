@@ -256,6 +256,8 @@
 	"State.Charge2Desc":"Increases attack, electrical damage, agility, evasion, TP charge, and healing from electrical damage.\n\"...but in my case, they are really potent.\"",
 	"State.Charge3":"Charge - Tier 3",
 	"State.Charge3Desc":"Increases attack, electrical damage, agility, evasion, TP charge, and healing from electrical damage. Normal attack deals electrical damage.\n\"Overall, don't underestimate my electricity, as you might get shocked.\"",
+	"State.Anxious":"Anxious",
+	"State.AnxiousDesc":"Slightly decreases main stats and the effectiveness of guarding, casting spells, and gaining TP.\n\"Good thing that it's over, but now it's hard to stop thinking about it...\"",
 	
 	"Enemy.DesertBandit":"Desert Bandit",
 	"Enemy.DesertBanditMage":"Desert Witch",
