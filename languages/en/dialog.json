@@ -64,6 +64,7 @@
 	"Check37":"There's a ton of valadium and dangerous stuff down there. I don't recommend going there.",
 	"Check38":"An ATM.",
 	"Check39":"Paying by phone is way more convenient.",
+	"Check40":"One of my workbenches. Also the only one not im my basement.",
 	
 	"Bookshelf1":"There's the 1st tome of the \"Welcome to Yōkai School! Hiroki-kun\" manga on it.",
 	"Bookshelf2":"We had read the whole series lots of times.",
@@ -466,6 +467,11 @@
 	"Phone.Stephen32":"...now.",
 	"Phone.Stephen33":"Heya, Minami. The drone's active, so you can enter right away.",
 	"Phone.Stephen34":"Perfect timing. Let's go to the Mineral Nation!",
+	
+	"Crafting.Select":"Select a thing to craft.",
+	"Crafting.Recipe":"Required: ",
+	"Crafting.NotEnough":"You don't have enough items.",
+	"Crafting.Craft":"Craft",
 	
 	"Demo.End":"Caution: The next room is still under heavy development, and also it's the end of this demo.",
 	

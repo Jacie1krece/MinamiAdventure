@@ -460,6 +460,11 @@
 	"Phone.Stephen33":"Siema, Minami. Dron już aktywny, tak więc wchodźcie.",
 	"Phone.Stephen34":"W samą porę. Ruszamy do Narodu Minerałów!",
 	
+	"Crafting.Select":"Wybierz, co chcesz stworzyć.",
+	"Crafting.Recipe":"Wymagane: ",
+	"Crafting.NotEnough":"Nie masz wystarczająco dużo przedmiotów.",
+	"Crafting.Craft":"Stwórz",
+	
 	"Demo.End":"Uwaga: Następne pomieszczenie jest w trakcie rozwoju, i do tego jest końcem tego dema.",
 	
 	"Credits.By":"Autorstwa Jacie_krece",
