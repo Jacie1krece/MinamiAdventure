@@ -363,6 +363,9 @@
 	"AmberPeaksBerries":"Patrzcie, jagody!",
 	"AmberPeaksBus1":"Przystanek autobusowy.",
 	"AmberPeaksBus2":"To jest jego końcowy przystanek, a więc tym moglibyśmy się tylko cofnąć. Do tego wolę drony Stephena.",
+	"AmberPeaksSign1":"\"Dla bezpieczeństwa to przejście zostało zablokowane. Użyj 4 przełączników w Szczytach, aby przejść dalej.\"",
+	"AmberPeaksSign2":"\"Jak nie wiesz co robić, kryształy ci pomogą...\"",
+	"AmberPeaksSign3":"Jest też narysowana mała strzałka w prawo.",
 	
 	"AuctionIntroduction":"Witajcie w moim domu aukcyjnym! Tutaj ludzie sprzedają jedne z najbardziej prestiżowych przedmiotów na świecie, a nawet wy możecie zarówno kupować, jak i sprzedawać!",
 	"AuctionLightbulbsBane":"To jest ${Weapon.LightbulbsBane}. To de facto nie jest broń, ale jej możliwość oślepienia wrogów przydaje się w bitwie!",
