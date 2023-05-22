@@ -223,6 +223,12 @@
 	"Item.ToiletPaperDesc":"Jakimś sposobem regeneruje 25 TP. Nie myśl nad tym.",
 	"Item.TrapCard":"Karta-pułapka",
 	"Item.TrapCardDesc":"Regeneruje 50 TP, ale ma szansę na nałożenie negatywnych efektów. Nie mów, że cię nie ostrzegałem.",
+	"Item.RedBalloon":"Czerwony balon z wodą",
+	"Item.RedBalloonDesc":"Często jest używany w walkach na wodę jako swego rodzaju granat.",
+	"Item.BlueBalloon":"Niebieski balon z wodą",
+	"Item.BlueBalloonDesc":"Jest jedynie trochę większy od tego czerwonego, a zawiera dwa razy więcej wody.",
+	"Item.GreenBalloon":"Zielony balon z wodą",
+	"Item.GreenBalloonDesc":"To coś z pewnością zrobi spory plusk, gdy tylko w coś uderzy...",
 	
 	"State.Poison":"Otrucie",
 	"State.PoisonDesc":"Zadaje 2.5% twojego HP jako obrażenia co turę.\n„Jeżeli nie masz antidotum, trucizna prowadzi tylko do zguby.”",
@@ -300,6 +306,7 @@
 	"Enemy.BanditElectricity":"Bandyta elektryk",
 	"Enemy.BanditWater":"Bandywa hydraulik",
 	"Enemy.ForestBandit":"Forest Bandit",
+	"Enemy.Lamp":"Lampa",
 	
 	"Cap":""
 }

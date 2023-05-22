@@ -223,6 +223,12 @@
 	"Item.ToiletPaperDesc":"It somehow restores 25 TP. Don't overthink it.",
 	"Item.TrapCard":"Trap Card",
 	"Item.TrapCardDesc":"It restores 50 TP, but may also cause negative effects. Don't say that you weren't warned.",
+	"Item.RedBalloon":"Red Water Balloon",
+	"Item.RedBalloonDesc":"It's commonly used in water fights as a sort of grenade.",
+	"Item.BlueBalloon":"Blue Water Balloon",
+	"Item.BlueBalloonDesc":"It is only slightly bigger than the red one, yet it holds double the amount of water.",
+	"Item.GreenBalloon":"Green Water Balloon",
+	"Item.GreenBalloonDesc":"You can feel the potential splash this could make when hitting something...",
 	
 	"State.Poison":"Posion",
 	"State.PoisonDesc":"Deals 2.5% of your HP as damage per turn.\n\"Unless you find an antidote, poison is a harbinger of death.\"",
@@ -312,6 +318,7 @@
 	"Enemy.SummonBanditElectricity":"Electrican Bandit",
 	"Enemy.SummonBanditWater":"Waterworker Bandit",
 	"Enemy.ForestBandit":"Forest Bandit",
+	"Enemy.Lamp":"Lamp",
 	
 	"Cap":""
 }
