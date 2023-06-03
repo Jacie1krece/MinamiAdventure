@@ -56,6 +56,14 @@
 	"Weapon.PunchingGlovesDesc":"Heavy gloves used for boxing. They're slightly burnt, but that's only cosmetic damage.\n\"Even if they start to no longer get usable, I will remember these gloves.\"",
 	"Weapon.WaterGun":"Water Gun",
 	"Weapon.WaterGunDesc":"If things went slightly differently, then this could be the main weapon of this world.\n\"Envolving ideas can be a good thing, as it allows them to come true.\"",
+	"Weapon.MineralDarts":"Mineral Darts",
+	"Weapon.MineralDartsDesc":"Bounces to another, random enemy after doing a hit.\n\"Great when popping balloons, being able to pierce through multiple of them with one good throw.\"",
+	"Weapon.BerylliumRifle":"Beryllium Rifle",
+	"Weapon.BerylliumRifleDesc":"Fires 2 bullets and has a chance to apply Berylliosis.\n\"Is it just me or is it laggy in here?\"",
+	"Weapon.DiamondStaff":"Diamond Staff",
+	"Weapon.DiamondStaffDesc":"Made out of good quality diamonds and platinium, it can defeat lots of enemies with ease.\n\"Better than the Emerald Staff that Dorothy sells, that's for sure.\"",
+	"Weapon.MMAGloves":"MMA Gloves",
+	"Weapon.MMAGloves":"Used by various famous people, these can be used to execute various fighting styles.\n\"The event these gloves are commonly used in are about internet celebrities fighting each other.\"",
 	
 	"Armor.TelarNecklace":"Amber necklace",
 	"Armor.TelarNecklaceDesc":"A mysterious necklace with enormous power that is passed down for generations in the Jriaed family.\n\"It was originally Telar's. Maybe putting it on her grave could be a good idea?\"",
@@ -107,6 +115,10 @@
 	"Armor.IronBracingDesc":"This pair of glove bracing makes your damage slightly higher, but only it you're using your fists.\n\"Also works as knuckles, if you found yourself barehanded in a tricky situation.\"",
 	"Armor.CrystalCharm":"Crystal Charm",
 	"Armor.CrystalCharmDesc":"It increases the team's max HP, agility, experience, luck, mana, defence, attack, and magical defence.\n\"A grand reward for collecting these charms. You can be proud of yourself.\"",
+	"Armor.ForestHeadband":"Forest Headband",
+	"Armor.ForestHeadband":"Simple, yet effective, and made using only natural materials from the Coal Forest.\n\"For every tree used to make headbands, 2 more are planted!\"",
+	"Armor.HussarArmor":"Hussar Armour",
+	"Armor.HussarArmor":"Having a pair of wings on its back, you can imagine how strong it would be on a cavalry soldier.\n\"Some say that these wings are inspired by Flügel - though it doesn't explain why they are vertical.\"",
 	
 	"Skill.DesertWindstorm":"Desert Windstorm",
 	"Skill.DesertWindstormDesc":"Summons a sandstorm, dealing damage to every enemy.\n\"Isn't Desert Windstorm just a more verbose way of saying Sandstorm?\"",
@@ -169,7 +181,14 @@
 	"Skill.WaterSpringDesc":"Summons a water spring, damaging one enemy and making all others wet.\n\"Don't underestimate a water spring that's about to burst...\"",
 	"Skill.Shotgun":"Shotgun",
 	"Skill.Snipe":"Snipe",
+	"Skill.WeakHeal":"Weak Heal",
+	"Skill.WeakHealDesc":"Restores HP to an ally, based on your Magical Attack.\n\"This is not the Ultimate Heal, but you should be fine.\"",
+	"Skill.BoulderRain":"Boulder Rain",
+	"Skill.MineralThrowDesc":"Summons a rain of boulders, hitting random enemies and possibly stunning them.\n\"If someone has amnesia, hitting them in the head with a boulder is the best way to bring them to their senses.\"",
+	"Skill.Distraction":"Distraction",
+	"Skill.DistractionDesc":"Distracts opponents, taking away their turn and their evasion.\n\"Just a normal Distraction Dance, that's all.\"",
 	
+	"Item.Consumable":" (Consumable)",
 	"Item.SpellNote":"Spell Note",
 	"Item.SkillNote":"Skill Note",
 	"Item.Breakfast":"Packed Breakfast",
@@ -227,6 +246,10 @@
 	"Item.BlueBalloonDesc":"Deals a small amount of Water damage.\n\"It is only slightly bigger than the red one, yet it holds double the amount of water.\"",
 	"Item.GreenBalloon":"Green Water Balloon",
 	"Item.GreenBalloonDesc":"Deals a medium amount of Water damage.\n\"You can feel the potential splash this could make when hitting something...\"",
+	"Item.Pierogi":"Pierogi",
+	"Item.PierogiDesc":"Recovers 12.5% HP.\n\"A typical Mineral Nation dish, now in a version that's ready to cook.\"",
+	"Item.GachaNote1Desc":"A note containing a powerful spell - Boulder Rain.\n\"If someone has amnesia, hitting them in the head with a boulder is the best way to bring them to their senses.\""
+	"Item.GachaNote2Desc":"A note containing a powerful skill - Distraction.\n\"Just a normal Distraction Dance, that's all.\""
 	
 	"State.Poison":"Posion",
 	"State.PoisonDesc":"Deals 2.5% of your HP as damage per turn.\n\"Unless you find an antidote, poison is a harbinger of death.\"",
@@ -290,6 +313,8 @@
 	"State.TrapPhaseInsanityDesc":"Forces to do whatever, without your intervention.\n\"I don't know what I'm doing!\"",
 	"State.TrapPhaseViolentPhase":"Violent Phase",
 	"State.TrapPhaseViolentPhaseDesc":"Forces to attack the enemy.\n\"*slash sound*\"",
+	"State.Distracted":"Distracted",
+	"State.DistractedDesc":"Makes you lose your turn and the ability to dodge attacks.\n\"*cluelessly dancing to the beat*\"",
 	
 	"Enemy.DesertBandit":"Desert Bandit",
 	"Enemy.DesertBanditMage":"Desert Witch",

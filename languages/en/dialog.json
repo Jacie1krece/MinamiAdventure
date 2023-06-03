@@ -395,6 +395,15 @@
 	"AuctionBought":"Thanks for your purchase!",
 	"AuctionNotEnough":"You look like you don't have enough money for that. Maybe you could sell something?",
 	
+	"Gacha1":"Ooh, a gacha machine! And it looks like it has a really nice item pool!",
+	"Gacha2":"Also, as the icing on the cake, the first roll is entirely free! Should I use it?",
+	"Gacha3":"(Play at the gacha machine?)",
+	"GachaNotes":"Check the notes",
+	"GachaRouxls":"Ruleset and item pool<br>One roll costs 15G.<br>Special item drops only once with a base chance of 1/90, with the chance's nominator increasing by 1 with every Rare or Common item.<br>Rare items drop with a base chance of 1/10, and the nominator also increases by 1 per every Common item.",
+	"GachaItems1":"The item list is as follows:<br>Common: Nothing<br>Common: Mana potion<br>Common: Instant Ramen<br>Common: Instant Rosół<br>Common: 1-25G<br>Rare: Mineral Darts (Throwing)<br>Rare: Pickaxe (Blade)<br>Rare: Diamond Staff (Wand)<br>Rare: Beryllium Rifle (Gun)<br>Rare: MMA Gloves (Punching)<br>Rare: Forest Headband (Helmet)<br>Rare: Hussar Armour (Armour)<br>Special: Jasper Charm (Accessory)<br>Rare: Distraction (Skill)<br>Rare: Boulder Rain (Spell)<br>Rare: Bomb (Consumable)<br>Rare: Pierogi (Food)<br>Rare: Agility Poppy (Flower)<br>Rare: Green Onion (Unique)<br>Rare: Rainbow Star (Once)",
+	"GachaRefuse":"*sigh* Fine, it's just gambling anyways.",
+	"GachaBroke":"*sigh* Did I just spend the whole cash that I got during this adventure on a gacha machine? Maybe I could get some G back by selling this stuff that I got from it?",
+	
 	"Sign.Debowiec1":"On the left is the auction house. Up is an shortcut back to the mine.",
 	
 	"NPC1":"I'm not exactly sure what to do. Sit on a bench, on a swing, or go home?",
