@@ -187,6 +187,7 @@
 	"Menu.DurationActions":"Akcje:",
 	"Menu.DurationTurns":"Tury:",
 	"Menu.Passive":"Pasywne",
+	"Menu.Phone":"Telefon",
 	
 	"Shop.Anytime":"Kiedykolwiek",
 	"Shop.Battle":"W bitwie",
@@ -364,6 +365,7 @@
 	"NPC.OldMiner":"Stary górnik",
 	"NPC.Dorothy":"Nadzorczyni aukcji Dorota",
 	"NPC.Aster":"Aster",
+	"NPC.AlchShop":"Alchemist Emporium Shopkeeper",
 	
 	"Save.Unknown":"BOŻE KURWA do cholery GRACZU gdzie ty KURWA jesteś!?",
 	"Save1":"${Save.Unknown}",
