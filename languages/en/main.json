@@ -1,5 +1,5 @@
 {
-	"Title":"Minami's Adventure DEMO",
+	"Title":"Minami's Adventure",
 	"Y":"Yes",
 	"N":"No",
 	"C":"Cancel",
@@ -52,6 +52,8 @@
 	
 	"Option.Language":"Language",
 	"Option.AlwaysDash":"Always Dash",
+	"Option.ShowCompass":"Minimap",
+	"Option.CompassSize":"Minimap Size",
 	"Option.TouchUI":"Mouse UI",
 	"Option.BGM":"BGM",
 	"Option.BGS":"BGS",
@@ -246,6 +248,11 @@
 	"Shop.Item.Hidden":"Collectibles",
 	"Shop.Item.Consumable":"Consumable",
 	"Shop.Item.Nonconsumable":"Nonconsumable",
+	"Shop.Exit":"Exit",
+	"Shop.Owned":"Owned",
+	"Shop.Change":"Change",
+	"Shop.Net":"Net",
+	"Shop.Craft":"Craft",
 	
 	"Element.Physical":"\\I[76]Physical",
 	"Element.Fire":"\\I[64]Fire",
@@ -365,6 +372,7 @@
 	"NPC.Dorothy":"Dorothy the Auction Supervisor",
 	"NPC.Aster":"Aster",
 	"NPC.SusDealer":"McCache",
+	"NPC.Opportunist":"Veronica, the Opportunist",
 	
 	"Save.Unknown":"GOD FUCKING damnit PLAYER where the FUCK are you!?",
 	"Save1":"${Save.Unknown}",
@@ -412,6 +420,7 @@
 	"Drone.NijisakiCity":"Nijisaki City",
 	"Drone.ZiemowitTown":"Ziemowit Town",
 	"Drone.DebowiecCity":"Dębowiec City",
+	"Drone.KatoszawaCity":"Katoszawa City",
 	
 	"World.Find":"Found ",
 	"World.Get":"Received ",

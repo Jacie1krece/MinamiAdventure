@@ -1,5 +1,5 @@
 {
-	"Title":"Przygoda Minami DEMO",
+	"Title":"Przygoda Minami",
 	"Y":"Tak",
 	"N":"Nie",
 	"C":"Anuluj",
@@ -52,6 +52,8 @@
 	
 	"Option.Language":"Język",
 	"Option.AlwaysDash":"Ciągłe bieganie",
+	"Option.ShowCompass":"Minimapa",
+	"Option.CompassSize":"Rozmiar minimapy",
 	"Option.TouchUI":"UI Myszki",
 	"Option.BGM":"Muzyka w tle",
 	"Option.BGS":"Dźwięki w tle",
@@ -247,6 +249,11 @@
 	"Shop.Item.Hidden":"Znajdźki",
 	"Shop.Item.Consumable":"Zużywalne",
 	"Shop.Item.Nonconsumable":"Niezużywalne",
+	"Shop.Exit":"Wyjdź",
+	"Shop.Owned":"Posiadane",
+	"Shop.Change":"Zmiana",
+	"Shop.Net":"Wynik",
+	"Shop.Craft":"Stwórz",
 	
 	"Element.Physical":"\\I[76]Fizyczne",
 	"Element.Fire":"\\I[64]Ogień",
@@ -366,6 +373,8 @@
 	"NPC.Dorothy":"Nadzorczyni aukcji Dorota",
 	"NPC.Aster":"Aster",
 	"NPC.AlchShop":"Alchemist Emporium Shopkeeper",
+	"NPC.SusDealer":"McCache",
+	"NPC.Opportunist":"Oportunistka Weronika",
 	
 	"Save.Unknown":"BOŻE KURWA do cholery GRACZU gdzie ty KURWA jesteś!?",
 	"Save1":"${Save.Unknown}",
@@ -391,7 +400,7 @@
 	"Save21":"Kopalnie Narodu Minerałów\nBunkier górników",
 	"Save22":"Kopalnie Narodu Minerałów\nStara kopalnia",
 	"Save23":"Kopalnie Narodu Minerałów\nKopalnia bandytów",
-	"Save24":"Naród Minerałów\nLas węgla",
+	"Save24":"Naród Minerałów\nWęglowy Las",
 	"Save25":"Miasto Dębowiec",
 	"Save26":"Miasto Dębowiec\n7. piętro",
 	"Save27":"${Save.Unknown}",
