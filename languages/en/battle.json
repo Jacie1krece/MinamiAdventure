@@ -324,6 +324,8 @@
 	"Item.TRIBoosterDesc":"Use to get 3 random Stat Boosters.\n\"It's a small packet, but I'm sure that it'll come to a great help.\"",
 	"Item.QUIBooster":"Large Booster Pack",
 	"Item.QUIBoosterDesc":"Use to get 5 random Stat Boosters.\n\"Remember that one monster girl card game? Well, it also got 5-card booster packs. Why I'm telling you it, though? No idea.\"",
+	"Item.DesertSand":"Desert Sand",
+	"Item.DesertSandDesc":"A small amount of sand from the Great Desert.\n\"Yeah, it's just sand. Don't put it into sandwiches, or you'll be sand.\"",
 	
 	"State.Poison":"Posion",
 	"State.PoisonDesc":"Deals 2.5% of your HP as damage per turn.\n\"Unless you find an antidote, poison is a harbinger of death.\"",
