@@ -3,7 +3,7 @@ Hello, and welcome to this preview build of Minami's Adventure, the game that I'
 This is still an early project, though it has slightly over a year, and I recently decided to make it public so anyone can see that there's something like that in the works.
 ## What is it
 Minami's Adventure is a turn-based RPG game, containing fun characters, various mechanics to spice up the gameplay, and especially a whole lot of various references - to a whole lot of stuff!
-As of version v0.1.1, the following content is avaliable:
+As of version v0.1.2, the following content is avaliable:
 ### Characters
 <details><summary><b>Minami</b></summary>The main protagonist. She's a catgirl, and she's not silent at all!</details>
 <details><summary><b>Naemi</b></summary>Minami's best friend's robotic 'sister', her main role is to assist... though she's good in combat as well.</details>
@@ -15,6 +15,9 @@ As of version v0.1.1, the following content is avaliable:
 <details><summary><b>Nijisaki City</b></summary>The starter town, where you can rest buy some items and exchange your Rainbow Stars.</details>
 <details><summary><b>The Great Desert</b></summary>There's a whole lot of bandits here, while Minami and Naemi want to go return the Amber Necklace where it belongs.</details>
 <details><summary><b>Mineral Nation</b></summary><b>WARNING: Not reworked to the new leveling system yet, might experience some wonkiness or unbalanced fights</b> The real adventure starts here! Explore the underground mines, the labirynth of the Coal Forest, and the little puzzles of the Amber Mountains.</details>
+
+##What I plan for the next update
+If everything goes smoothly, I plan on reworking the Mineral Nation Mines, including making it based on multiple "maps" rather than a single big one - I'll be starting with the 1st part, and go to the 2nd one slightly later. All alongside other bug fixes and freshly-introduced items.
 
 ## Downloading
 This code right here isn't able to be run without RPG Maker MZ, but in Releases, there's a .zip file containing the actual game, ready to be played.
