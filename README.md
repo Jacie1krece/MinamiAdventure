@@ -16,9 +16,8 @@ As of version v0.1.2, the following content is avaliable:
 <details><summary><b>The Great Desert</b></summary>There's a whole lot of bandits here, while Minami and Naemi want to go return the Amber Necklace where it belongs.</details>
 <details><summary><b>Mineral Nation</b></summary><b>WARNING: Not reworked to the new leveling system yet, might experience some wonkiness or unbalanced fights</b> The real adventure starts here! Explore the underground mines, the labirynth of the Coal Forest, and the little puzzles of the Amber Mountains.</details>
 
-##What I plan for the next update
+## What I plan for the next update
 If everything goes smoothly, I plan on reworking the Mineral Nation Mines, including making it based on multiple "maps" rather than a single big one - I'll be starting with the 1st part, and go to the 2nd one slightly later. All alongside other bug fixes and freshly-introduced items.
-
 ## Downloading
 This code right here isn't able to be run without RPG Maker MZ, but in Releases, there's a .zip file containing the actual game, ready to be played.
 ## Feedback
