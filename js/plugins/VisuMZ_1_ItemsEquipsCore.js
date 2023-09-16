@@ -8,12 +8,12 @@ Imported.VisuMZ_1_ItemsEquipsCore = true;
 
 var VisuMZ = VisuMZ || {};
 VisuMZ.ItemsEquipsCore = VisuMZ.ItemsEquipsCore || {};
-VisuMZ.ItemsEquipsCore.version = 1.43;
+VisuMZ.ItemsEquipsCore.version = 1.48;
 
 //=============================================================================
  /*:
  * @target MZ
- * @plugindesc [RPG Maker MZ] [Tier 1] [Version 1.43] [ItemsEquipsCore]
+ * @plugindesc [RPG Maker MZ] [Tier 1] [Version 1.48] [ItemsEquipsCore]
  * @author VisuStella
  * @url http://www.yanfly.moe/wiki/Items_and_Equips_Core_VisuStella_MZ
  * @orderAfter VisuMZ_0_CoreEngine
@@ -202,6 +202,16 @@ VisuMZ.ItemsEquipsCore.version = 1.43;
  * - Replace each 'x' with a category name to mark this item as.
  *
  * ---
+ * 
+ * <Conserve: x%>
+ * 
+ * - Used for: Item
+ * - Gives the item a percent chance when used to not consume the item.
+ * - Replace 'x' with a number representing the percent chance to successfully
+ *   conserve the item.
+ * - If an item cannot be consumed, conserve chance will be 100% regardless.
+ * 
+ * ---
  *
  * === Item Accessibility Notetags ===
  *
@@ -360,6 +370,99 @@ VisuMZ.ItemsEquipsCore.version = 1.43;
  *   party's inventory.
  * - This item will NOT be added during the setup phase for Battle Tests.
  *   - If you want to add the item, do it manually.
+ * 
+ * ---
+ * 
+ * <Equip For Class Only: x>
+ * <Equip For Classes Only: x, x, x>
+ * <Equip For Class Only: name>
+ * <Equip For Classes Only: name, name, name>
+ * 
+ * - Used for: Weapon, Armor Notetags
+ * - This piece of equipment can only be worn by members with 'x' as the main
+ *   class. If there are multiple classes listed, at least one of them need to
+ *   be the actor's main class.
+ * - Replace 'x' with a number representing the ID of the class required.
+ * - For the 'name' variant, replace 'name' with the name of the required class
+ *   the actor needs to have in order to equip this object.
+ * 
+ * ---
+ * 
+ * <Equip Requirements>
+ *  requirement
+ *  requirement
+ *  requirement
+ * </Equip Requirements>
+ * 
+ * - Used for: Weapon, Armor Notetags
+ * - Defines a requirement(s) for the actor to meet in order for the equip item
+ *   to be equippable.
+ * - Failure to meet these requirements will cause the equipment to unequip
+ *   automatically.
+ *   - Keep in mind that in some cases, this will not happen immediately.
+ *     Things like switches will require the actor to meet its cache clear
+ *     in order to trigger the automatic unequip.
+ *   - Some ways to trigger a cache clear would be to change the actor's HP/MP,
+ *     or adding and then removing a state for the actor (preferrably an unused
+ *     state that has no real effect).
+ * - Replace 'requirement' with one of the settings bellow:
+ * - Add multiple 'requirement' lines for more requirements.
+ * 
+ *   Requirements:
+ *
+ *   param > x
+ *   param >= x
+ *   param === x
+ *   param <= x
+ *   param < x
+ *   - Replace 'param' with 'level', 'maxhp', 'maxmp', 'atk', 'def', 'mat',
+ *     'mdf', 'agi', or 'luk'.
+ *   - This will make the piece of equipment require the actor's base parameter
+ *     to be greater than (>), greater than or equal to (>=), equal to (===),
+ *     less than or equal to (<=), or less than (<).
+ *   - This is NOT the value for the total parameter, only the base parameter.
+ *   - The base parameter is calculated by the user's class parameter value and
+ *     any bonuses received through permanent stat increases.
+ *
+ *   learned skill: x
+ *   learned skill: name
+ *   - This will make the piece of equipment require the actor to have learned
+ *     skill 'x'. 
+ *   - If 'name' is used, priority will be given to the skill with the highest
+ *     ID in the database.
+ *   - The actor needs to have LEARNED the skill. This means that if you have
+ *     added a skill to the actor's kit through a trait, it will not count.
+ *
+ *   switch: x
+ *   - This will require switch X to be on.
+ *   - If it isn't, the piece of equipment cannot be worn.
+ *   - Insert multiple of these to add more switches that are are required to
+ *     be on.
+ * 
+ *   ***NOTE 1***
+ *   There is no "class: x" for these equip requirements. Instead, use the
+ *   <Equip For Class Only: x> notetags.
+ * 
+ *   ***NOTE 2***
+ *   For those wondering where "unique only" is, that does not exist in this
+ *   plugin. Instead, use the <Equip Copy Limit: x> notetag listed above.
+ * 
+ *   Example A:
+ * 
+ *     <Equip Requirements>
+ *     level >= 20
+ *     </Equip Requirements>
+ * 
+ *     - Requires the user to be at least level 20 in order to equip.
+ * 
+ *   Example B:
+ * 
+ *     <Equip Requirements>
+ *     atk >= 50
+ *     def <= 50
+ *     </Equip Requirements>
+ *     - Requires the user have at least 50 base ATK to equip.
+ *     - Requires the user to be under 50 base DEF to equip.
  * 
  * ---
  *
@@ -639,6 +742,50 @@ VisuMZ.ItemsEquipsCore.version = 1.43;
  * - If 'Any' notetag variant is used, item cannot be sold if any of the
  *   switches are ON. Otherwise, it can be sold.
  *
+ * ---
+ * 
+ * <Buy Turn On Switch: x>
+ * <Buy Turn On Switches: x, x, x>
+ * 
+ * - Used for: Item, Weapon, Armor Notetags
+ * - When this item, weapon, or armor is bought in the shop scene, turn on the
+ *   switch(es) 'x'.
+ * - Replace 'x' with a number representing the ID of the switch to turn on.
+ *   - Insert multiple 'x' values to turn on multiple switches upon buying.
+ * 
+ * ---
+ * 
+ * <Buy Turn Off Switch: x>
+ * <Buy Turn Off Switches: x, x, x>
+ * 
+ * - Used for: Item, Weapon, Armor Notetags
+ * - When this item, weapon, or armor is bought in the shop scene, turn off the
+ *   switch(es) 'x'.
+ * - Replace 'x' with a number representing the ID of the switch to turn off.
+ *   - Insert multiple 'x' values to turn off multiple switches upon buying.
+ * 
+ * ---
+ * 
+ * <Sell Turn On Switch: x>
+ * <Sell Turn On Switches: x, x, x>
+ * 
+ * - Used for: Item, Weapon, Armor Notetags
+ * - When this item, weapon, or armor is sold in the shop scene, turn on the
+ *   switch(es) 'x'.
+ * - Replace 'x' with a number representing the ID of the switch to turn on.
+ *   - Insert multiple 'x' values to turn on multiple switches upon selling.
+ * 
+ * ---
+ * 
+ * <Sell Turn Off Switch: x>
+ * <Sell Turn Off Switches: x, x, x>
+ * 
+ * - Used for: Item, Weapon, Armor Notetags
+ * - When this item, weapon, or armor is sold in the shop scene, turn off the
+ *   switch(es) 'x'.
+ * - Replace 'x' with a number representing the ID of the switch to turn off.
+ *   - Insert multiple 'x' values to turn off multiple switches upon selling.
+ * 
  * ---
  *
  * === JavaScript Notetags: Shop Menu ===
@@ -1193,6 +1340,10 @@ VisuMZ.ItemsEquipsCore.version = 1.43;
  *   Can't Equip:
  *   - Marker used to show an actor cannot equip an item.
  * 
+ *   Delay MS:
+ *   - How many milliseconds (MS) to delay the preview update?
+ *   - This is to prevent lag spikes for equips only.
+ * 
  *   No Changes:
  *   - Marker used to show no changes have occurred.
  * 
@@ -1298,6 +1449,68 @@ VisuMZ.ItemsEquipsCore.version = 1.43;
  * ============================================================================
  * Changelog
  * ============================================================================
+ * 
+ * Version 1.48: September 14, 2023
+ * * Bug Fixes!
+ * ** Fixed a problem where the help window position of the non-updated layout
+ *    would appear in the wrong position. Fix made by Irina.
+ * * Optimization Update!
+ * ** Plugin should run more optimized when weapons and armors exceed 2000
+ *    in database quantity.
+ * 
+ * Version 1.47: July 13, 2023
+ * * Bug Fixes!
+ * ** Fixed a bug that would cause the shop status window to display incorrect
+ *    removed buffs and debuffs. Fix made by Olivia.
+ * * Compatibility Update!
+ * ** Added compatibility functionality for future plugins.
+ * * Documentation Update!
+ * ** Help file updated for new features.
+ * * Feature Updates!
+ * ** Changes made to dynamic shop listings in order to update upon listing
+ *    changes rather than having to enter and exit the shop again. Update made
+ *    by Arisu.
+ * * New Features!
+ * ** New notetag effects added by Arisu and sponsored by AndyL:
+ * *** <Conserve: x%>
+ * **** Gives the item a percent chance when used to not consume the item.
+ * *** <Buy Turn On Switches: x, x, x>
+ * *** <Buy Turn Off Switches: x, x, x>
+ * *** <Sell Turn On Switches: x, x, x>
+ * *** <Sell Turn Off Switches: x, x, x>
+ * **** When buying/selling an item, weapon, or armor with these notetags,
+ *      turn on/off switch(es) 'x'.
+ * *** New Plugin Parameters added by Arisu:
+ * **** Params > Settings > Shop Status Window > Equipment Data > Delay MS:
+ * ***** How many milliseconds (MS) to delay the preview update?
+ * ***** This is to prevent lag spikes for equips only.
+ * 
+ * Version 1.46: June 15, 2023
+ * * Bug Fixes!
+ * ** Fixed a problem where the help and input modes are not adequately
+ *    adjusted when not used with the updated layout or without the Options
+ *    Core custom UI placement. Fix made by Arisu.
+ * 
+ * Version 1.45: May 18, 2023
+ * * Bug Fixes!
+ * ** Fixed a bug that would cause equip slots to not be recognized properly if
+ *    the equip slot name ends in a space.
+ * 
+ * Version 1.44: April 13, 2023
+ * * Documentation Update!
+ * ** Help file updated for new features.
+ * * New Features!
+ * ** New notetag effects added by Arisu and sponsored by Anon:
+ * *** <Equip For Class Only: x>
+ * *** <Equip For Classes Only: x, x, x>
+ * *** <Equip For Class Only: name>
+ * *** <Equip For Classes Only: name, name, name>
+ * **** The piece of equipment can only be worn by the listed classes.
+ * *** <Equip Requirements> notetag added.
+ * **** Define multiple requirements that the actor needs to meet in order for
+ *      this equip item to be equippable.
+ * **** See help file for more information on the types of requirements that
+ *      can be added.
  * 
  * Version 1.43: March 16, 2023
  * * Bug Fixes!
@@ -2668,6 +2881,16 @@ VisuMZ.ItemsEquipsCore.version = 1.43;
  * @desc Marker used to show an actor cannot equip an item.
  * @default -
  *
+ * @param EquipDelayMS:num
+ * @text Delay MS
+ * @parent EquipData
+ * @type number
+ * @min 1
+ * @max 999
+ * @desc How many milliseconds (MS) to delay the preview update?
+ * This is to prevent lag spikes for equips only.
+ * @default 240
+ *
  * @param NoChangeMarker:str
  * @text No Changes
  * @parent EquipData
@@ -3083,4 +3306,6469 @@ VisuMZ.ItemsEquipsCore.version = 1.43;
  */
 //=============================================================================
 
-const _0x23d1fb=_0xd29d;(function(_0xfc9937,_0x43a875){const _0xaeba26=_0xd29d,_0x52bd96=_0xfc9937();while(!![]){try{const _0x196c9b=-parseInt(_0xaeba26(0x49e))/0x1*(parseInt(_0xaeba26(0x40d))/0x2)+parseInt(_0xaeba26(0x1f8))/0x3+parseInt(_0xaeba26(0x2ad))/0x4+parseInt(_0xaeba26(0x32c))/0x5*(parseInt(_0xaeba26(0x1b7))/0x6)+-parseInt(_0xaeba26(0x2f7))/0x7+-parseInt(_0xaeba26(0x513))/0x8+parseInt(_0xaeba26(0x4ba))/0x9;if(_0x196c9b===_0x43a875)break;else _0x52bd96['push'](_0x52bd96['shift']());}catch(_0x11998a){_0x52bd96['push'](_0x52bd96['shift']());}}}(_0x198d,0x91e5a));var label=_0x23d1fb(0x248),tier=tier||0x0,dependencies=[],pluginData=$plugins[_0x23d1fb(0x324)](function(_0x4f6032){const _0x3a180f=_0x23d1fb;return _0x4f6032[_0x3a180f(0x1f0)]&&_0x4f6032['description'][_0x3a180f(0x39a)]('['+label+']');})[0x0];VisuMZ[label][_0x23d1fb(0x357)]=VisuMZ[label][_0x23d1fb(0x357)]||{},VisuMZ[_0x23d1fb(0x4b7)]=function(_0x748654,_0x5e890f){const _0x1681ab=_0x23d1fb;for(const _0xd4fc6f in _0x5e890f){if(_0xd4fc6f['match'](/(.*):(.*)/i)){const _0x3f965d=String(RegExp['$1']),_0x36a0e4=String(RegExp['$2'])[_0x1681ab(0x25d)]()[_0x1681ab(0x432)]();let _0x5098d1,_0x50ba72,_0x27683f;switch(_0x36a0e4){case'NUM':_0x5098d1=_0x5e890f[_0xd4fc6f]!==''?Number(_0x5e890f[_0xd4fc6f]):0x0;break;case'ARRAYNUM':_0x50ba72=_0x5e890f[_0xd4fc6f]!==''?JSON[_0x1681ab(0x257)](_0x5e890f[_0xd4fc6f]):[],_0x5098d1=_0x50ba72[_0x1681ab(0x344)](_0xa8e53=>Number(_0xa8e53));break;case _0x1681ab(0x3ed):_0x5098d1=_0x5e890f[_0xd4fc6f]!==''?eval(_0x5e890f[_0xd4fc6f]):null;break;case _0x1681ab(0x481):_0x50ba72=_0x5e890f[_0xd4fc6f]!==''?JSON[_0x1681ab(0x257)](_0x5e890f[_0xd4fc6f]):[],_0x5098d1=_0x50ba72[_0x1681ab(0x344)](_0x4a0631=>eval(_0x4a0631));break;case _0x1681ab(0x1c0):_0x5098d1=_0x5e890f[_0xd4fc6f]!==''?JSON[_0x1681ab(0x257)](_0x5e890f[_0xd4fc6f]):'';break;case _0x1681ab(0x4da):_0x50ba72=_0x5e890f[_0xd4fc6f]!==''?JSON[_0x1681ab(0x257)](_0x5e890f[_0xd4fc6f]):[],_0x5098d1=_0x50ba72[_0x1681ab(0x344)](_0x7341e0=>JSON[_0x1681ab(0x257)](_0x7341e0));break;case _0x1681ab(0x2b2):_0x5098d1=_0x5e890f[_0xd4fc6f]!==''?new Function(JSON[_0x1681ab(0x257)](_0x5e890f[_0xd4fc6f])):new Function(_0x1681ab(0x449));break;case _0x1681ab(0x467):_0x50ba72=_0x5e890f[_0xd4fc6f]!==''?JSON[_0x1681ab(0x257)](_0x5e890f[_0xd4fc6f]):[],_0x5098d1=_0x50ba72[_0x1681ab(0x344)](_0x2f205a=>new Function(JSON['parse'](_0x2f205a)));break;case _0x1681ab(0x252):_0x5098d1=_0x5e890f[_0xd4fc6f]!==''?String(_0x5e890f[_0xd4fc6f]):'';break;case _0x1681ab(0x3e0):_0x50ba72=_0x5e890f[_0xd4fc6f]!==''?JSON[_0x1681ab(0x257)](_0x5e890f[_0xd4fc6f]):[],_0x5098d1=_0x50ba72['map'](_0x4d1f03=>String(_0x4d1f03));break;case _0x1681ab(0x1d4):_0x27683f=_0x5e890f[_0xd4fc6f]!==''?JSON[_0x1681ab(0x257)](_0x5e890f[_0xd4fc6f]):{},_0x748654[_0x3f965d]={},VisuMZ[_0x1681ab(0x4b7)](_0x748654[_0x3f965d],_0x27683f);continue;case _0x1681ab(0x45e):_0x50ba72=_0x5e890f[_0xd4fc6f]!==''?JSON[_0x1681ab(0x257)](_0x5e890f[_0xd4fc6f]):[],_0x5098d1=_0x50ba72[_0x1681ab(0x344)](_0x2ed241=>VisuMZ[_0x1681ab(0x4b7)]({},JSON['parse'](_0x2ed241)));break;default:continue;}_0x748654[_0x3f965d]=_0x5098d1;}}return _0x748654;},(_0x4c6930=>{const _0x4c9512=_0x23d1fb,_0x4306e3=_0x4c6930['name'];for(const _0x5209b4 of dependencies){if(!Imported[_0x5209b4]){alert(_0x4c9512(0x2f4)[_0x4c9512(0x325)](_0x4306e3,_0x5209b4)),SceneManager[_0x4c9512(0x4b9)]();break;}}const _0x2bba90=_0x4c6930[_0x4c9512(0x1e2)];if(_0x2bba90[_0x4c9512(0x2fc)](/\[Version[ ](.*?)\]/i)){const _0x21a3f0=Number(RegExp['$1']);_0x21a3f0!==VisuMZ[label][_0x4c9512(0x2f8)]&&(alert(_0x4c9512(0x189)['format'](_0x4306e3,_0x21a3f0)),SceneManager[_0x4c9512(0x4b9)]());}if(_0x2bba90['match'](/\[Tier[ ](\d+)\]/i)){const _0x1f7a3c=Number(RegExp['$1']);_0x1f7a3c<tier?(alert(_0x4c9512(0x350)[_0x4c9512(0x325)](_0x4306e3,_0x1f7a3c,tier)),SceneManager[_0x4c9512(0x4b9)]()):tier=Math[_0x4c9512(0x2e0)](_0x1f7a3c,tier);}VisuMZ[_0x4c9512(0x4b7)](VisuMZ[label][_0x4c9512(0x357)],_0x4c6930[_0x4c9512(0x4a5)]);})(pluginData),PluginManager['registerCommand'](pluginData[_0x23d1fb(0x285)],_0x23d1fb(0x2fe),_0x5a8bfe=>{const _0x51bc6e=_0x23d1fb;VisuMZ[_0x51bc6e(0x4b7)](_0x5a8bfe,_0x5a8bfe);const _0x971c29=_0x5a8bfe[_0x51bc6e(0x49d)][_0x51bc6e(0x344)](_0x2fdf4c=>$gameActors[_0x51bc6e(0x383)](_0x2fdf4c)),_0x212517=_0x5a8bfe['Slots'][_0x51bc6e(0x344)](_0xb13aaa=>$dataSystem['equipTypes'][_0x51bc6e(0x41c)](_0xb13aaa[_0x51bc6e(0x432)]()));for(const _0x3239df of _0x971c29){if(!_0x3239df)continue;_0x3239df['forceChangeEquipSlots'](_0x212517);}}),PluginManager['registerCommand'](pluginData[_0x23d1fb(0x285)],_0x23d1fb(0x339),_0x5b2e02=>{const _0x4a51be=_0x23d1fb;VisuMZ[_0x4a51be(0x4b7)](_0x5b2e02,_0x5b2e02);const _0x44e288=_0x5b2e02[_0x4a51be(0x49d)][_0x4a51be(0x344)](_0x47500d=>$gameActors[_0x4a51be(0x383)](_0x47500d));for(const _0x41059d of _0x44e288){if(!_0x41059d)continue;_0x41059d[_0x4a51be(0x1ca)]();}}),PluginManager['registerCommand'](pluginData[_0x23d1fb(0x285)],_0x23d1fb(0x30a),_0x53518d=>{const _0x5ada5e=_0x23d1fb;VisuMZ[_0x5ada5e(0x4b7)](_0x53518d,_0x53518d);const _0x3828c2=[],_0x3747ba=_0x53518d[_0x5ada5e(0x1e8)][_0x5ada5e(0x344)](_0x51a17d=>_0x51a17d[_0x5ada5e(0x25d)]()['trim']()),_0x4d0483=_0x53518d['Whitelist']['map'](_0x3af894=>_0x3af894[_0x5ada5e(0x25d)]()[_0x5ada5e(0x432)]()),_0x4c12b1=_0x53518d[_0x5ada5e(0x345)]>=_0x53518d[_0x5ada5e(0x1c8)]?_0x53518d[_0x5ada5e(0x1c8)]:_0x53518d[_0x5ada5e(0x345)],_0x298cf0=_0x53518d['Step1End']>=_0x53518d[_0x5ada5e(0x1c8)]?_0x53518d['Step1End']:_0x53518d['Step1Start'],_0x2bcffd=Array(_0x298cf0-_0x4c12b1+0x1)['fill']()['map']((_0xeb8070,_0x2bb29f)=>_0x4c12b1+_0x2bb29f);for(const _0x338798 of _0x2bcffd){const _0x2dfa7c=$dataItems[_0x338798];if(!_0x2dfa7c)continue;if(!VisuMZ['ItemsEquipsCore'][_0x5ada5e(0x396)](_0x2dfa7c,_0x3747ba,_0x4d0483))continue;_0x3828c2[_0x5ada5e(0x1dd)]([0x0,_0x338798,0x0,_0x2dfa7c[_0x5ada5e(0x403)]]);}const _0x3f773=_0x53518d['Step2End']>=_0x53518d['Step2Start']?_0x53518d[_0x5ada5e(0x318)]:_0x53518d[_0x5ada5e(0x34b)],_0x6a692c=_0x53518d['Step2End']>=_0x53518d[_0x5ada5e(0x318)]?_0x53518d[_0x5ada5e(0x34b)]:_0x53518d[_0x5ada5e(0x318)],_0x414139=Array(_0x6a692c-_0x3f773+0x1)[_0x5ada5e(0x2c0)]()[_0x5ada5e(0x344)]((_0x3d6223,_0x141078)=>_0x3f773+_0x141078);for(const _0x18d40e of _0x414139){const _0x55c78b=$dataWeapons[_0x18d40e];if(!_0x55c78b)continue;if(!VisuMZ[_0x5ada5e(0x248)]['IncludeShopItem'](_0x55c78b,_0x3747ba,_0x4d0483))continue;_0x3828c2['push']([0x1,_0x18d40e,0x0,_0x55c78b[_0x5ada5e(0x403)]]);}const _0x592415=_0x53518d[_0x5ada5e(0x306)]>=_0x53518d[_0x5ada5e(0x3d4)]?_0x53518d[_0x5ada5e(0x3d4)]:_0x53518d['Step3End'],_0x37b8c2=_0x53518d['Step3End']>=_0x53518d[_0x5ada5e(0x3d4)]?_0x53518d[_0x5ada5e(0x306)]:_0x53518d[_0x5ada5e(0x3d4)],_0x283e27=Array(_0x37b8c2-_0x592415+0x1)[_0x5ada5e(0x2c0)]()['map']((_0x5648fd,_0x50af60)=>_0x592415+_0x50af60);for(const _0x2841f4 of _0x283e27){const _0x442bef=$dataArmors[_0x2841f4];if(!_0x442bef)continue;if(!VisuMZ['ItemsEquipsCore']['IncludeShopItem'](_0x442bef,_0x3747ba,_0x4d0483))continue;_0x3828c2['push']([0x2,_0x2841f4,0x0,_0x442bef['price']]);}SceneManager['push'](Scene_Shop),SceneManager[_0x5ada5e(0x3e6)](_0x3828c2,_0x53518d[_0x5ada5e(0x232)]);}),VisuMZ['ItemsEquipsCore']['IncludeShopItem']=function(_0x4a9b06,_0x6ebd9d,_0x522a4a){const _0x45fde4=_0x23d1fb;if(_0x4a9b06['name']['trim']()==='')return![];if(_0x4a9b06[_0x45fde4(0x285)]['match'](/-----/i))return![];const _0x1e866e=_0x4a9b06[_0x45fde4(0x2e8)];if(_0x6ebd9d[_0x45fde4(0x401)]>0x0)for(const _0x5577d0 of _0x6ebd9d){if(!_0x5577d0)continue;if(_0x1e866e[_0x45fde4(0x39a)](_0x5577d0))return![];}if(_0x522a4a[_0x45fde4(0x401)]>0x0){for(const _0x561a43 of _0x522a4a){if(!_0x561a43)continue;if(_0x1e866e['includes'](_0x561a43))return!![];}return![];}return!![];},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x472)]=Scene_Boot[_0x23d1fb(0x241)][_0x23d1fb(0x4ec)],Scene_Boot[_0x23d1fb(0x241)]['onDatabaseLoaded']=function(){const _0x3fecc1=_0x23d1fb;this[_0x3fecc1(0x280)](),VisuMZ[_0x3fecc1(0x248)][_0x3fecc1(0x472)]['call'](this),this[_0x3fecc1(0x2ac)](),VisuMZ[_0x3fecc1(0x248)]['SetupProxyItemGroups']();},Scene_Boot[_0x23d1fb(0x241)][_0x23d1fb(0x280)]=function(){const _0x31b039=_0x23d1fb;VisuMZ[_0x31b039(0x248)][_0x31b039(0x1fe)]={},VisuMZ[_0x31b039(0x248)][_0x31b039(0x1fe)][_0x31b039(0x18b)]=[],VisuMZ[_0x31b039(0x248)]['RegExp'][_0x31b039(0x24b)]=[];const _0x4b93f8=[_0x31b039(0x454),_0x31b039(0x397),'ATK',_0x31b039(0x465),_0x31b039(0x3f5),_0x31b039(0x35c),_0x31b039(0x3dd),_0x31b039(0x33d)];for(const _0x44347c of _0x4b93f8){const _0x51dde7=_0x31b039(0x18e)['format'](_0x44347c);VisuMZ[_0x31b039(0x248)][_0x31b039(0x1fe)][_0x31b039(0x18b)][_0x31b039(0x1dd)](new RegExp(_0x51dde7,'i'));const _0x40b733='\x5cb%1\x5cb'[_0x31b039(0x325)](_0x44347c);VisuMZ[_0x31b039(0x248)][_0x31b039(0x1fe)][_0x31b039(0x24b)][_0x31b039(0x1dd)](new RegExp(_0x40b733,'g'));}},Scene_Boot[_0x23d1fb(0x241)][_0x23d1fb(0x2ac)]=function(){const _0x5100d4=_0x23d1fb;if(VisuMZ[_0x5100d4(0x32a)])return;this['process_VisuMZ_ItemsEquipsCore_EquipSlots']();const _0x324079=[$dataItems,$dataWeapons,$dataArmors];for(const _0xce9d42 of _0x324079){for(const _0x59d69e of _0xce9d42){if(!_0x59d69e)continue;VisuMZ['ItemsEquipsCore'][_0x5100d4(0x1ea)](_0x59d69e,_0xce9d42),VisuMZ[_0x5100d4(0x248)]['Parse_Notetags_Prices'](_0x59d69e,_0xce9d42),VisuMZ[_0x5100d4(0x248)][_0x5100d4(0x1ad)](_0x59d69e,_0xce9d42),VisuMZ[_0x5100d4(0x248)][_0x5100d4(0x3e4)](_0x59d69e,_0xce9d42),VisuMZ[_0x5100d4(0x248)]['Parse_Notetags_EnableJS'](_0x59d69e,_0xce9d42);}}},Scene_Boot[_0x23d1fb(0x241)]['process_VisuMZ_ItemsEquipsCore_EquipSlots']=function(){const _0x70916d=_0x23d1fb;for(const _0xb8a458 of $dataClasses){if(!_0xb8a458)continue;VisuMZ['ItemsEquipsCore'][_0x70916d(0x206)](_0xb8a458);}},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x382)]=VisuMZ[_0x23d1fb(0x382)],VisuMZ[_0x23d1fb(0x382)]=function(_0x93233a){const _0x2b14db=_0x23d1fb;VisuMZ[_0x2b14db(0x248)][_0x2b14db(0x382)][_0x2b14db(0x44b)](this,_0x93233a),VisuMZ[_0x2b14db(0x248)][_0x2b14db(0x206)](_0x93233a);},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x20a)]=VisuMZ[_0x23d1fb(0x20a)],VisuMZ[_0x23d1fb(0x20a)]=function(_0x50cf4e){const _0x2066ca=_0x23d1fb;VisuMZ[_0x2066ca(0x248)][_0x2066ca(0x20a)][_0x2066ca(0x44b)](this,_0x50cf4e),VisuMZ['ItemsEquipsCore']['Parse_Notetags_Batch'](_0x50cf4e,$dataItems);},VisuMZ[_0x23d1fb(0x248)]['ParseWeaponNotetags']=VisuMZ['ParseWeaponNotetags'],VisuMZ[_0x23d1fb(0x40a)]=function(_0x503737){const _0x3f574b=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x3f574b(0x40a)][_0x3f574b(0x44b)](this,_0x503737),VisuMZ[_0x3f574b(0x248)]['Parse_Notetags_Batch'](_0x503737,$dataWeapons);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x3a1)]=VisuMZ[_0x23d1fb(0x3a1)],VisuMZ[_0x23d1fb(0x3a1)]=function(_0x739cc8){const _0x512a8c=_0x23d1fb;VisuMZ['ItemsEquipsCore']['ParseArmorNotetags'][_0x512a8c(0x44b)](this,_0x739cc8),VisuMZ[_0x512a8c(0x248)]['Parse_Notetags_Batch'](_0x739cc8,$dataArmors);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x206)]=function(_0x5269fe){const _0x357fdf=_0x23d1fb;_0x5269fe[_0x357fdf(0x3c7)]=[];if(!BattleManager[_0x357fdf(0x3ac)]()&&_0x5269fe[_0x357fdf(0x4fe)][_0x357fdf(0x2fc)](/<EQUIP SLOTS>\s*([\s\S]*)\s*<\/EQUIP SLOTS>/i)){const _0x7bec2=String(RegExp['$1'])[_0x357fdf(0x504)](/[\r\n]+/);for(const _0x2eddea of _0x7bec2){const _0x28ad03=$dataSystem[_0x357fdf(0x1ab)][_0x357fdf(0x41c)](_0x2eddea[_0x357fdf(0x432)]());if(_0x28ad03>0x0)_0x5269fe[_0x357fdf(0x3c7)]['push'](_0x28ad03);}}else for(const _0x56adef of $dataSystem[_0x357fdf(0x1ab)]){const _0x1a939c=$dataSystem['equipTypes']['indexOf'](_0x56adef['trim']());if(_0x1a939c>0x0)_0x5269fe[_0x357fdf(0x3c7)]['push'](_0x1a939c);}},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x3aa)]=function(_0x2eac75,_0x1f9b45){const _0x12620a=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x12620a(0x1ea)](_0x2eac75,_0x1f9b45),VisuMZ['ItemsEquipsCore'][_0x12620a(0x359)](_0x2eac75,_0x1f9b45),VisuMZ[_0x12620a(0x248)][_0x12620a(0x1ad)](_0x2eac75,_0x1f9b45),VisuMZ[_0x12620a(0x248)][_0x12620a(0x3e4)](_0x2eac75,_0x1f9b45),VisuMZ[_0x12620a(0x248)][_0x12620a(0x366)](_0x2eac75,_0x1f9b45);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1ea)]=function(_0x426e34,_0x1caa4d){const _0x4fec9f=_0x23d1fb;_0x426e34[_0x4fec9f(0x2e8)]=[];const _0x4fe2e9=_0x426e34[_0x4fec9f(0x4fe)],_0x5934b8=_0x4fe2e9[_0x4fec9f(0x2fc)](/<(?:CATEGORY|CATEGORIES):[ ](.*)>/gi);if(_0x5934b8)for(const _0x289255 of _0x5934b8){_0x289255['match'](/<(?:CATEGORY|CATEGORIES):[ ](.*)>/gi);const _0x322fc5=String(RegExp['$1'])['toUpperCase']()[_0x4fec9f(0x432)]()[_0x4fec9f(0x504)](',');for(const _0x1919f0 of _0x322fc5){_0x426e34[_0x4fec9f(0x2e8)][_0x4fec9f(0x1dd)](_0x1919f0['trim']());}}if(_0x4fe2e9[_0x4fec9f(0x2fc)](/<(?:CATEGORY|CATEGORIES)>\s*([\s\S]*)\s*<\/(?:CATEGORY|CATEGORIES)>/i)){const _0xd939eb=RegExp['$1']['split'](/[\r\n]+/);for(const _0x2df611 of _0xd939eb){_0x426e34[_0x4fec9f(0x2e8)][_0x4fec9f(0x1dd)](_0x2df611['toUpperCase']()[_0x4fec9f(0x432)]());}}},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x359)]=function(_0x4c4bdd,_0x104827){const _0x4d864f=_0x23d1fb;_0x4c4bdd[_0x4d864f(0x4fe)][_0x4d864f(0x2fc)](/<PRICE:[ ](\d+)>/i)&&(_0x4c4bdd[_0x4d864f(0x403)]=Number(RegExp['$1']));},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1ad)]=function(_0x17d32a,_0x5252f3){const _0x45127f=_0x23d1fb;if(_0x5252f3===$dataItems)return;for(let _0x4d0f4e=0x0;_0x4d0f4e<0x8;_0x4d0f4e++){const _0x644e86=VisuMZ[_0x45127f(0x248)][_0x45127f(0x1fe)]['EquipParams'][_0x4d0f4e];_0x17d32a[_0x45127f(0x4fe)]['match'](_0x644e86)&&(_0x17d32a[_0x45127f(0x242)][_0x4d0f4e]=parseInt(RegExp['$1']));}},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x24e)]={},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x3e4)]=function(_0x44769a,_0x7964c7){const _0x2fe8bb=_0x23d1fb;if(_0x7964c7===$dataItems)return;if(_0x44769a[_0x2fe8bb(0x4fe)]['match'](/<JS PARAMETERS>\s*([\s\S]*)\s*<\/JS PARAMETERS>/i)){const _0x396385=String(RegExp['$1']),_0x2d5355=(_0x7964c7===$dataWeapons?_0x2fe8bb(0x50c):_0x2fe8bb(0x365))[_0x2fe8bb(0x325)](_0x44769a['id']),_0x289bb3=_0x2fe8bb(0x42e)[_0x2fe8bb(0x325)](_0x396385);for(let _0xb3e9c1=0x0;_0xb3e9c1<0x8;_0xb3e9c1++){if(_0x396385[_0x2fe8bb(0x2fc)](VisuMZ[_0x2fe8bb(0x248)][_0x2fe8bb(0x1fe)][_0x2fe8bb(0x24b)][_0xb3e9c1])){const _0x2cf808=_0x2fe8bb(0x32f)[_0x2fe8bb(0x325)](_0x2d5355,_0xb3e9c1);VisuMZ[_0x2fe8bb(0x248)][_0x2fe8bb(0x24e)][_0x2cf808]=new Function(_0x2fe8bb(0x320),_0x2fe8bb(0x3c2),_0x289bb3);}}}},VisuMZ[_0x23d1fb(0x248)]['itemEnableJS']={},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x366)]=function(_0xf91dac,_0x25ad64){const _0x5a0b1a=_0x23d1fb;if(_0x25ad64!==$dataItems)return;if(_0xf91dac[_0x5a0b1a(0x4fe)][_0x5a0b1a(0x2fc)](/<JS ITEM ENABLE>\s*([\s\S]*)\s*<\/JS ITEM ENABLE>/i)){const _0x3765c3=String(RegExp['$1']),_0x552a93=_0x5a0b1a(0x319)['format'](_0x3765c3);VisuMZ[_0x5a0b1a(0x248)][_0x5a0b1a(0x1fb)][_0xf91dac['id']]=new Function(_0x5a0b1a(0x320),_0x552a93);}},DataManager['isKeyItem']=function(_0x4d06df){const _0xf4f649=_0x23d1fb;return this['isItem'](_0x4d06df)&&_0x4d06df[_0xf4f649(0x2d5)]===0x2;},DataManager[_0x23d1fb(0x23c)]=function(_0x20b12f){const _0x5ec26b=_0x23d1fb;if(!_0x20b12f)return 0x63;else return _0x20b12f['note'][_0x5ec26b(0x2fc)](/<MAX:[ ](\d+)>/i)?parseInt(RegExp['$1']):this[_0x5ec26b(0x38a)](_0x20b12f);},DataManager[_0x23d1fb(0x38a)]=function(_0x317094){const _0x3852ce=_0x23d1fb;if(this['isItem'](_0x317094))return VisuMZ['ItemsEquipsCore']['Settings'][_0x3852ce(0x3fe)][_0x3852ce(0x308)];else{if(this[_0x3852ce(0x4ad)](_0x317094))return VisuMZ['ItemsEquipsCore'][_0x3852ce(0x357)][_0x3852ce(0x3fe)][_0x3852ce(0x1a6)];else{if(this[_0x3852ce(0x2bb)](_0x317094))return VisuMZ[_0x3852ce(0x248)][_0x3852ce(0x357)][_0x3852ce(0x3fe)][_0x3852ce(0x450)];}}},DataManager['getItemIdWithName']=function(_0x359296){const _0x59487c=_0x23d1fb;_0x359296=_0x359296[_0x59487c(0x25d)]()[_0x59487c(0x432)](),this[_0x59487c(0x21b)]=this['_itemIDs']||{};if(this[_0x59487c(0x21b)][_0x359296])return this[_0x59487c(0x21b)][_0x359296];for(const _0x1b12fb of $dataItems){if(!_0x1b12fb)continue;this[_0x59487c(0x21b)][_0x1b12fb[_0x59487c(0x285)]['toUpperCase']()[_0x59487c(0x432)]()]=_0x1b12fb['id'];}return this[_0x59487c(0x21b)][_0x359296]||0x0;},DataManager['getWeaponIdWithName']=function(_0x341923){const _0x215a2d=_0x23d1fb;_0x341923=_0x341923['toUpperCase']()['trim'](),this[_0x215a2d(0x1be)]=this[_0x215a2d(0x1be)]||{};if(this['_weaponIDs'][_0x341923])return this[_0x215a2d(0x1be)][_0x341923];for(const _0x5e791d of $dataWeapons){if(!_0x5e791d)continue;this['_weaponIDs'][_0x5e791d[_0x215a2d(0x285)]['toUpperCase']()[_0x215a2d(0x432)]()]=_0x5e791d['id'];}return this[_0x215a2d(0x1be)][_0x341923]||0x0;},DataManager[_0x23d1fb(0x421)]=function(_0xc327e0){const _0x243cfc=_0x23d1fb;_0xc327e0=_0xc327e0[_0x243cfc(0x25d)]()[_0x243cfc(0x432)](),this[_0x243cfc(0x4c8)]=this[_0x243cfc(0x4c8)]||{};if(this[_0x243cfc(0x4c8)][_0xc327e0])return this[_0x243cfc(0x4c8)][_0xc327e0];for(const _0x2f6c5f of $dataArmors){if(!_0x2f6c5f)continue;this['_armorIDs'][_0x2f6c5f[_0x243cfc(0x285)]['toUpperCase']()['trim']()]=_0x2f6c5f['id'];}return this['_armorIDs'][_0xc327e0]||0x0;},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x1ee)]=function(){const _0x3e68e3=_0x23d1fb;VisuMZ[_0x3e68e3(0x248)][_0x3e68e3(0x371)]($dataItems),VisuMZ[_0x3e68e3(0x248)][_0x3e68e3(0x371)]($dataWeapons),VisuMZ[_0x3e68e3(0x248)][_0x3e68e3(0x371)]($dataArmors);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x371)]=function(_0x5e70b2){const _0x2aba74=_0x23d1fb;for(const _0x5c7450 of _0x5e70b2){if(!_0x5c7450)continue;if(!DataManager['isProxyItem'](_0x5c7450))continue;const _0x178781=DataManager[_0x2aba74(0x417)](_0x5c7450),_0x4b691d=[_0x2aba74(0x285),'iconIndex',_0x2aba74(0x1e2)];for(const _0x312eb6 of _0x4b691d){_0x5c7450[_0x312eb6]=_0x178781[_0x312eb6];}}},DataManager[_0x23d1fb(0x193)]=function(_0x4c69ed){const _0x5a7da7=_0x23d1fb;if(!_0x4c69ed)return![];if(!_0x4c69ed[_0x5a7da7(0x4fe)])return![];return _0x4c69ed&&_0x4c69ed['note'][_0x5a7da7(0x2fc)](/<PROXY:[ ](.*)>/i);},DataManager[_0x23d1fb(0x417)]=function(_0x1dea3c){const _0x31006e=_0x23d1fb;return this[_0x31006e(0x193)](_0x1dea3c)?this[_0x31006e(0x40e)](_0x1dea3c)||_0x1dea3c:_0x1dea3c;},DataManager['switchProxyItem']=function(_0x5d2def){const _0x4fa8c0=_0x23d1fb;_0x5d2def['note'][_0x4fa8c0(0x2fc)](/<PROXY:[ ](.*)>/i);const _0x3013c=RegExp['$1']['trim'](),_0x837abd=/^\d+$/['test'](_0x3013c);if(this[_0x4fa8c0(0x1ac)](_0x5d2def)){const _0xf1429=_0x837abd?Number(RegExp['$1']):DataManager[_0x4fa8c0(0x27f)](_0x3013c);return $dataItems[_0xf1429]||_0x5d2def;}else{if(this['isWeapon'](_0x5d2def)){const _0x128861=_0x837abd?Number(RegExp['$1']):DataManager[_0x4fa8c0(0x526)](_0x3013c);return $dataWeapons[_0x128861]||_0x5d2def;}else{if(this[_0x4fa8c0(0x2bb)](_0x5d2def)){const _0x30d96=_0x837abd?Number(RegExp['$1']):DataManager[_0x4fa8c0(0x421)](_0x3013c);return $dataArmors[_0x30d96]||_0x5d2def;}}}return _0x5d2def;},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x223)]=Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x320)],Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x320)]=function(){const _0x1ddb4b=_0x23d1fb;if($gameTemp['_bypassProxy'])return VisuMZ['ItemsEquipsCore'][_0x1ddb4b(0x223)][_0x1ddb4b(0x44b)](this);return DataManager[_0x1ddb4b(0x417)](VisuMZ['ItemsEquipsCore'][_0x1ddb4b(0x223)][_0x1ddb4b(0x44b)](this));},Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x444)]=function(){const _0x5b90cc=_0x23d1fb;return VisuMZ[_0x5b90cc(0x248)][_0x5b90cc(0x223)][_0x5b90cc(0x44b)](this);},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x3f2)]=Window_ShopBuy['prototype']['item'],Window_ShopBuy['prototype'][_0x23d1fb(0x320)]=function(){const _0x513b2f=_0x23d1fb;if($gameTemp[_0x513b2f(0x184)])return VisuMZ[_0x513b2f(0x248)]['Window_ShopBuy_item'][_0x513b2f(0x44b)](this);return DataManager[_0x513b2f(0x417)](VisuMZ['ItemsEquipsCore']['Window_ShopBuy_item']['call'](this));},Window_ShopBuy[_0x23d1fb(0x241)][_0x23d1fb(0x444)]=function(){const _0x3d3db8=_0x23d1fb;return VisuMZ[_0x3d3db8(0x248)][_0x3d3db8(0x3f2)][_0x3d3db8(0x44b)](this);},VisuMZ['ItemsEquipsCore']['Window_ShopStatus_setItem']=Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x31d)],Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x31d)]=function(_0x52fada){const _0x245910=_0x23d1fb;_0x52fada=DataManager[_0x245910(0x417)](_0x52fada),VisuMZ['ItemsEquipsCore'][_0x245910(0x37e)]['call'](this,_0x52fada);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1a4)]=Game_Item[_0x23d1fb(0x241)][_0x23d1fb(0x478)],Game_Item[_0x23d1fb(0x241)]['setObject']=function(_0x41dee3){const _0x55b9a3=_0x23d1fb;if(DataManager[_0x55b9a3(0x193)](_0x41dee3))return;VisuMZ[_0x55b9a3(0x248)][_0x55b9a3(0x1a4)][_0x55b9a3(0x44b)](this,_0x41dee3);},DataManager[_0x23d1fb(0x2de)]=function(_0x541e2f){const _0x3c83dd=_0x23d1fb;if(!this[_0x3c83dd(0x2bb)](_0x541e2f))return![];const _0x1b71e6=_0x541e2f[_0x3c83dd(0x4fe)];if(!_0x1b71e6)return![];if(_0x1b71e6[_0x3c83dd(0x2fc)](/<(?:PARTY|ALLY) (?:ARTIFACT|RELIC)>/i))return!![];if(_0x1b71e6[_0x3c83dd(0x2fc)](/<(?:STACKABLE|STACK) (?:PARTY|ALLY) (?:ARTIFACT|RELIC)>/i))return!![];if(_0x1b71e6[_0x3c83dd(0x2fc)](/<(?:TROOP|FOE) (?:ARTIFACT|RELIC)>/i))return!![];if(_0x1b71e6['match'](/<(?:STACKABLE|STACK) (?:TROOP|FOE) (?:ARTIFACT|RELIC)>/i))return!![];return![];},DataManager[_0x23d1fb(0x3d2)]=function(_0x405954){const _0x1525df=_0x23d1fb;if(!this[_0x1525df(0x2de)](_0x405954))return![];const _0x2357bb=_0x405954[_0x1525df(0x4fe)];if(!_0x2357bb)return![];if(_0x2357bb['match'](/<(?:STACKABLE|STACK) (?:PARTY|ALLY) (?:ARTIFACT|RELIC)>/i))return!![];if(_0x2357bb[_0x1525df(0x2fc)](/<(?:STACKABLE|STACK) (?:TROOP|FOE) (?:ARTIFACT|RELIC)>/i))return!![];return![];},DataManager[_0x23d1fb(0x386)]=function(_0x3b27ed){const _0x36db44=_0x23d1fb;if(!this[_0x36db44(0x2de)](_0x3b27ed))return![];const _0x1354b7=_0x3b27ed[_0x36db44(0x4fe)];if(!_0x1354b7)return![];if(_0x1354b7['match'](/<(?:PARTY|ALLY) (?:ARTIFACT|RELIC)>/i))return!![];if(_0x1354b7[_0x36db44(0x2fc)](/<(?:STACKABLE|STACK) (?:PARTY|ALLY) (?:ARTIFACT|RELIC)>/i))return!![];return![];},DataManager['isTroopArtifact']=function(_0x2f816a){const _0x55d914=_0x23d1fb;if(!this[_0x55d914(0x2de)](_0x2f816a))return![];const _0x3fdf0a=_0x2f816a['note'];if(!_0x3fdf0a)return![];if(_0x3fdf0a['match'](/<(?:TROOP|FOE) (?:ARTIFACT|RELIC)>/i))return!![];if(_0x3fdf0a[_0x55d914(0x2fc)](/<(?:STACKABLE|STACK) (?:TROOP|FOE) (?:ARTIFACT|RELIC)>/i))return!![];return![];},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x31a)]=Game_BattlerBase[_0x23d1fb(0x241)][_0x23d1fb(0x2fa)],Game_BattlerBase[_0x23d1fb(0x241)][_0x23d1fb(0x2fa)]=function(_0x191c31){const _0x3468a3=_0x23d1fb;if(DataManager[_0x3468a3(0x2de)](_0x191c31))return![];return VisuMZ[_0x3468a3(0x248)][_0x3468a3(0x31a)]['call'](this,_0x191c31);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1d2)]=Game_BattlerBase[_0x23d1fb(0x241)]['param'],Game_BattlerBase[_0x23d1fb(0x241)][_0x23d1fb(0x3bf)]=function(_0x30b14a){const _0x2a45a7=_0x23d1fb;this[_0x2a45a7(0x4e8)]=!![];const _0x3445da=VisuMZ[_0x2a45a7(0x248)][_0x2a45a7(0x1d2)][_0x2a45a7(0x44b)](this,_0x30b14a);return this[_0x2a45a7(0x4e8)]=undefined,_0x3445da;},VisuMZ[_0x23d1fb(0x248)]['Game_Actor_artifact']=Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x41b)],Game_Actor['prototype'][_0x23d1fb(0x41b)]=function(){const _0x30b97d=_0x23d1fb;this[_0x30b97d(0x2d8)]=!![];const _0x3d6a81=VisuMZ['ItemsEquipsCore'][_0x30b97d(0x519)][_0x30b97d(0x44b)](this);return this[_0x30b97d(0x2d8)]=undefined,_0x3d6a81;},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x407)]=Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x38e)],Game_Actor['prototype'][_0x23d1fb(0x38e)]=function(){const _0x458f7c=_0x23d1fb,_0x2832c9=VisuMZ[_0x458f7c(0x248)][_0x458f7c(0x407)][_0x458f7c(0x44b)](this);if(this['_allowArtifactTraitObjects']||this[_0x458f7c(0x4e8)]){const _0x4dc63f=_0x2832c9[_0x458f7c(0x1c1)]($gameParty['partyArtifacts']());return _0x4dc63f;}else return _0x2832c9;},VisuMZ[_0x23d1fb(0x248)]['Game_BattlerBase_paramPlus_artifact']=Game_BattlerBase[_0x23d1fb(0x241)][_0x23d1fb(0x377)],Game_BattlerBase[_0x23d1fb(0x241)][_0x23d1fb(0x377)]=function(_0x2c9778){const _0x2ad5ca=_0x23d1fb;let _0x48ae4a=VisuMZ['ItemsEquipsCore'][_0x2ad5ca(0x301)]['call'](this,_0x2c9778);if(this['constructor']===Game_Enemy)for(const _0x377737 of $gameParty[_0x2ad5ca(0x2af)]()){if(_0x377737)_0x48ae4a+=_0x377737[_0x2ad5ca(0x242)][_0x2c9778];}return _0x48ae4a;},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x19b)]=Game_Enemy[_0x23d1fb(0x241)]['traitObjects'],Game_Enemy['prototype']['traitObjects']=function(){const _0xc2a855=_0x23d1fb;let _0x43b4ab=VisuMZ[_0xc2a855(0x248)][_0xc2a855(0x19b)][_0xc2a855(0x44b)](this);return _0x43b4ab['concat']($gameParty['troopArtifacts']());},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1e1)]=Game_Party[_0x23d1fb(0x241)]['gainItem'],Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x363)]=function(_0x354584,_0x49f118,_0xffa93e){const _0x1e61c2=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x1e61c2(0x1e1)][_0x1e61c2(0x44b)](this,_0x354584,_0x49f118,_0xffa93e);if(DataManager[_0x1e61c2(0x2de)](_0x354584)){let _0x5659e1=$gameParty['allMembers']();if($gameParty['inBattle']())_0x5659e1=_0x5659e1[_0x1e61c2(0x1c1)]($gameTroop[_0x1e61c2(0x368)]());for(const _0x1e54dd of _0x5659e1){if(!_0x1e54dd)continue;_0x1e54dd[_0x1e61c2(0x2e9)]={};}}},Game_Party[_0x23d1fb(0x241)]['partyArtifacts']=function(){const _0x4e0991=_0x23d1fb;let _0x10c111=[];for(const _0x235612 of this[_0x4e0991(0x497)]()){if(!_0x235612)continue;if(!DataManager[_0x4e0991(0x2de)](_0x235612))continue;if(!DataManager[_0x4e0991(0x386)](_0x235612))continue;let _0x31b48b=0x1;if(DataManager[_0x4e0991(0x3d2)](_0x235612))_0x31b48b=this['numItems'](_0x235612);while(_0x31b48b--)_0x10c111['push'](_0x235612);}return _0x10c111;},Game_Party['prototype']['troopArtifacts']=function(){const _0xb62e5e=_0x23d1fb;let _0x3d127f=[];for(const _0x2af6f5 of this[_0xb62e5e(0x497)]()){if(!_0x2af6f5)continue;if(!DataManager[_0xb62e5e(0x2de)](_0x2af6f5))continue;if(!DataManager[_0xb62e5e(0x2f3)](_0x2af6f5))continue;let _0x4f1360=0x1;if(DataManager['isStackableArtifact'](_0x2af6f5))_0x4f1360=this[_0xb62e5e(0x4b0)](_0x2af6f5);while(_0x4f1360--)_0x3d127f[_0xb62e5e(0x1dd)](_0x2af6f5);}return _0x3d127f;},Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x4ce)]=function(){const _0x1b8260=_0x23d1fb;return this[_0x1b8260(0x355)]()[_0x1b8260(0x1c1)](this[_0x1b8260(0x2af)]());},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x4b5)]=Game_Party[_0x23d1fb(0x241)]['setupBattleTestItems'],Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x2aa)]=function(){const _0x1bf82c=_0x23d1fb;VisuMZ[_0x1bf82c(0x248)]['Game_Party_setupBattleTestItems_artifact'][_0x1bf82c(0x44b)](this),this[_0x1bf82c(0x4db)]();},Game_Party['prototype']['removeBattleTestArtifacts']=function(){const _0x4c39f0=_0x23d1fb,_0x5d9f55=$gameParty[_0x4c39f0(0x497)]()[_0x4c39f0(0x324)](_0x5e02b7=>DataManager[_0x4c39f0(0x2de)](_0x5e02b7));for(const _0x4cd1c4 of _0x5d9f55){const _0x53243f=this['numItems'](_0x4cd1c4);if(_0x53243f)this[_0x4c39f0(0x2dc)](_0x4cd1c4,_0x53243f);}},TextManager[_0x23d1fb(0x4dd)]={'helpDesc':{'equip':VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x357)][_0x23d1fb(0x3af)]['equipCmdDesc']??'Pick\x20and\x20choose\x20equipment\x20to\x20change.','optimize':VisuMZ['ItemsEquipsCore']['Settings'][_0x23d1fb(0x3af)][_0x23d1fb(0x1b4)]??'Equip\x20the\x20strongest\x20available\x20equipment.','clear':VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x357)][_0x23d1fb(0x3af)]['clearCmdDesc']??_0x23d1fb(0x1d8)}},ColorManager['getItemColor']=function(_0x567caa){const _0x1cafb2=_0x23d1fb;if(!_0x567caa)return this['normalColor']();else{if(_0x567caa[_0x1cafb2(0x4fe)]['match'](/<COLOR:[ ](\d+)>/i))return this[_0x1cafb2(0x296)](Number(RegExp['$1'])[_0x1cafb2(0x3b7)](0x0,0x1f));else return _0x567caa['note'][_0x1cafb2(0x2fc)](/<COLOR:[ ]#(.*)>/i)?'#'+String(RegExp['$1']):this[_0x1cafb2(0x192)]();}},ColorManager[_0x23d1fb(0x3c5)]=function(_0x737ca0){const _0x1a21b6=_0x23d1fb;return _0x737ca0=String(_0x737ca0),_0x737ca0[_0x1a21b6(0x2fc)](/#(.*)/i)?_0x1a21b6(0x32d)[_0x1a21b6(0x325)](String(RegExp['$1'])):this[_0x1a21b6(0x296)](Number(_0x737ca0));},SceneManager[_0x23d1fb(0x40c)]=function(){const _0x436853=_0x23d1fb;return this[_0x436853(0x2b6)]&&this[_0x436853(0x2b6)][_0x436853(0x1f1)]===Scene_Shop;},Game_Temp[_0x23d1fb(0x241)][_0x23d1fb(0x313)]=function(){const _0x4b9b79=_0x23d1fb;if(this[_0x4b9b79(0x46b)])return![];return VisuMZ[_0x4b9b79(0x248)]['Settings'][_0x4b9b79(0x333)]['Enable'];},VisuMZ[_0x23d1fb(0x1a7)]=VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x357)][_0x23d1fb(0x4c6)][_0x23d1fb(0x2c8)],VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1ec)]=Game_BattlerBase[_0x23d1fb(0x241)]['param'],Game_BattlerBase[_0x23d1fb(0x241)][_0x23d1fb(0x3bf)]=function(_0x439ad0){const _0x56de53=_0x23d1fb;return this[_0x56de53(0x374)]?this[_0x56de53(0x224)]?VisuMZ[_0x56de53(0x1a7)]:0x1:VisuMZ[_0x56de53(0x248)][_0x56de53(0x1ec)][_0x56de53(0x44b)](this,_0x439ad0);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x433)]=Game_BattlerBase['prototype']['meetsItemConditions'],Game_BattlerBase[_0x23d1fb(0x241)][_0x23d1fb(0x3a6)]=function(_0x2e8d2e){const _0x20c3e8=_0x23d1fb;if(!_0x2e8d2e)return![];if(!VisuMZ[_0x20c3e8(0x248)]['Game_BattlerBase_meetsItemConditions']['call'](this,_0x2e8d2e))return![];if(!this[_0x20c3e8(0x236)](_0x2e8d2e))return![];if(!this[_0x20c3e8(0x498)](_0x2e8d2e))return![];return!![];},Game_BattlerBase[_0x23d1fb(0x241)]['meetsItemConditionsNotetags']=function(_0xba6fce){const _0x2d3c7c=_0x23d1fb;if(!this[_0x2d3c7c(0x25e)](_0xba6fce))return![];return!![];},Game_BattlerBase['prototype']['checkItemConditionsSwitchNotetags']=function(_0x471432){const _0x527c7e=_0x23d1fb,_0x2fa95c=_0x471432[_0x527c7e(0x4fe)];if(_0x2fa95c[_0x527c7e(0x2fc)](/<ENABLE[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x45fcc4=JSON[_0x527c7e(0x257)]('['+RegExp['$1'][_0x527c7e(0x2fc)](/\d+/g)+']');for(const _0x5dea01 of _0x45fcc4){if(!$gameSwitches[_0x527c7e(0x3f6)](_0x5dea01))return![];}return!![];}if(_0x2fa95c[_0x527c7e(0x2fc)](/<ENABLE ALL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x17df0c=JSON['parse']('['+RegExp['$1'][_0x527c7e(0x2fc)](/\d+/g)+']');for(const _0x506de7 of _0x17df0c){if(!$gameSwitches['value'](_0x506de7))return![];}return!![];}if(_0x2fa95c[_0x527c7e(0x2fc)](/<ENABLE ANY[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x20b3fd=JSON[_0x527c7e(0x257)]('['+RegExp['$1'][_0x527c7e(0x2fc)](/\d+/g)+']');for(const _0x4abbcb of _0x20b3fd){if($gameSwitches[_0x527c7e(0x3f6)](_0x4abbcb))return!![];}return![];}if(_0x2fa95c[_0x527c7e(0x2fc)](/<DISABLE[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0xe4c9f2=JSON[_0x527c7e(0x257)]('['+RegExp['$1'][_0x527c7e(0x2fc)](/\d+/g)+']');for(const _0x534abd of _0xe4c9f2){if(!$gameSwitches['value'](_0x534abd))return!![];}return![];}if(_0x2fa95c[_0x527c7e(0x2fc)](/<DISABLE ALL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x10b4d3=JSON[_0x527c7e(0x257)]('['+RegExp['$1'][_0x527c7e(0x2fc)](/\d+/g)+']');for(const _0x42288e of _0x10b4d3){if(!$gameSwitches[_0x527c7e(0x3f6)](_0x42288e))return!![];}return![];}if(_0x2fa95c['match'](/<DISABLE ANY[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x3de00d=JSON[_0x527c7e(0x257)]('['+RegExp['$1'][_0x527c7e(0x2fc)](/\d+/g)+']');for(const _0xa1ced2 of _0x3de00d){if($gameSwitches[_0x527c7e(0x3f6)](_0xa1ced2))return![];}return!![];}return!![];},Game_BattlerBase['prototype']['meetsItemConditionsJS']=function(_0x1c5301){const _0x17c6f4=_0x1c5301['note'],_0x824f2b=VisuMZ['ItemsEquipsCore']['itemEnableJS'];return _0x824f2b[_0x1c5301['id']]?_0x824f2b[_0x1c5301['id']]['call'](this,_0x1c5301):!![];},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x3a2)]=function(_0x581eef){const _0x5bffa7=_0x23d1fb;_0x581eef=this[_0x5bffa7(0x2bf)](_0x581eef);const _0x15b9da=this[_0x5bffa7(0x3c7)]();this['_equips']=[];for(let _0x50da49=0x0;_0x50da49<_0x15b9da[_0x5bffa7(0x401)];_0x50da49++){this[_0x5bffa7(0x4b4)][_0x50da49]=new Game_Item();}for(let _0xc38a67=0x0;_0xc38a67<_0x15b9da[_0x5bffa7(0x401)];_0xc38a67++){const _0x3931eb=_0x15b9da[_0xc38a67],_0x13898b=this['getMatchingInitEquip'](_0x581eef,_0x3931eb);if(this[_0x5bffa7(0x2fa)](_0x13898b))this['_equips'][_0xc38a67][_0x5bffa7(0x478)](_0x13898b);}this[_0x5bffa7(0x303)](!![]),this['refresh']();},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x2bf)]=function(_0x22e101){const _0xfd567a=_0x23d1fb,_0x4780ad=[];for(let _0x497d52=0x0;_0x497d52<_0x22e101[_0xfd567a(0x401)];_0x497d52++){const _0xc94e48=_0x22e101[_0x497d52];if(_0xc94e48<=0x0)continue;const _0x72cbaa=$dataSystem[_0xfd567a(0x1ab)][_0x497d52+0x1];if(_0x72cbaa===$dataSystem[_0xfd567a(0x1ab)][0x1]||_0x497d52===0x1&&this['isDualWield']())_0x4780ad['push']($dataWeapons[_0xc94e48]);else{if(BattleManager[_0xfd567a(0x3ac)]()){const _0x8dee1f=$dataArmors[_0xc94e48];_0x8dee1f&&_0x8dee1f[_0xfd567a(0x394)]===_0x497d52+0x1&&_0x4780ad[_0xfd567a(0x1dd)](_0x8dee1f);}else{const _0x5df665=$dataArmors[_0xc94e48];_0x5df665&&_0x5df665['etypeId']===_0x497d52+0x1&&_0x4780ad[_0xfd567a(0x1dd)](_0x5df665);}}}return _0x4780ad;},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x1bc)]=function(_0x141b8e,_0x525768){const _0x585f0b=_0x23d1fb;for(const _0x295803 of _0x141b8e){if(!_0x295803)continue;if(_0x295803['etypeId']===_0x525768)return _0x141b8e[_0x585f0b(0x33f)](_0x141b8e[_0x585f0b(0x41c)](_0x295803),0x1),_0x295803;}return null;},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x3c7)]=function(){const _0x3c7740=_0x23d1fb,_0x3cee71=JsonEx[_0x3c7740(0x213)](this[_0x3c7740(0x2b4)]||this[_0x3c7740(0x37a)]()['equipSlots']);if(_0x3cee71[_0x3c7740(0x401)]>=0x2&&this['isDualWield']())_0x3cee71[0x1]=0x1;return _0x3cee71;},Game_Actor['prototype'][_0x23d1fb(0x4f3)]=function(_0xd16f2b){const _0x352eb1=_0x23d1fb;_0xd16f2b['remove'](0x0),_0xd16f2b[_0x352eb1(0x4ed)](-0x1),this[_0x352eb1(0x2b4)]=_0xd16f2b,this['refresh'](),this['updateChangedSlots']();},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x1ca)]=function(){const _0x24fa82=_0x23d1fb;this[_0x24fa82(0x2b4)]=undefined,this[_0x24fa82(0x3c3)](),this[_0x24fa82(0x4e2)]();},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x4e2)]=function(){const _0x54ec32=_0x23d1fb;let _0x2063de=this[_0x54ec32(0x3c7)]()[_0x54ec32(0x401)];while(this[_0x54ec32(0x4b4)][_0x54ec32(0x401)]>_0x2063de){const _0x322720=this[_0x54ec32(0x4b4)][this[_0x54ec32(0x4b4)][_0x54ec32(0x401)]-0x1];_0x322720&&_0x322720['object']()&&$gameParty['gainItem'](_0x322720[_0x54ec32(0x390)](),0x1),this[_0x54ec32(0x4b4)][_0x54ec32(0x261)]();}while(_0x2063de>this[_0x54ec32(0x4b4)]['length']){this[_0x54ec32(0x4b4)][_0x54ec32(0x1dd)](new Game_Item());}},Game_Actor['prototype'][_0x23d1fb(0x45b)]=function(){const _0x1f85bf=_0x23d1fb,_0xa6a040=this[_0x1f85bf(0x3c7)]();for(let _0x4d4bcc=0x0;_0x4d4bcc<_0xa6a040[_0x1f85bf(0x401)];_0x4d4bcc++){if(!this[_0x1f85bf(0x4b4)][_0x4d4bcc])this[_0x1f85bf(0x4b4)][_0x4d4bcc]=new Game_Item();}this[_0x1f85bf(0x303)](![]),this['refresh']();},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x512)]=Game_Actor[_0x23d1fb(0x241)]['changeEquip'],Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x2eb)]=function(_0x57ceae,_0x18fd86){const _0x3f8443=_0x23d1fb;if(!this['_tempActor']){const _0x327c42=JsonEx[_0x3f8443(0x213)](this);_0x327c42[_0x3f8443(0x31b)]=!![],VisuMZ['ItemsEquipsCore'][_0x3f8443(0x512)][_0x3f8443(0x44b)](this,_0x57ceae,_0x18fd86),this[_0x3f8443(0x4ae)](_0x327c42);}else VisuMZ[_0x3f8443(0x248)][_0x3f8443(0x512)][_0x3f8443(0x44b)](this,_0x57ceae,_0x18fd86);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x43d)]=Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x507)],Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x507)]=function(_0x1467bf,_0x225ea7){const _0x379cb0=_0x23d1fb;if(!this['_tempActor']){const _0x4b1958=JsonEx[_0x379cb0(0x213)](this);_0x4b1958[_0x379cb0(0x31b)]=!![],VisuMZ[_0x379cb0(0x248)][_0x379cb0(0x43d)][_0x379cb0(0x44b)](this,_0x1467bf,_0x225ea7),this[_0x379cb0(0x4ae)](_0x4b1958);}else VisuMZ[_0x379cb0(0x248)][_0x379cb0(0x43d)][_0x379cb0(0x44b)](this,_0x1467bf,_0x225ea7);},VisuMZ[_0x23d1fb(0x248)]['Game_Actor_discardEquip']=Game_Actor[_0x23d1fb(0x241)]['discardEquip'],Game_Actor[_0x23d1fb(0x241)]['discardEquip']=function(_0x31fd99){const _0x1e4685=_0x23d1fb;if(!this[_0x1e4685(0x31b)]){const _0x506406=JsonEx['makeDeepCopy'](this);_0x506406[_0x1e4685(0x31b)]=!![],VisuMZ['ItemsEquipsCore']['Game_Actor_discardEquip'][_0x1e4685(0x44b)](this,_0x31fd99),this[_0x1e4685(0x4ae)](_0x506406);}else VisuMZ[_0x1e4685(0x248)][_0x1e4685(0x27b)][_0x1e4685(0x44b)](this,_0x31fd99);},Game_Actor[_0x23d1fb(0x241)]['releaseUnequippableItems']=function(_0x2843a5){const _0x1059a4=_0x23d1fb;if(this[_0x1059a4(0x1d1)])return;for(;;){const _0x744c66=this['equipSlots'](),_0x467041=this[_0x1059a4(0x38e)](),_0x8ecf61=_0x467041[_0x1059a4(0x401)];let _0xcac19f=![];for(let _0x260ca6=0x0;_0x260ca6<_0x8ecf61;_0x260ca6++){const _0x3b1651=_0x467041[_0x260ca6];if(_0x3b1651&&(!this['canEquip'](_0x3b1651)||_0x3b1651['etypeId']!==_0x744c66[_0x260ca6])){!_0x2843a5&&this['tradeItemWithParty'](null,_0x3b1651);if(!this['_tempActor']){const _0x1d5780=JsonEx['makeDeepCopy'](this);_0x1d5780[_0x1059a4(0x31b)]=!![],this[_0x1059a4(0x4b4)][_0x260ca6][_0x1059a4(0x478)](null),this[_0x1059a4(0x1d1)]=!![],this['equipAdjustHpMp'](_0x1d5780),this[_0x1059a4(0x1d1)]=undefined;}else this[_0x1059a4(0x4b4)][_0x260ca6][_0x1059a4(0x478)](null);_0xcac19f=!![];}}if(!_0xcac19f)break;}},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x4ae)]=function(_0x408539){const _0x52e634=_0x23d1fb;if(this['_tempActor'])return;if(!VisuMZ[_0x52e634(0x248)][_0x52e634(0x357)]['EquipScene'][_0x52e634(0x528)])return;const _0x5ed920=Math['round'](_0x408539['hpRate']()*this[_0x52e634(0x45f)]),_0x22e5ae=Math[_0x52e634(0x291)](_0x408539[_0x52e634(0x525)]()*this[_0x52e634(0x2c3)]);if(this['hp']>0x0)this[_0x52e634(0x4b2)](_0x5ed920);if(this['mp']>0x0)this['setMp'](_0x22e5ae);},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x4e1)]=function(){const _0x4570ff=_0x23d1fb,_0x558ff2=this[_0x4570ff(0x3c7)]()['length'];for(let _0x52fda5=0x0;_0x52fda5<_0x558ff2;_0x52fda5++){if(this[_0x4570ff(0x373)](_0x52fda5))this['changeEquip'](_0x52fda5,null);}},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x373)]=function(_0x5e949b){const _0xe7afca=_0x23d1fb;return this[_0xe7afca(0x1e6)]()['includes'](this[_0xe7afca(0x3c7)]()[_0x5e949b])?![]:this['isEquipChangeOk'](_0x5e949b);},Game_Actor['prototype'][_0x23d1fb(0x1e6)]=function(){const _0x30177a=_0x23d1fb;return VisuMZ[_0x30177a(0x248)][_0x30177a(0x357)][_0x30177a(0x3af)]['NonRemoveETypes'];},Game_Actor['prototype']['optimizeEquipments']=function(){const _0x35320f=_0x23d1fb,_0x5cc0df=this[_0x35320f(0x3c7)]()[_0x35320f(0x401)];for(let _0x497534=0x0;_0x497534<_0x5cc0df;_0x497534++){if(this[_0x35320f(0x4e0)](_0x497534))this['changeEquip'](_0x497534,null);}for(let _0x4c3d09=0x0;_0x4c3d09<_0x5cc0df;_0x4c3d09++){if(this['isOptimizeEquipOk'](_0x4c3d09))this[_0x35320f(0x2eb)](_0x4c3d09,this[_0x35320f(0x1d9)](_0x4c3d09));}},Game_Actor['prototype'][_0x23d1fb(0x4e0)]=function(_0x2b4fc9){const _0x4f1745=_0x23d1fb;return this[_0x4f1745(0x41f)]()[_0x4f1745(0x39a)](this[_0x4f1745(0x3c7)]()[_0x2b4fc9])?![]:this['isEquipChangeOk'](_0x2b4fc9);},Game_Actor['prototype']['nonOptimizeEtypes']=function(){const _0x377c9b=_0x23d1fb;return VisuMZ['ItemsEquipsCore'][_0x377c9b(0x357)][_0x377c9b(0x3af)][_0x377c9b(0x302)];},VisuMZ[_0x23d1fb(0x248)]['Game_Actor_tradeItemWithParty']=Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x2d1)],Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x2d1)]=function(_0x4c114c,_0x344919){const _0x4f79f8=_0x23d1fb;if(this[_0x4f79f8(0x31b)])return![];$gameTemp[_0x4f79f8(0x46b)]=!![];const _0x21df4f=VisuMZ[_0x4f79f8(0x248)][_0x4f79f8(0x42c)]['call'](this,_0x4c114c,_0x344919);return $gameTemp[_0x4f79f8(0x46b)]=![],_0x21df4f;},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x462)]=function(_0x3e690d,_0x21cd62){const _0x5c62b9=_0x23d1fb,_0xd55980=this['getNextAvailableEtypeId'](_0x3e690d);if(_0xd55980<0x0)return;const _0xf1e264=_0x3e690d===0x1?$dataWeapons[_0x21cd62]:$dataArmors[_0x21cd62];this[_0x5c62b9(0x2eb)](_0xd55980,_0xf1e264);},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x4cf)]=function(_0x5660a5){const _0xa2088d=_0x23d1fb;let _0x2fb400=0x0;const _0x31cec4=this[_0xa2088d(0x3c7)](),_0x57eb87=this[_0xa2088d(0x38e)]();for(let _0xf4faea=0x0;_0xf4faea<_0x31cec4[_0xa2088d(0x401)];_0xf4faea++){if(_0x31cec4[_0xf4faea]===_0x5660a5){_0x2fb400=_0xf4faea;if(!_0x57eb87[_0xf4faea])return _0x2fb400;}}return _0x2fb400;},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x227)]=Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x377)],Game_Actor['prototype'][_0x23d1fb(0x377)]=function(_0x27ba13){const _0x437ed1=_0x23d1fb;let _0x1dcda1=VisuMZ[_0x437ed1(0x248)]['Game_Actor_paramPlus']['call'](this,_0x27ba13);for(const _0x20262f of this[_0x437ed1(0x38e)]()){if(_0x20262f)_0x1dcda1+=this['paramPlusItemsEquipsCoreCustomJS'](_0x20262f,_0x27ba13);}return _0x1dcda1;},Game_Actor['prototype'][_0x23d1fb(0x3b5)]=function(_0x5e45ef,_0x301e93){const _0x29710c=_0x23d1fb;if(this['_calculatingJSParameters'])return 0x0;const _0x4f320b=(DataManager[_0x29710c(0x4ad)](_0x5e45ef)?_0x29710c(0x50c):'A%1')[_0x29710c(0x325)](_0x5e45ef['id']),_0x54ccf1=_0x29710c(0x32f)[_0x29710c(0x325)](_0x4f320b,_0x301e93);if(VisuMZ[_0x29710c(0x248)]['paramJS'][_0x54ccf1]){this[_0x29710c(0x33c)]=!![];const _0x35800c=VisuMZ['ItemsEquipsCore'][_0x29710c(0x24e)][_0x54ccf1][_0x29710c(0x44b)](this,_0x5e45ef,_0x301e93);return this[_0x29710c(0x33c)]=![],_0x35800c;}else return 0x0;},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x452)]=function(_0x4055c1){const _0x4ea280=_0x23d1fb;this[_0x4ea280(0x374)]=!![],this['_shopStatusMenuAlly']=_0x4055c1;},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x202)]=Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x415)],Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x415)]=function(){const _0x2bd233=_0x23d1fb;VisuMZ[_0x2bd233(0x248)][_0x2bd233(0x202)]['call'](this),this[_0x2bd233(0x51f)]();},Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x51f)]=function(){this['_newItemsList']=[];},Game_Party['prototype'][_0x23d1fb(0x1ff)]=function(_0x238c9d){const _0x721259=_0x23d1fb;if(!$gameTemp[_0x721259(0x313)]())return![];if(this['_newItemsList']===undefined)this['initNewItemsList']();let _0x1670c3='';if(DataManager['isItem'](_0x238c9d))_0x1670c3=_0x721259(0x48b)[_0x721259(0x325)](_0x238c9d['id']);else{if(DataManager['isWeapon'](_0x238c9d))_0x1670c3=_0x721259(0x2a7)[_0x721259(0x325)](_0x238c9d['id']);else{if(DataManager[_0x721259(0x2bb)](_0x238c9d))_0x1670c3=_0x721259(0x4ac)[_0x721259(0x325)](_0x238c9d['id']);else return;}}return this[_0x721259(0x347)][_0x721259(0x39a)](_0x1670c3);},Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x4d6)]=function(_0x1f8464){const _0x10db74=_0x23d1fb;if(!$gameTemp['newLabelEnabled']())return;if(this['_newItemsList']===undefined)this[_0x10db74(0x51f)]();let _0x47334d='';if(DataManager[_0x10db74(0x1ac)](_0x1f8464))_0x47334d=_0x10db74(0x48b)[_0x10db74(0x325)](_0x1f8464['id']);else{if(DataManager['isWeapon'](_0x1f8464))_0x47334d='weapon-%1'[_0x10db74(0x325)](_0x1f8464['id']);else{if(DataManager['isArmor'](_0x1f8464))_0x47334d=_0x10db74(0x4ac)[_0x10db74(0x325)](_0x1f8464['id']);else return;}}if(!this[_0x10db74(0x347)][_0x10db74(0x39a)](_0x47334d))this[_0x10db74(0x347)][_0x10db74(0x1dd)](_0x47334d);},Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x413)]=function(_0x153632){const _0x458ca4=_0x23d1fb;if(!$gameTemp[_0x458ca4(0x313)]())return;if(this[_0x458ca4(0x347)]===undefined)this[_0x458ca4(0x51f)]();let _0x3cf552='';if(DataManager['isItem'](_0x153632))_0x3cf552='item-%1'[_0x458ca4(0x325)](_0x153632['id']);else{if(DataManager[_0x458ca4(0x4ad)](_0x153632))_0x3cf552='weapon-%1'['format'](_0x153632['id']);else{if(DataManager['isArmor'](_0x153632))_0x3cf552=_0x458ca4(0x4ac)[_0x458ca4(0x325)](_0x153632['id']);else return;}}this['_newItemsList'][_0x458ca4(0x39a)](_0x3cf552)&&this[_0x458ca4(0x347)]['splice'](this[_0x458ca4(0x347)][_0x458ca4(0x41c)](_0x3cf552),0x1);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x2c7)]=Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x4b0)],Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x4b0)]=function(_0x3d4be2){const _0x49490f=_0x23d1fb;if(DataManager[_0x49490f(0x193)](_0x3d4be2))_0x3d4be2=DataManager[_0x49490f(0x417)](_0x3d4be2);return VisuMZ[_0x49490f(0x248)][_0x49490f(0x2c7)][_0x49490f(0x44b)](this,_0x3d4be2);},VisuMZ['ItemsEquipsCore']['Game_Party_gainItem']=Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x363)],Game_Party[_0x23d1fb(0x241)][_0x23d1fb(0x363)]=function(_0x1875d1,_0x1aa43f,_0x5ba02f){const _0x19559a=_0x23d1fb;if(DataManager[_0x19559a(0x193)](_0x1875d1))_0x1875d1=null;const _0x5d63ac=this['numItems'](_0x1875d1);VisuMZ[_0x19559a(0x248)][_0x19559a(0x527)][_0x19559a(0x44b)](this,_0x1875d1,_0x1aa43f,_0x5ba02f);if(this[_0x19559a(0x4b0)](_0x1875d1)>_0x5d63ac)this[_0x19559a(0x4d6)](_0x1875d1);},Game_Party['prototype'][_0x23d1fb(0x22a)]=function(_0x4fea2a){const _0x3e45b6=_0x23d1fb;if(DataManager[_0x3e45b6(0x193)](_0x4fea2a))_0x4fea2a=DataManager['getProxyItem'](_0x4fea2a);return DataManager['maxItemAmount'](_0x4fea2a);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x281)]=Scene_ItemBase[_0x23d1fb(0x241)][_0x23d1fb(0x480)],Scene_ItemBase[_0x23d1fb(0x241)][_0x23d1fb(0x480)]=function(){const _0x1f4373=_0x23d1fb;VisuMZ[_0x1f4373(0x248)][_0x1f4373(0x281)][_0x1f4373(0x44b)](this),this[_0x1f4373(0x468)][_0x1f4373(0x2c2)]();},Scene_Item[_0x23d1fb(0x241)]['isBottomHelpMode']=function(){const _0x46bc7e=_0x23d1fb;if(ConfigManager['uiMenuStyle']&&ConfigManager[_0x46bc7e(0x505)]!==undefined)return ConfigManager[_0x46bc7e(0x505)];else{if(this[_0x46bc7e(0x23a)]())return this[_0x46bc7e(0x238)]()[_0x46bc7e(0x2fc)](/LOWER/i);else Scene_ItemBase[_0x46bc7e(0x241)][_0x46bc7e(0x330)][_0x46bc7e(0x44b)](this);}},Scene_Item['prototype'][_0x23d1fb(0x330)]=function(){const _0x48a19e=_0x23d1fb;if(ConfigManager[_0x48a19e(0x48c)]&&ConfigManager[_0x48a19e(0x27e)]!==undefined)return ConfigManager[_0x48a19e(0x27e)];else{if(this[_0x48a19e(0x23a)]())return this[_0x48a19e(0x238)]()[_0x48a19e(0x2fc)](/RIGHT/i);else Scene_ItemBase[_0x48a19e(0x241)]['isRightInputMode'][_0x48a19e(0x44b)](this);}},Scene_Item['prototype'][_0x23d1fb(0x238)]=function(){const _0xcab78b=_0x23d1fb;return VisuMZ[_0xcab78b(0x248)][_0xcab78b(0x357)][_0xcab78b(0x3fe)]['LayoutStyle'];},Scene_Item[_0x23d1fb(0x241)]['isUseModernControls']=function(){const _0x30cd2e=_0x23d1fb;return this[_0x30cd2e(0x48d)]&&this[_0x30cd2e(0x48d)][_0x30cd2e(0x3bd)]();},Scene_Item['prototype'][_0x23d1fb(0x23a)]=function(){const _0x88398d=_0x23d1fb;return VisuMZ['ItemsEquipsCore'][_0x88398d(0x357)][_0x88398d(0x3fe)]['EnableLayout'];},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x4ab)]=Scene_Item['prototype'][_0x23d1fb(0x4d7)],Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x4d7)]=function(){const _0x3e8c84=_0x23d1fb;VisuMZ['ItemsEquipsCore']['Scene_Item_create'][_0x3e8c84(0x44b)](this),this['isUseModernControls']()&&this[_0x3e8c84(0x35d)]();},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x41a)]=Scene_Item['prototype']['helpWindowRect'],Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x20b)]=function(){const _0x1c4818=_0x23d1fb;return this[_0x1c4818(0x23a)]()?this['helpWindowRectItemsEquipsCore']():VisuMZ[_0x1c4818(0x248)][_0x1c4818(0x41a)][_0x1c4818(0x44b)](this);},Scene_Item['prototype'][_0x23d1fb(0x4a2)]=function(){const _0x559913=_0x23d1fb,_0x4fda19=0x0,_0x169db7=this['helpAreaTop'](),_0x3c0820=Graphics[_0x559913(0x352)],_0x5473fd=this[_0x559913(0x231)]();return new Rectangle(_0x4fda19,_0x169db7,_0x3c0820,_0x5473fd);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x39d)]=Scene_Item['prototype'][_0x23d1fb(0x3a7)],Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x3a7)]=function(){const _0x79a218=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x79a218(0x39d)][_0x79a218(0x44b)](this),this['isUseModernControls']()&&this[_0x79a218(0x3ab)]();},Scene_Item['prototype'][_0x23d1fb(0x3ab)]=function(){const _0x443942=_0x23d1fb;delete this[_0x443942(0x48d)][_0x443942(0x2c1)]['ok'],delete this[_0x443942(0x48d)][_0x443942(0x2c1)]['cancel'];},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x349)]=Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x21e)],Scene_Item['prototype']['categoryWindowRect']=function(){const _0x24ee13=_0x23d1fb;return this[_0x24ee13(0x23a)]()?this[_0x24ee13(0x28c)]():VisuMZ['ItemsEquipsCore'][_0x24ee13(0x349)]['call'](this);},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x28c)]=function(){const _0x2de6db=_0x23d1fb,_0x57f3d1=0x0,_0x20c2ac=this[_0x2de6db(0x195)](),_0x1d7fdc=Graphics[_0x2de6db(0x352)],_0x285271=this[_0x2de6db(0x4e6)](0x1,!![]);return new Rectangle(_0x57f3d1,_0x20c2ac,_0x1d7fdc,_0x285271);},VisuMZ[_0x23d1fb(0x248)]['Scene_Item_createItemWindow']=Scene_Item['prototype'][_0x23d1fb(0x1f6)],Scene_Item['prototype'][_0x23d1fb(0x1f6)]=function(){const _0x3463f8=_0x23d1fb;VisuMZ[_0x3463f8(0x248)][_0x3463f8(0x1cf)]['call'](this),this[_0x3463f8(0x3bd)]()&&this[_0x3463f8(0x283)](),this[_0x3463f8(0x1fd)]()&&this[_0x3463f8(0x47f)]();},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x2be)]=Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x424)],Scene_Item[_0x23d1fb(0x241)]['itemWindowRect']=function(){const _0x1619cf=_0x23d1fb;if(this[_0x1619cf(0x23a)]())return this[_0x1619cf(0x4a3)]();else{const _0x280229=VisuMZ['ItemsEquipsCore'][_0x1619cf(0x2be)][_0x1619cf(0x44b)](this);return this[_0x1619cf(0x1fd)]()&&this[_0x1619cf(0x36a)]()&&(_0x280229[_0x1619cf(0x3f4)]-=this[_0x1619cf(0x35e)]()),_0x280229;}},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x4a3)]=function(){const _0x5c329b=_0x23d1fb,_0x43f723=this[_0x5c329b(0x330)]()?this['statusWidth']():0x0,_0x4170db=this[_0x5c329b(0x48d)]['y']+this[_0x5c329b(0x48d)][_0x5c329b(0x1f9)],_0x33e0a7=Graphics[_0x5c329b(0x352)]-this['statusWidth'](),_0x54df7f=this['mainAreaBottom']()-_0x4170db;return new Rectangle(_0x43f723,_0x4170db,_0x33e0a7,_0x54df7f);},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x283)]=function(){const _0x12d7a5=_0x23d1fb;this[_0x12d7a5(0x468)]['setHandler']('cancel',this[_0x12d7a5(0x1b9)][_0x12d7a5(0x36d)](this));},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x1fd)]=function(){const _0x3e81c3=_0x23d1fb;return this[_0x3e81c3(0x23a)]()?!![]:VisuMZ[_0x3e81c3(0x248)][_0x3e81c3(0x357)][_0x3e81c3(0x3fe)]['ShowShopStatus'];},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x36a)]=function(){const _0x89dd42=_0x23d1fb;return VisuMZ[_0x89dd42(0x248)][_0x89dd42(0x357)][_0x89dd42(0x3fe)]['ItemSceneAdjustItemList'];},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x47f)]=function(){const _0x792937=_0x23d1fb,_0x3d8721=this[_0x792937(0x336)]();this['_statusWindow']=new Window_ShopStatus(_0x3d8721),this['addWindow'](this[_0x792937(0x24d)]),this[_0x792937(0x468)][_0x792937(0x52c)](this[_0x792937(0x24d)]);const _0x4dfd2e=VisuMZ['ItemsEquipsCore'][_0x792937(0x357)][_0x792937(0x3fe)][_0x792937(0x3c1)];this[_0x792937(0x24d)][_0x792937(0x4c5)](_0x4dfd2e||0x0);},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x336)]=function(){const _0x5145a0=_0x23d1fb;return this[_0x5145a0(0x23a)]()?this[_0x5145a0(0x1c4)]():VisuMZ[_0x5145a0(0x248)]['Settings']['ItemScene'][_0x5145a0(0x469)][_0x5145a0(0x44b)](this);},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x1c4)]=function(){const _0x36c55b=_0x23d1fb,_0xb1cf3e=this[_0x36c55b(0x35e)](),_0x56ac90=this[_0x36c55b(0x468)][_0x36c55b(0x1f9)],_0x14dc17=this[_0x36c55b(0x330)]()?0x0:Graphics['boxWidth']-this[_0x36c55b(0x35e)](),_0x2cd88c=this[_0x36c55b(0x468)]['y'];return new Rectangle(_0x14dc17,_0x2cd88c,_0xb1cf3e,_0x56ac90);},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x35e)]=function(){const _0x4ffcd9=_0x23d1fb;return Scene_Shop[_0x4ffcd9(0x241)]['statusWidth']();},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x229)]=function(){const _0x1da667=_0x23d1fb;if(!this['updatedLayoutStyle']())return![];if(!this[_0x1da667(0x3bd)]())return![];if(!this['_itemWindow'])return![];if(!this[_0x1da667(0x468)][_0x1da667(0x235)])return![];return this[_0x1da667(0x238)]()&&this[_0x1da667(0x3bd)]();},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x44c)]=function(){const _0x3be26a=_0x23d1fb;if(this['buttonAssistItemListRequirement']())return this[_0x3be26a(0x468)][_0x3be26a(0x264)]()===0x1?TextManager['getInputMultiButtonStrings']('left',_0x3be26a(0x3cb)):TextManager['getInputMultiButtonStrings'](_0x3be26a(0x529),'pagedown');return Scene_ItemBase[_0x3be26a(0x241)][_0x3be26a(0x44c)][_0x3be26a(0x44b)](this);},Scene_Item[_0x23d1fb(0x241)][_0x23d1fb(0x4df)]=function(){const _0x35065b=_0x23d1fb;if(this['buttonAssistItemListRequirement']())return VisuMZ[_0x35065b(0x248)][_0x35065b(0x357)][_0x35065b(0x3fe)][_0x35065b(0x22b)];return Scene_ItemBase[_0x35065b(0x241)][_0x35065b(0x4df)][_0x35065b(0x44b)](this);},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x456)]=function(){const _0xd7514c=_0x23d1fb;if(ConfigManager[_0xd7514c(0x48c)]&&ConfigManager['uiHelpPosition']!==undefined)return ConfigManager[_0xd7514c(0x505)];else{if(this['isUseItemsEquipsCoreUpdatedLayout']())return this['updatedLayoutStyle']()[_0xd7514c(0x2fc)](/LOWER/i);else Scene_MenuBase[_0xd7514c(0x241)]['isRightInputMode'][_0xd7514c(0x44b)](this);}},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x330)]=function(){const _0x140dd1=_0x23d1fb;if(ConfigManager[_0x140dd1(0x48c)]&&ConfigManager[_0x140dd1(0x27e)]!==undefined)return ConfigManager[_0x140dd1(0x27e)];else{if(this[_0x140dd1(0x23a)]())return this[_0x140dd1(0x238)]()[_0x140dd1(0x2fc)](/RIGHT/i);else Scene_MenuBase[_0x140dd1(0x241)]['isRightInputMode'][_0x140dd1(0x44b)](this);}},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x238)]=function(){const _0x1e9d83=_0x23d1fb;return VisuMZ[_0x1e9d83(0x248)]['Settings'][_0x1e9d83(0x3af)][_0x1e9d83(0x4c1)];},Scene_Equip['prototype']['isUseModernControls']=function(){const _0x2beca8=_0x23d1fb;return this[_0x2beca8(0x3f1)]&&this[_0x2beca8(0x3f1)][_0x2beca8(0x3bd)]();},Scene_Equip['prototype'][_0x23d1fb(0x23a)]=function(){const _0x329644=_0x23d1fb;return VisuMZ['ItemsEquipsCore']['Settings'][_0x329644(0x3af)][_0x329644(0x1de)];},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x37b)]=Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x4d7)],Scene_Equip[_0x23d1fb(0x241)]['create']=function(){const _0x484f09=_0x23d1fb;VisuMZ[_0x484f09(0x248)][_0x484f09(0x37b)]['call'](this),this[_0x484f09(0x3bd)]()&&this[_0x484f09(0x337)]();},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x46d)]=Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x20b)],Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x20b)]=function(){const _0x5ef6fa=_0x23d1fb;return this[_0x5ef6fa(0x23a)]()?this[_0x5ef6fa(0x4a2)]():VisuMZ[_0x5ef6fa(0x248)][_0x5ef6fa(0x46d)][_0x5ef6fa(0x44b)](this);},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x4a2)]=function(){const _0x3bcb0f=_0x23d1fb,_0x5318ae=0x0,_0x96ac0f=this['helpAreaTop'](),_0x158c3a=Graphics[_0x3bcb0f(0x352)],_0x4be343=this[_0x3bcb0f(0x231)]();return new Rectangle(_0x5318ae,_0x96ac0f,_0x158c3a,_0x4be343);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x3f7)]=Scene_Equip['prototype'][_0x23d1fb(0x336)],Scene_Equip['prototype'][_0x23d1fb(0x336)]=function(){const _0x1b7364=_0x23d1fb;return this['isUseItemsEquipsCoreUpdatedLayout']()?this['statusWindowRectItemsEquipsCore']():VisuMZ['ItemsEquipsCore'][_0x1b7364(0x3f7)]['call'](this);},Scene_Equip['prototype'][_0x23d1fb(0x1c4)]=function(){const _0x50b4b1=_0x23d1fb,_0x1834c8=this[_0x50b4b1(0x330)]()?0x0:Graphics[_0x50b4b1(0x352)]-this[_0x50b4b1(0x35e)](),_0x419720=this[_0x50b4b1(0x195)](),_0x622e64=this[_0x50b4b1(0x35e)](),_0x1533f9=this['mainAreaHeight']();return new Rectangle(_0x1834c8,_0x419720,_0x622e64,_0x1533f9);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x399)]=Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x4f0)],Scene_Equip['prototype']['createCommandWindow']=function(){const _0x4b9014=_0x23d1fb;VisuMZ[_0x4b9014(0x248)][_0x4b9014(0x399)][_0x4b9014(0x44b)](this);if(this[_0x4b9014(0x22c)])this['_commandWindow'][_0x4b9014(0x52e)](this[_0x4b9014(0x22c)]);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x2d7)]=Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x25c)],Scene_Equip[_0x23d1fb(0x241)]['commandWindowRect']=function(){const _0x15b74b=_0x23d1fb;return this[_0x15b74b(0x23a)]()?this[_0x15b74b(0x43c)]():VisuMZ['ItemsEquipsCore'][_0x15b74b(0x2d7)][_0x15b74b(0x44b)](this);},Scene_Equip['prototype']['shouldCommandWindowExist']=function(){const _0x19a706=_0x23d1fb,_0x278b30=VisuMZ[_0x19a706(0x248)][_0x19a706(0x357)][_0x19a706(0x3af)];return _0x278b30[_0x19a706(0x3df)]||_0x278b30['CommandAddClear'];},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x43c)]=function(){const _0x148188=_0x23d1fb,_0x444bbf=this[_0x148188(0x38d)](),_0x2ac3b3=this[_0x148188(0x330)]()?this[_0x148188(0x35e)]():0x0,_0x6fed3=this['mainAreaTop'](),_0x4bfefd=Graphics[_0x148188(0x352)]-this[_0x148188(0x35e)](),_0x1b3562=_0x444bbf?this[_0x148188(0x4e6)](0x1,!![]):0x0;return new Rectangle(_0x2ac3b3,_0x6fed3,_0x4bfefd,_0x1b3562);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1e7)]=Scene_Equip['prototype']['createSlotWindow'],Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x225)]=function(){const _0x486fd0=_0x23d1fb;VisuMZ[_0x486fd0(0x248)][_0x486fd0(0x1e7)]['call'](this),this['isUseModernControls']()&&this['postCreateSlotWindowItemsEquipsCore']();},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x4d2)]=Scene_Equip['prototype'][_0x23d1fb(0x2a6)],Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x2a6)]=function(){const _0x2224f3=_0x23d1fb;return this[_0x2224f3(0x23a)]()?this['slotWindowRectItemsEquipsCore']():VisuMZ['ItemsEquipsCore'][_0x2224f3(0x4d2)][_0x2224f3(0x44b)](this);},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x3e7)]=function(){const _0x8ed704=_0x23d1fb,_0x2f11c4=this[_0x8ed704(0x25c)](),_0xbcecf3=this[_0x8ed704(0x330)]()?this[_0x8ed704(0x35e)]():0x0,_0xaddf08=_0x2f11c4['y']+_0x2f11c4['height'],_0x5ca8ce=Graphics[_0x8ed704(0x352)]-this[_0x8ed704(0x35e)](),_0x4ad73f=this[_0x8ed704(0x295)]()-_0x2f11c4[_0x8ed704(0x1f9)];return new Rectangle(_0xbcecf3,_0xaddf08,_0x5ca8ce,_0x4ad73f);},VisuMZ[_0x23d1fb(0x248)]['Scene_Equip_itemWindowRect']=Scene_Equip['prototype']['itemWindowRect'],Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x424)]=function(){const _0xdc82bb=_0x23d1fb;return this['isUseItemsEquipsCoreUpdatedLayout']()?this[_0xdc82bb(0x2a6)]():VisuMZ[_0xdc82bb(0x248)][_0xdc82bb(0x487)]['call'](this);},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x35e)]=function(){const _0xe4bf13=_0x23d1fb;return this[_0xe4bf13(0x23a)]()?this[_0xe4bf13(0x1ed)]():VisuMZ[_0xe4bf13(0x248)][_0xe4bf13(0x357)][_0xe4bf13(0x3af)][_0xe4bf13(0x430)];},Scene_Equip['prototype'][_0x23d1fb(0x1ed)]=function(){const _0x18c28c=_0x23d1fb;return Math[_0x18c28c(0x312)](Graphics[_0x18c28c(0x352)]/0x2);},Scene_Equip['prototype']['postCreateSlotWindowItemsEquipsCore']=function(){const _0x13e5c5=_0x23d1fb;this[_0x13e5c5(0x4c4)][_0x13e5c5(0x446)](_0x13e5c5(0x2ff),this['popScene'][_0x13e5c5(0x36d)](this)),this['_slotWindow']['setHandler']('pagedown',this['nextActor'][_0x13e5c5(0x36d)](this)),this['_slotWindow'][_0x13e5c5(0x446)](_0x13e5c5(0x529),this[_0x13e5c5(0x36b)][_0x13e5c5(0x36d)](this));},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x2ca)]=Scene_Equip['prototype'][_0x23d1fb(0x337)],Scene_Equip[_0x23d1fb(0x241)]['commandEquip']=function(){const _0x42c157=_0x23d1fb;this[_0x42c157(0x3bd)]()&&(this[_0x42c157(0x3f1)]['deselect'](),this['_commandWindow'][_0x42c157(0x44f)]()),VisuMZ['ItemsEquipsCore'][_0x42c157(0x2ca)][_0x42c157(0x44b)](this);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x4bd)]=Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x38c)],Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x38c)]=function(){const _0xa6a49f=_0x23d1fb;this['_slotWindow'][_0xa6a49f(0x276)]()>=0x0?(VisuMZ[_0xa6a49f(0x248)]['Scene_Equip_onSlotOk'][_0xa6a49f(0x44b)](this),this['onSlotOkAutoSelect']()):(this[_0xa6a49f(0x4c4)]['smoothSelect'](0x0),this[_0xa6a49f(0x4c4)]['activate']());},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x411)]=function(){const _0x5ca1db=_0x23d1fb;this[_0x5ca1db(0x468)][_0x5ca1db(0x3c3)]();const _0x57deb0=this[_0x5ca1db(0x4c4)]['item'](),_0x5e74cb=this[_0x5ca1db(0x468)][_0x5ca1db(0x4ef)]['indexOf'](_0x57deb0),_0x468bea=Math[_0x5ca1db(0x312)](this[_0x5ca1db(0x468)][_0x5ca1db(0x3c0)]()/0x2)-0x1;this[_0x5ca1db(0x468)][_0x5ca1db(0x3ea)](_0x5e74cb>=0x0?_0x5e74cb:0x0),this[_0x5ca1db(0x468)][_0x5ca1db(0x1aa)]>0x1&&(this[_0x5ca1db(0x468)][_0x5ca1db(0x1aa)]=0x1,this['_itemWindow'][_0x5ca1db(0x50e)]()),this[_0x5ca1db(0x468)][_0x5ca1db(0x23e)](this['_itemWindow'][_0x5ca1db(0x276)]()-_0x468bea);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x259)]=Scene_Equip[_0x23d1fb(0x241)]['onSlotCancel'],Scene_Equip['prototype']['onSlotCancel']=function(){const _0x414165=_0x23d1fb;VisuMZ[_0x414165(0x248)][_0x414165(0x259)][_0x414165(0x44b)](this),this['isUseModernControls']()&&(this['_commandWindow'][_0x414165(0x3ea)](0x0),this[_0x414165(0x4c4)][_0x414165(0x44f)]());},VisuMZ['ItemsEquipsCore']['Scene_Equip_onActorChange']=Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x459)],Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x459)]=function(){const _0x5d72d6=_0x23d1fb;VisuMZ[_0x5d72d6(0x248)][_0x5d72d6(0x2ae)][_0x5d72d6(0x44b)](this),this[_0x5d72d6(0x3bd)]()&&(this[_0x5d72d6(0x3f1)][_0x5d72d6(0x44f)](),this[_0x5d72d6(0x3f1)][_0x5d72d6(0x4e5)](),this[_0x5d72d6(0x4c4)][_0x5d72d6(0x3ea)](0x0),this[_0x5d72d6(0x4c4)][_0x5d72d6(0x408)]());},Scene_Equip['prototype'][_0x23d1fb(0x4fa)]=function(){const _0x2b7496=_0x23d1fb;if(!this['_slotWindow'])return![];if(!this[_0x2b7496(0x4c4)][_0x2b7496(0x235)])return![];return this['_slotWindow'][_0x2b7496(0x186)]();},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x19c)]=function(){const _0x3dfcb2=_0x23d1fb;if(this['buttonAssistSlotWindowShift']())return TextManager[_0x3dfcb2(0x1ba)](_0x3dfcb2(0x329));return Scene_MenuBase['prototype'][_0x3dfcb2(0x19c)]['call'](this);},Scene_Equip['prototype'][_0x23d1fb(0x4cb)]=function(){const _0x552ee5=_0x23d1fb;if(this[_0x552ee5(0x4fa)]())return VisuMZ[_0x552ee5(0x248)][_0x552ee5(0x357)][_0x552ee5(0x3af)]['buttonAssistRemove'];return Scene_MenuBase[_0x552ee5(0x241)][_0x552ee5(0x4cb)][_0x552ee5(0x44b)](this);},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x3fd)]=function(){const _0x1b994c=_0x23d1fb;if(this['buttonAssistSlotWindowShift']())return this['_buttonAssistWindow'][_0x1b994c(0x3f4)]/0x5/-0x3;return Scene_MenuBase[_0x1b994c(0x241)][_0x1b994c(0x3fd)]['call'](this);},Scene_Equip[_0x23d1fb(0x241)][_0x23d1fb(0x1b9)]=function(){const _0xfdcecc=_0x23d1fb;SceneManager[_0xfdcecc(0x261)]();},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x34c)]=Scene_Load[_0x23d1fb(0x241)][_0x23d1fb(0x516)],Scene_Load[_0x23d1fb(0x241)][_0x23d1fb(0x516)]=function(){const _0x17be58=_0x23d1fb;VisuMZ[_0x17be58(0x248)][_0x17be58(0x34c)][_0x17be58(0x44b)](this),this[_0x17be58(0x4de)]();},Scene_Load[_0x23d1fb(0x241)]['refreshActorEquipSlotsIfUpdated']=function(){const _0x3c7e5e=_0x23d1fb;if($gameSystem['versionId']()!==$dataSystem['versionId'])for(const _0xf4d499 of $gameActors[_0x3c7e5e(0x4ef)]){if(_0xf4d499)_0xf4d499['prepareNewEquipSlotsOnLoad']();}},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x456)]=function(){const _0x1517ff=_0x23d1fb;if(ConfigManager[_0x1517ff(0x48c)]&&ConfigManager[_0x1517ff(0x505)]!==undefined)return ConfigManager[_0x1517ff(0x505)];else{if(this[_0x1517ff(0x23a)]())return this[_0x1517ff(0x238)]()['match'](/LOWER/i);else Scene_MenuBase[_0x1517ff(0x241)][_0x1517ff(0x330)]['call'](this);}},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x330)]=function(){const _0x1e1020=_0x23d1fb;if(ConfigManager[_0x1e1020(0x48c)]&&ConfigManager[_0x1e1020(0x27e)]!==undefined)return ConfigManager['uiInputPosition'];else{if(this[_0x1e1020(0x23a)]())return this[_0x1e1020(0x238)]()[_0x1e1020(0x2fc)](/RIGHT/i);else Scene_MenuBase[_0x1e1020(0x241)][_0x1e1020(0x330)]['call'](this);}},Scene_Shop['prototype']['updatedLayoutStyle']=function(){const _0x173ce7=_0x23d1fb;return VisuMZ[_0x173ce7(0x248)][_0x173ce7(0x357)]['ShopScene'][_0x173ce7(0x4c1)];},Scene_Shop['prototype'][_0x23d1fb(0x3bd)]=function(){const _0x5f0739=_0x23d1fb;return this[_0x5f0739(0x48d)]&&this[_0x5f0739(0x48d)]['isUseModernControls']();},Scene_Shop['prototype']['isUseItemsEquipsCoreUpdatedLayout']=function(){const _0x7dcefa=_0x23d1fb;return VisuMZ[_0x7dcefa(0x248)]['Settings']['ShopScene'][_0x7dcefa(0x1de)];},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1b0)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x240)],Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x240)]=function(_0x410d78,_0x2e443c){const _0x47ddc1=_0x23d1fb;_0x410d78=JsonEx['makeDeepCopy'](_0x410d78),VisuMZ['ItemsEquipsCore'][_0x47ddc1(0x1b0)]['call'](this,_0x410d78,_0x2e443c),this[_0x47ddc1(0x461)]();},Scene_Shop[_0x23d1fb(0x241)]['adjustHiddenShownGoods']=function(){const _0x26296e=_0x23d1fb;this[_0x26296e(0x21c)]=0x0;const _0x3f1685=[];for(const _0xf82261 of this[_0x26296e(0x356)]){this[_0x26296e(0x4a1)](_0xf82261)?this['_goodsCount']++:_0x3f1685[_0x26296e(0x1dd)](_0xf82261);}for(const _0x3a6a9b of _0x3f1685){this[_0x26296e(0x356)][_0x26296e(0x4ed)](_0x3a6a9b);}},Scene_Shop['prototype'][_0x23d1fb(0x4a1)]=function(_0x28fc31){const _0x3968a7=_0x23d1fb;if(_0x28fc31[0x0]>0x2||_0x28fc31[0x0]<0x0)return![];const _0x2268bb=[$dataItems,$dataWeapons,$dataArmors][_0x28fc31[0x0]][_0x28fc31[0x1]];if(!_0x2268bb)return![];const _0x1ee6ee=_0x2268bb[_0x3968a7(0x4fe)]||'';if(_0x1ee6ee[_0x3968a7(0x2fc)](/<SHOW SHOP[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x3a6e47=JSON[_0x3968a7(0x257)]('['+RegExp['$1']['match'](/\d+/g)+']');for(const _0x11c61d of _0x3a6e47){if(!$gameSwitches[_0x3968a7(0x3f6)](_0x11c61d))return![];}return!![];}if(_0x1ee6ee[_0x3968a7(0x2fc)](/<SHOW SHOP ALL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x6d5617=JSON[_0x3968a7(0x257)]('['+RegExp['$1']['match'](/\d+/g)+']');for(const _0x463c69 of _0x6d5617){if(!$gameSwitches['value'](_0x463c69))return![];}return!![];}if(_0x1ee6ee[_0x3968a7(0x2fc)](/<SHOW SHOP ANY[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x1cd2d6=JSON[_0x3968a7(0x257)]('['+RegExp['$1'][_0x3968a7(0x2fc)](/\d+/g)+']');for(const _0x4538b0 of _0x1cd2d6){if($gameSwitches[_0x3968a7(0x3f6)](_0x4538b0))return!![];}return![];}if(_0x1ee6ee[_0x3968a7(0x2fc)](/<HIDE SHOP[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x4f6c5e=JSON[_0x3968a7(0x257)]('['+RegExp['$1'][_0x3968a7(0x2fc)](/\d+/g)+']');for(const _0x5da6c2 of _0x4f6c5e){if(!$gameSwitches['value'](_0x5da6c2))return!![];}return![];}if(_0x1ee6ee['match'](/<HIDE SHOP ALL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x38ff17=JSON[_0x3968a7(0x257)]('['+RegExp['$1'][_0x3968a7(0x2fc)](/\d+/g)+']');for(const _0xf843f9 of _0x38ff17){if(!$gameSwitches[_0x3968a7(0x3f6)](_0xf843f9))return!![];}return![];}if(_0x1ee6ee[_0x3968a7(0x2fc)](/<HIDE SHOP ANY[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x197d88=JSON[_0x3968a7(0x257)]('['+RegExp['$1'][_0x3968a7(0x2fc)](/\d+/g)+']');for(const _0x4c36a5 of _0x197d88){if($gameSwitches[_0x3968a7(0x3f6)](_0x4c36a5))return![];}return!![];}return!![];},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x367)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x4d7)],Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x4d7)]=function(){const _0x5cf246=_0x23d1fb;VisuMZ[_0x5cf246(0x248)][_0x5cf246(0x367)][_0x5cf246(0x44b)](this),this['isUseItemsEquipsCoreUpdatedLayout']()&&this[_0x5cf246(0x437)](),this[_0x5cf246(0x30e)]();},Scene_Shop[_0x23d1fb(0x241)]['postCreateItemsEquipsCore']=function(){const _0x2dc4d9=_0x23d1fb;this['_dummyWindow'][_0x2dc4d9(0x4d4)](),this[_0x2dc4d9(0x2d2)][_0x2dc4d9(0x19f)](),this[_0x2dc4d9(0x2d2)][_0x2dc4d9(0x4e5)](),this[_0x2dc4d9(0x24d)]['show']();},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1f3)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x20b)],Scene_Shop['prototype'][_0x23d1fb(0x20b)]=function(){const _0x24d567=_0x23d1fb;return this[_0x24d567(0x23a)]()?this['helpWindowRectItemsEquipsCore']():VisuMZ[_0x24d567(0x248)]['Scene_Shop_helpWindowRect']['call'](this);},Scene_Shop[_0x23d1fb(0x241)]['helpWindowRectItemsEquipsCore']=function(){const _0x418009=_0x23d1fb,_0x34a8bf=0x0,_0x17f2a2=this[_0x418009(0x47e)](),_0xc555cd=Graphics[_0x418009(0x352)],_0x1d10eb=this[_0x418009(0x231)]();return new Rectangle(_0x34a8bf,_0x17f2a2,_0xc555cd,_0x1d10eb);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x3f0)]=Scene_Shop[_0x23d1fb(0x241)]['goldWindowRect'],Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x3d0)]=function(){const _0x12cbb2=_0x23d1fb;return this[_0x12cbb2(0x23a)]()?this[_0x12cbb2(0x25b)]():VisuMZ['ItemsEquipsCore']['Scene_Shop_goldWindowRect'][_0x12cbb2(0x44b)](this);},Scene_Shop['prototype']['goldWindowRectItemsEquipsCore']=function(){const _0x1bd40e=_0x23d1fb,_0x40e57e=this[_0x1bd40e(0x506)](),_0x2f957b=this['calcWindowHeight'](0x1,!![]),_0x1b0148=this[_0x1bd40e(0x330)]()?0x0:Graphics[_0x1bd40e(0x352)]-_0x40e57e,_0x2add71=this[_0x1bd40e(0x195)]();return new Rectangle(_0x1b0148,_0x2add71,_0x40e57e,_0x2f957b);},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x1e0)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x25c)],Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x25c)]=function(){const _0x33be6e=_0x23d1fb;return this[_0x33be6e(0x23a)]()?this['commandWindowRectItemsEquipsCore']():VisuMZ[_0x33be6e(0x248)][_0x33be6e(0x1e0)]['call'](this);},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x43c)]=function(){const _0x30fe34=_0x23d1fb,_0x20ebb8=this[_0x30fe34(0x330)]()?this[_0x30fe34(0x506)]():0x0,_0x378f93=this[_0x30fe34(0x195)](),_0xaf4d3e=Graphics['boxWidth']-this[_0x30fe34(0x506)](),_0x3c98c7=this['calcWindowHeight'](0x1,!![]);return new Rectangle(_0x20ebb8,_0x378f93,_0xaf4d3e,_0x3c98c7);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x263)]=Scene_Shop['prototype'][_0x23d1fb(0x20d)],Scene_Shop['prototype']['numberWindowRect']=function(){const _0x10d023=_0x23d1fb;return this[_0x10d023(0x23a)]()?this[_0x10d023(0x209)]():VisuMZ[_0x10d023(0x248)][_0x10d023(0x263)][_0x10d023(0x44b)](this);},Scene_Shop[_0x23d1fb(0x241)]['numberWindowRectItemsEquipsCore']=function(){const _0x5236ce=_0x23d1fb,_0x462e31=this[_0x5236ce(0x3f1)]['y']+this[_0x5236ce(0x3f1)][_0x5236ce(0x1f9)],_0x51f2e9=Graphics[_0x5236ce(0x352)]-this[_0x5236ce(0x35e)](),_0x4f3810=this[_0x5236ce(0x330)]()?Graphics[_0x5236ce(0x352)]-_0x51f2e9:0x0,_0x1cebcb=this['mainAreaHeight']()-this[_0x5236ce(0x3f1)][_0x5236ce(0x1f9)];return new Rectangle(_0x4f3810,_0x462e31,_0x51f2e9,_0x1cebcb);},VisuMZ[_0x23d1fb(0x248)]['Scene_Shop_statusWindowRect']=Scene_Shop['prototype']['statusWindowRect'],Scene_Shop[_0x23d1fb(0x241)]['statusWindowRect']=function(){const _0x492c92=_0x23d1fb;return this[_0x492c92(0x23a)]()?this[_0x492c92(0x1c4)]():VisuMZ[_0x492c92(0x248)]['Scene_Shop_statusWindowRect']['call'](this);},Scene_Shop[_0x23d1fb(0x241)]['statusWindowRectItemsEquipsCore']=function(){const _0x10c039=_0x23d1fb,_0x194e82=this['statusWidth'](),_0x2f8514=this[_0x10c039(0x295)]()-this[_0x10c039(0x3f1)][_0x10c039(0x1f9)],_0x27822b=this[_0x10c039(0x330)]()?0x0:Graphics['boxWidth']-_0x194e82,_0x57f04f=this['_commandWindow']['y']+this[_0x10c039(0x3f1)][_0x10c039(0x1f9)];return new Rectangle(_0x27822b,_0x57f04f,_0x194e82,_0x2f8514);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1cb)]=Scene_Shop['prototype'][_0x23d1fb(0x2a2)],Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x2a2)]=function(){const _0x5583b3=_0x23d1fb;return this['isUseItemsEquipsCoreUpdatedLayout']()?this[_0x5583b3(0x1df)]():VisuMZ[_0x5583b3(0x248)][_0x5583b3(0x1cb)]['call'](this);},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x1df)]=function(){const _0x2678e0=_0x23d1fb,_0x1cd970=this[_0x2678e0(0x3f1)]['y']+this['_commandWindow'][_0x2678e0(0x1f9)],_0x11659b=Graphics[_0x2678e0(0x352)]-this['statusWidth'](),_0x2e37aa=this[_0x2678e0(0x295)]()-this[_0x2678e0(0x3f1)][_0x2678e0(0x1f9)],_0x36f2f1=this[_0x2678e0(0x330)]()?Graphics['boxWidth']-_0x11659b:0x0;return new Rectangle(_0x36f2f1,_0x1cd970,_0x11659b,_0x2e37aa);},VisuMZ[_0x23d1fb(0x248)]['Scene_Shop_createCategoryWindow']=Scene_Shop[_0x23d1fb(0x241)]['createCategoryWindow'],Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x3a7)]=function(){const _0xe8f42=_0x23d1fb;VisuMZ[_0xe8f42(0x248)]['Scene_Shop_createCategoryWindow']['call'](this),this['isUseModernControls']()&&this[_0xe8f42(0x3ab)]();},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x269)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x21e)],Scene_Shop[_0x23d1fb(0x241)]['categoryWindowRect']=function(){const _0x223953=_0x23d1fb;return this[_0x223953(0x23a)]()?this[_0x223953(0x28c)]():VisuMZ[_0x223953(0x248)]['Scene_Shop_categoryWindowRect']['call'](this);},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x28c)]=function(){const _0x107f2d=_0x23d1fb,_0x1860f6=this[_0x107f2d(0x3f1)]['y'],_0x4f2b5d=this['_commandWindow']['width'],_0x14159d=this[_0x107f2d(0x4e6)](0x1,!![]),_0x51e98b=this[_0x107f2d(0x330)]()?Graphics[_0x107f2d(0x352)]-_0x4f2b5d:0x0;return new Rectangle(_0x51e98b,_0x1860f6,_0x4f2b5d,_0x14159d);},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x3ab)]=function(){const _0x58b6ce=_0x23d1fb;delete this[_0x58b6ce(0x48d)][_0x58b6ce(0x2c1)]['ok'],delete this['_categoryWindow'][_0x58b6ce(0x2c1)][_0x58b6ce(0x2ff)];},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x326)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x32e)],Scene_Shop['prototype'][_0x23d1fb(0x32e)]=function(){const _0x4df1aa=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x4df1aa(0x326)][_0x4df1aa(0x44b)](this),this[_0x4df1aa(0x23a)]()&&this[_0x4df1aa(0x22d)]();},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x201)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x40f)],Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x40f)]=function(){const _0x2f6bf5=_0x23d1fb;return this[_0x2f6bf5(0x23a)]()?this[_0x2f6bf5(0x2d4)]():VisuMZ[_0x2f6bf5(0x248)][_0x2f6bf5(0x201)]['call'](this);},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x2d4)]=function(){const _0x3412cd=_0x23d1fb,_0x2e9cec=this['_categoryWindow']['y']+this[_0x3412cd(0x48d)][_0x3412cd(0x1f9)],_0x782d46=Graphics[_0x3412cd(0x352)]-this[_0x3412cd(0x35e)](),_0x1f4342=this[_0x3412cd(0x295)]()-this['_categoryWindow'][_0x3412cd(0x1f9)],_0x2a6848=this[_0x3412cd(0x330)]()?Graphics[_0x3412cd(0x352)]-_0x782d46:0x0;return new Rectangle(_0x2a6848,_0x2e9cec,_0x782d46,_0x1f4342);},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x22d)]=function(){const _0x4a2fad=_0x23d1fb;this[_0x4a2fad(0x21d)][_0x4a2fad(0x52c)](this[_0x4a2fad(0x24d)]);},Scene_Shop[_0x23d1fb(0x241)]['statusWidth']=function(){const _0x431d52=_0x23d1fb;return VisuMZ[_0x431d52(0x248)][_0x431d52(0x357)][_0x431d52(0x4c6)][_0x431d52(0x427)];},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x4e7)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x3ff)],Scene_Shop['prototype'][_0x23d1fb(0x3ff)]=function(){const _0x10e9c2=_0x23d1fb;VisuMZ[_0x10e9c2(0x248)]['Scene_Shop_activateSellWindow'][_0x10e9c2(0x44b)](this),this[_0x10e9c2(0x23a)]()&&this['_statusWindow'][_0x10e9c2(0x19f)](),this['_sellWindow'][_0x10e9c2(0x4f1)]();},VisuMZ['ItemsEquipsCore']['Scene_Shop_commandBuy']=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x35f)],Scene_Shop['prototype'][_0x23d1fb(0x35f)]=function(){const _0x2aa108=_0x23d1fb;VisuMZ[_0x2aa108(0x248)]['Scene_Shop_commandBuy'][_0x2aa108(0x44b)](this),this['isUseItemsEquipsCoreUpdatedLayout']()&&this[_0x2aa108(0x4b8)]();},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x4b8)]=function(){const _0x18f8f0=_0x23d1fb;this[_0x18f8f0(0x4ff)]=this[_0x18f8f0(0x4ff)]||0x0,this[_0x18f8f0(0x2d2)][_0x18f8f0(0x3ea)](this[_0x18f8f0(0x4ff)]);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x4d1)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x3b8)],Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x3b8)]=function(){const _0x58f366=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x58f366(0x4d1)][_0x58f366(0x44b)](this),this[_0x58f366(0x23a)]()&&this['commandSellItemsEquipsCore'](),this['isUseModernControls']()&&(this[_0x58f366(0x48d)][_0x58f366(0x3ea)](0x0),this[_0x58f366(0x35d)]());},Scene_Shop['prototype'][_0x23d1fb(0x3a9)]=function(){const _0x2bcbbe=_0x23d1fb;this['_buyWindow'][_0x2bcbbe(0x4d4)](),this[_0x2bcbbe(0x3f1)]['hide']();},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x18c)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x335)],Scene_Shop['prototype'][_0x23d1fb(0x335)]=function(){const _0x12cb37=_0x23d1fb;VisuMZ[_0x12cb37(0x248)][_0x12cb37(0x18c)][_0x12cb37(0x44b)](this),this['isUseItemsEquipsCoreUpdatedLayout']()&&this[_0x12cb37(0x1ef)]();},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x1ef)]=function(){const _0x1d584d=_0x23d1fb;this[_0x1d584d(0x4ff)]=this[_0x1d584d(0x2d2)]['index'](),this[_0x1d584d(0x2d2)][_0x1d584d(0x19f)](),this[_0x1d584d(0x2d2)][_0x1d584d(0x4e5)](),this['_buyWindow'][_0x1d584d(0x2b5)](0x0,0x0),this[_0x1d584d(0x24d)][_0x1d584d(0x19f)](),this[_0x1d584d(0x3b4)][_0x1d584d(0x4d4)]();},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x489)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x237)],Scene_Shop['prototype'][_0x23d1fb(0x237)]=function(){const _0x399230=_0x23d1fb;VisuMZ[_0x399230(0x248)][_0x399230(0x489)][_0x399230(0x44b)](this),this[_0x399230(0x23a)]()&&this['onCategoryCancelItemsEquipsCore']();},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x1b6)]=function(){const _0x115e8c=_0x23d1fb;this['_buyWindow'][_0x115e8c(0x19f)](),this[_0x115e8c(0x3f1)][_0x115e8c(0x19f)]();},VisuMZ[_0x23d1fb(0x248)]['Scene_Shop_onBuyOk']=Scene_Shop['prototype']['onBuyOk'],Scene_Shop['prototype'][_0x23d1fb(0x328)]=function(){const _0x41c952=_0x23d1fb;$gameTemp[_0x41c952(0x184)]=!![],VisuMZ['ItemsEquipsCore'][_0x41c952(0x50a)]['call'](this),$gameTemp['_bypassProxy']=![],this['_item']=this[_0x41c952(0x2d2)][_0x41c952(0x320)]();},VisuMZ[_0x23d1fb(0x248)]['Scene_Shop_buyingPrice']=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x334)],Scene_Shop[_0x23d1fb(0x241)]['buyingPrice']=function(){const _0xfd236f=_0x23d1fb;$gameTemp[_0xfd236f(0x184)]=!![],this['_item']=this[_0xfd236f(0x2d2)][_0xfd236f(0x320)]();const _0x3b620c=VisuMZ[_0xfd236f(0x248)][_0xfd236f(0x380)][_0xfd236f(0x44b)](this);return $gameTemp[_0xfd236f(0x184)]=![],this[_0xfd236f(0x2bc)]=this[_0xfd236f(0x2d2)][_0xfd236f(0x320)](),_0x3b620c;},VisuMZ[_0x23d1fb(0x248)]['Scene_Shop_onSellOk']=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x445)],Scene_Shop['prototype'][_0x23d1fb(0x445)]=function(){const _0x4e7e4e=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x4e7e4e(0x18d)][_0x4e7e4e(0x44b)](this),this[_0x4e7e4e(0x23a)]()&&this[_0x4e7e4e(0x521)]();},Scene_Shop[_0x23d1fb(0x241)]['onSellOkItemsEquipsCore']=function(){const _0x290825=_0x23d1fb;this[_0x290825(0x48d)][_0x290825(0x19f)]();},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x258)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x442)],Scene_Shop['prototype'][_0x23d1fb(0x442)]=function(){const _0x4f6c2a=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x4f6c2a(0x258)][_0x4f6c2a(0x44b)](this),this['isUseModernControls']()&&this['onCategoryCancel'](),this[_0x4f6c2a(0x23a)]()&&this[_0x4f6c2a(0x3b4)]['hide']();},Scene_Shop['prototype'][_0x23d1fb(0x2cd)]=function(_0x5d0498){const _0x59ca36=_0x23d1fb,_0x2c2a1a=this[_0x59ca36(0x2bc)];this['_item']=_0x5d0498;const _0xd2ceaf=this[_0x59ca36(0x1d5)]();return this[_0x59ca36(0x2bc)]=_0x2c2a1a,_0xd2ceaf;},VisuMZ[_0x23d1fb(0x248)]['Scene_Shop_sellingPrice']=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x1d5)],Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x1d5)]=function(){const _0x1d5d99=_0x23d1fb;let _0x3452de=this['determineBaseSellingPrice']();const _0x47b017=this['_item'];return _0x3452de=VisuMZ[_0x1d5d99(0x248)][_0x1d5d99(0x357)][_0x1d5d99(0x3db)][_0x1d5d99(0x496)][_0x1d5d99(0x44b)](this,_0x47b017,_0x3452de),_0x3452de;},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x26b)]=function(){const _0x2dd0a4=_0x23d1fb;let _0x95ddab=this[_0x2dd0a4(0x2bc)][_0x2dd0a4(0x403)];if(!this[_0x2dd0a4(0x2bc)])return 0x0;else{if(this[_0x2dd0a4(0x2bc)]['note'][_0x2dd0a4(0x2fc)](/<JS SELL PRICE>\s*([\s\S]*)\s*<\/JS SELL PRICE>/i)){const _0x26f520=String(RegExp['$1']);let _0x492d2d=this['_item'],_0x5611bd=_0x95ddab*this[_0x2dd0a4(0x346)]();try{eval(_0x26f520);}catch(_0x468290){if($gameTemp[_0x2dd0a4(0x26d)]())console['log'](_0x468290);}if(isNaN(_0x5611bd))_0x5611bd=0x0;return Math[_0x2dd0a4(0x312)](_0x5611bd);}else return this['_item'][_0x2dd0a4(0x4fe)][_0x2dd0a4(0x2fc)](/<SELL PRICE:[ ](\d+)>/i)?parseInt(RegExp['$1']):Math[_0x2dd0a4(0x312)](this[_0x2dd0a4(0x426)]());}},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x426)]=function(){const _0x4e0c3d=_0x23d1fb;return this[_0x4e0c3d(0x2bc)][_0x4e0c3d(0x403)]*this[_0x4e0c3d(0x346)]();},Scene_Shop[_0x23d1fb(0x241)]['sellPriceRate']=function(){const _0x54c3ff=_0x23d1fb;return VisuMZ[_0x54c3ff(0x248)][_0x54c3ff(0x357)][_0x54c3ff(0x3db)][_0x54c3ff(0x438)];},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x229)]=function(){const _0x3e5b6f=_0x23d1fb;if(!this['updatedLayoutStyle']())return![];if(!this[_0x3e5b6f(0x3bd)]())return![];if(!this[_0x3e5b6f(0x21d)])return![];if(!this[_0x3e5b6f(0x21d)][_0x3e5b6f(0x235)])return![];return this['updatedLayoutStyle']()&&this['isUseModernControls']();},Scene_Shop['prototype']['buttonAssistKey1']=function(){const _0x2e86cf=_0x23d1fb;if(this['buttonAssistItemListRequirement']())return this[_0x2e86cf(0x21d)][_0x2e86cf(0x264)]()===0x1?TextManager[_0x2e86cf(0x364)](_0x2e86cf(0x4cc),'right'):TextManager['getInputMultiButtonStrings'](_0x2e86cf(0x529),_0x2e86cf(0x22f));else{if(this[_0x2e86cf(0x207)]&&this[_0x2e86cf(0x207)][_0x2e86cf(0x235)])return TextManager[_0x2e86cf(0x364)](_0x2e86cf(0x4cc),_0x2e86cf(0x3cb));}return Scene_MenuBase['prototype'][_0x2e86cf(0x44c)][_0x2e86cf(0x44b)](this);},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x228)]=function(){const _0x183aa2=_0x23d1fb;if(this[_0x183aa2(0x207)]&&this[_0x183aa2(0x207)][_0x183aa2(0x235)])return TextManager[_0x183aa2(0x364)]('up',_0x183aa2(0x523));return Scene_MenuBase['prototype']['buttonAssistKey2']['call'](this);},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x4df)]=function(){const _0x99551e=_0x23d1fb;if(this[_0x99551e(0x229)]())return VisuMZ['ItemsEquipsCore'][_0x99551e(0x357)][_0x99551e(0x3fe)][_0x99551e(0x22b)];else{if(this[_0x99551e(0x207)]&&this['_numberWindow']['active'])return VisuMZ[_0x99551e(0x248)][_0x99551e(0x357)][_0x99551e(0x3db)][_0x99551e(0x265)];}return Scene_MenuBase[_0x99551e(0x241)][_0x99551e(0x4df)]['call'](this);},Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x495)]=function(){const _0x13962b=_0x23d1fb;if(this['_numberWindow']&&this[_0x13962b(0x207)][_0x13962b(0x235)])return VisuMZ[_0x13962b(0x248)][_0x13962b(0x357)]['ShopScene'][_0x13962b(0x3f8)];return Scene_MenuBase[_0x13962b(0x241)]['buttonAssistText2'][_0x13962b(0x44b)](this);},Scene_Shop['prototype'][_0x23d1fb(0x30e)]=function(){const _0xbbf8d7=_0x23d1fb;if(!SceneManager[_0xbbf8d7(0x40c)]())return;const _0x1f008c=VisuMZ['ItemsEquipsCore']['Settings']['ShopScene'];_0x1f008c['SwitchBuy']&&$gameSwitches[_0xbbf8d7(0x464)](_0x1f008c[_0xbbf8d7(0x3e1)],![]),_0x1f008c[_0xbbf8d7(0x2a9)]&&$gameSwitches[_0xbbf8d7(0x464)](_0x1f008c[_0xbbf8d7(0x2a9)],![]);},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x246)]=Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x327)],Scene_Shop['prototype']['doBuy']=function(_0x8b74db){const _0x424c0b=_0x23d1fb;VisuMZ[_0x424c0b(0x248)]['Scene_Shop_doBuy'][_0x424c0b(0x44b)](this,_0x8b74db);if(_0x8b74db<=0x0)return;const _0x1f06b5=VisuMZ['ItemsEquipsCore']['Settings'][_0x424c0b(0x3db)];_0x1f06b5[_0x424c0b(0x3e1)]&&$gameSwitches[_0x424c0b(0x464)](_0x1f06b5['SwitchBuy'],!![]);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x311)]=Scene_Shop['prototype']['doSell'],Scene_Shop[_0x23d1fb(0x241)][_0x23d1fb(0x27a)]=function(_0x34faa8){const _0x5cfdba=_0x23d1fb;VisuMZ[_0x5cfdba(0x248)]['Scene_Shop_doSell'][_0x5cfdba(0x44b)](this,_0x34faa8);if(_0x34faa8<=0x0)return;const _0x4db4bd=VisuMZ['ItemsEquipsCore']['Settings'][_0x5cfdba(0x3db)];_0x4db4bd['SwitchBuy']&&$gameSwitches[_0x5cfdba(0x464)](_0x4db4bd['SwitchSell'],!![]);};function Sprite_NewLabel(){this['initialize'](...arguments);}function _0xd29d(_0x1ef783,_0x53b7bf){const _0x198d38=_0x198d();return _0xd29d=function(_0xd29d58,_0x24975d){_0xd29d58=_0xd29d58-0x181;let _0x3fdc4c=_0x198d38[_0xd29d58];return _0x3fdc4c;},_0xd29d(_0x1ef783,_0x53b7bf);}Sprite_NewLabel['prototype']=Object[_0x23d1fb(0x4d7)](Sprite[_0x23d1fb(0x241)]),Sprite_NewLabel[_0x23d1fb(0x241)][_0x23d1fb(0x1f1)]=Sprite_NewLabel,Sprite_NewLabel[_0x23d1fb(0x241)][_0x23d1fb(0x415)]=function(){const _0x4b4d39=_0x23d1fb;Sprite[_0x4b4d39(0x241)][_0x4b4d39(0x415)][_0x4b4d39(0x44b)](this),this[_0x4b4d39(0x1d0)]();},Sprite_NewLabel[_0x23d1fb(0x241)][_0x23d1fb(0x1d0)]=function(){const _0x176dea=_0x23d1fb,_0x26224f=ImageManager[_0x176dea(0x431)],_0x11d915=ImageManager[_0x176dea(0x31e)];this[_0x176dea(0x4fb)]=new Bitmap(_0x26224f,_0x11d915),this['drawNewLabelIcon'](),this[_0x176dea(0x29e)]();},Sprite_NewLabel[_0x23d1fb(0x241)][_0x23d1fb(0x447)]=function(){const _0x272dfa=_0x23d1fb,_0x2262f6=VisuMZ['ItemsEquipsCore'][_0x272dfa(0x357)][_0x272dfa(0x333)][_0x272dfa(0x211)];if(_0x2262f6<=0x0)return;const _0x2f3bd2=ImageManager['loadSystem'](_0x272dfa(0x448)),_0x3a24f8=ImageManager['iconWidth'],_0x545c04=ImageManager[_0x272dfa(0x31e)],_0x50dad1=_0x2262f6%0x10*_0x3a24f8,_0x3bf624=Math[_0x272dfa(0x312)](_0x2262f6/0x10)*_0x545c04;this['bitmap'][_0x272dfa(0x1b8)](_0x2f3bd2,_0x50dad1,_0x3bf624,_0x3a24f8,_0x545c04,0x0,0x0);},Sprite_NewLabel['prototype'][_0x23d1fb(0x29e)]=function(){const _0x39f4da=_0x23d1fb,_0x182dc0=VisuMZ['ItemsEquipsCore'][_0x39f4da(0x357)][_0x39f4da(0x333)],_0x14270d=_0x182dc0[_0x39f4da(0x33b)];if(_0x14270d==='')return;const _0x43d28c=ImageManager[_0x39f4da(0x431)],_0x1eb4a8=ImageManager[_0x39f4da(0x31e)];this[_0x39f4da(0x4fb)][_0x39f4da(0x3dc)]=_0x182dc0[_0x39f4da(0x4aa)]||$gameSystem['mainFontFace'](),this[_0x39f4da(0x4fb)][_0x39f4da(0x296)]=this[_0x39f4da(0x1e3)](),this[_0x39f4da(0x4fb)][_0x39f4da(0x428)]=_0x182dc0[_0x39f4da(0x331)],this[_0x39f4da(0x4fb)]['drawText'](_0x14270d,0x0,_0x1eb4a8/0x2,_0x43d28c,_0x1eb4a8/0x2,'center');},Sprite_NewLabel[_0x23d1fb(0x241)][_0x23d1fb(0x1e3)]=function(){const _0x52cd3d=_0x23d1fb,_0x22359a=VisuMZ[_0x52cd3d(0x248)]['Settings'][_0x52cd3d(0x333)][_0x52cd3d(0x36c)];return _0x22359a[_0x52cd3d(0x2fc)](/#(.*)/i)?'#'+String(RegExp['$1']):ColorManager['textColor'](_0x22359a);},Window_Base[_0x23d1fb(0x241)][_0x23d1fb(0x1a2)]=function(_0x20b88f,_0x2a6736,_0x44998d,_0xc0de6c){const _0x1ab2d7=_0x23d1fb;if(_0x20b88f){const _0x440961=_0x44998d+(this[_0x1ab2d7(0x314)]()-ImageManager[_0x1ab2d7(0x31e)])/0x2,_0x1370f0=ImageManager[_0x1ab2d7(0x431)]+0x4,_0x4947cb=Math[_0x1ab2d7(0x2e0)](0x0,_0xc0de6c-_0x1370f0);this[_0x1ab2d7(0x391)](ColorManager[_0x1ab2d7(0x2e6)](_0x20b88f)),this[_0x1ab2d7(0x48a)](_0x20b88f[_0x1ab2d7(0x3c9)],_0x2a6736,_0x440961),this[_0x1ab2d7(0x341)](_0x20b88f['name'],_0x2a6736+_0x1370f0,_0x44998d,_0x4947cb),this[_0x1ab2d7(0x29a)]();}},Window_Base['prototype'][_0x23d1fb(0x522)]=function(_0x350234,_0x326621,_0x30a3e1,_0x52b290){const _0xa1be4e=_0x23d1fb;if(this['isDrawItemNumber'](_0x350234)){this[_0xa1be4e(0x425)]();const _0x9dcbc0=VisuMZ[_0xa1be4e(0x248)]['Settings'][_0xa1be4e(0x3fe)],_0x2d477a=_0x9dcbc0[_0xa1be4e(0x517)],_0x95dc70=_0x2d477a['format']($gameParty['numItems'](_0x350234));this[_0xa1be4e(0x1c5)][_0xa1be4e(0x428)]=_0x9dcbc0['ItemQuantityFontSize'],this[_0xa1be4e(0x341)](_0x95dc70,_0x326621,_0x30a3e1,_0x52b290,_0xa1be4e(0x3cb)),this[_0xa1be4e(0x425)]();}},Window_Base[_0x23d1fb(0x241)][_0x23d1fb(0x28f)]=function(_0x565f65){const _0x5a5b88=_0x23d1fb;if(DataManager['isKeyItem'](_0x565f65))return $dataSystem[_0x5a5b88(0x354)];return!![];},Window_Base[_0x23d1fb(0x241)][_0x23d1fb(0x23b)]=function(_0x27d35c,_0x17de14,_0x8a9420,_0x22fedb,_0x1a73c2){const _0xb326d5=_0x23d1fb;_0x1a73c2=Math[_0xb326d5(0x2e0)](_0x1a73c2||0x1,0x1);while(_0x1a73c2--){_0x22fedb=_0x22fedb||this[_0xb326d5(0x314)](),this[_0xb326d5(0x4bf)][_0xb326d5(0x4f7)]=0xa0;const _0x4c4f99=ColorManager[_0xb326d5(0x2ba)]();this['contentsBack'][_0xb326d5(0x409)](_0x27d35c+0x1,_0x17de14+0x1,_0x8a9420-0x2,_0x22fedb-0x2,_0x4c4f99),this[_0xb326d5(0x4bf)][_0xb326d5(0x4f7)]=0xff;}},VisuMZ[_0x23d1fb(0x248)]['Window_Selectable_initialize']=Window_Selectable[_0x23d1fb(0x241)][_0x23d1fb(0x415)],Window_Selectable['prototype']['initialize']=function(_0x5009ee){const _0x3302ac=_0x23d1fb;this['initNewLabelSprites'](),VisuMZ[_0x3302ac(0x248)][_0x3302ac(0x24f)][_0x3302ac(0x44b)](this,_0x5009ee);},Window_Selectable['prototype'][_0x23d1fb(0x1a8)]=function(){const _0x1b1a93=_0x23d1fb;this['_newLabelSprites']={},this[_0x1b1a93(0x4be)]=0xff,this[_0x1b1a93(0x4f2)]=VisuMZ[_0x1b1a93(0x248)][_0x1b1a93(0x357)][_0x1b1a93(0x333)][_0x1b1a93(0x4af)],this[_0x1b1a93(0x196)]=VisuMZ[_0x1b1a93(0x248)][_0x1b1a93(0x357)]['New'][_0x1b1a93(0x503)];},Window_Selectable[_0x23d1fb(0x241)][_0x23d1fb(0x200)]=function(){return![];},VisuMZ[_0x23d1fb(0x248)]['Window_Selectable_setHelpWindowItem']=Window_Selectable[_0x23d1fb(0x241)]['setHelpWindowItem'],Window_Selectable['prototype']['setHelpWindowItem']=function(_0x40abec){const _0x394b44=_0x23d1fb;VisuMZ[_0x394b44(0x248)][_0x394b44(0x41e)]['call'](this,_0x40abec);if(this[_0x394b44(0x200)]())this['clearNewLabelFromItem'](_0x40abec);},Window_Selectable[_0x23d1fb(0x241)]['clearNewLabelFromItem']=function(_0x36f7b7){const _0x3f2c15=_0x23d1fb;if(!_0x36f7b7)return;$gameParty[_0x3f2c15(0x413)](_0x36f7b7);let _0x5f254d='';if(DataManager[_0x3f2c15(0x1ac)](_0x36f7b7))_0x5f254d=_0x3f2c15(0x48b)['format'](_0x36f7b7['id']);else{if(DataManager[_0x3f2c15(0x4ad)](_0x36f7b7))_0x5f254d=_0x3f2c15(0x2a7)[_0x3f2c15(0x325)](_0x36f7b7['id']);else{if(DataManager['isArmor'](_0x36f7b7))_0x5f254d=_0x3f2c15(0x4ac)[_0x3f2c15(0x325)](_0x36f7b7['id']);else return;}}const _0x9fae43=this[_0x3f2c15(0x2c6)][_0x5f254d];if(_0x9fae43)_0x9fae43[_0x3f2c15(0x4d4)]();},VisuMZ['ItemsEquipsCore']['Window_Selectable_refresh']=Window_Selectable[_0x23d1fb(0x241)][_0x23d1fb(0x3c3)],Window_Selectable[_0x23d1fb(0x241)][_0x23d1fb(0x3c3)]=function(){const _0x5a8089=_0x23d1fb;this[_0x5a8089(0x50f)](),VisuMZ[_0x5a8089(0x248)]['Window_Selectable_refresh'][_0x5a8089(0x44b)](this);},Window_Selectable['prototype'][_0x23d1fb(0x50f)]=function(){const _0x2db10d=_0x23d1fb;for(const _0x59465b of Object[_0x2db10d(0x20f)](this[_0x2db10d(0x2c6)])){_0x59465b[_0x2db10d(0x4d4)]();}},VisuMZ[_0x23d1fb(0x248)]['Window_Selectable_update']=Window_Selectable[_0x23d1fb(0x241)][_0x23d1fb(0x389)],Window_Selectable[_0x23d1fb(0x241)][_0x23d1fb(0x389)]=function(){const _0x2534c6=_0x23d1fb;this[_0x2534c6(0x434)](),VisuMZ[_0x2534c6(0x248)][_0x2534c6(0x2f9)][_0x2534c6(0x44b)](this);},Window_Selectable[_0x23d1fb(0x241)]['updateNewLabelOpacity']=function(){const _0xaf0f8=_0x23d1fb;if(!this['isShowNew']())return;const _0x2edf70=this[_0xaf0f8(0x196)];this[_0xaf0f8(0x4be)]+=this[_0xaf0f8(0x4f2)];(this['_newLabelOpacity']>=_0x2edf70||this[_0xaf0f8(0x4be)]<=0x0)&&(this[_0xaf0f8(0x4f2)]*=-0x1);this[_0xaf0f8(0x4be)]=this['_newLabelOpacity'][_0xaf0f8(0x3b7)](0x0,_0x2edf70);for(const _0x38c6ec of Object['values'](this['_newLabelSprites'])){_0x38c6ec[_0xaf0f8(0x1d7)]=this[_0xaf0f8(0x4be)];}},Window_Selectable[_0x23d1fb(0x241)]['createNewLabelSprite']=function(_0xdb3fb2){const _0x4ee482=_0x23d1fb,_0x33a7a3=this[_0x4ee482(0x2c6)];if(_0x33a7a3[_0xdb3fb2])return _0x33a7a3[_0xdb3fb2];else{const _0x4f42ab=new Sprite_NewLabel();return _0x33a7a3[_0xdb3fb2]=_0x4f42ab,this[_0x4ee482(0x3fa)](_0x4f42ab),_0x4f42ab;}},Window_Selectable[_0x23d1fb(0x241)][_0x23d1fb(0x44d)]=function(_0x54cbde,_0x9c5af,_0x2e00b5){const _0x590444=_0x23d1fb;let _0x584509='';if(DataManager['isItem'](_0x54cbde))_0x584509=_0x590444(0x48b)[_0x590444(0x325)](_0x54cbde['id']);else{if(DataManager[_0x590444(0x4ad)](_0x54cbde))_0x584509=_0x590444(0x2a7)['format'](_0x54cbde['id']);else{if(DataManager[_0x590444(0x2bb)](_0x54cbde))_0x584509=_0x590444(0x4ac)[_0x590444(0x325)](_0x54cbde['id']);else return;}}const _0x18a80c=this[_0x590444(0x267)](_0x584509);_0x18a80c['move'](_0x9c5af,_0x2e00b5),_0x18a80c[_0x590444(0x19f)](),_0x18a80c['opacity']=this['_newLabelOpacity'];},Window_ItemCategory[_0x23d1fb(0x26f)]=VisuMZ[_0x23d1fb(0x248)]['Settings']['Categories'][_0x23d1fb(0x499)],Window_ItemCategory[_0x23d1fb(0x194)]=[_0x23d1fb(0x289),'HiddenItemB','Nonconsumable',_0x23d1fb(0x36f),_0x23d1fb(0x277),'BattleUsable',_0x23d1fb(0x4c7),'NeverUsable'],VisuMZ[_0x23d1fb(0x248)]['Window_ItemCategory_initialize']=Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x415)],Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x415)]=function(_0x5d19cf){const _0x38442b=_0x23d1fb;VisuMZ[_0x38442b(0x248)][_0x38442b(0x3d5)]['call'](this,_0x5d19cf),this[_0x38442b(0x457)](_0x5d19cf);},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x457)]=function(_0x2cdf6b){const _0x5bda11=_0x23d1fb,_0x4156fb=new Rectangle(0x0,0x0,_0x2cdf6b[_0x5bda11(0x3f4)],_0x2cdf6b['height']);this[_0x5bda11(0x422)]=new Window_Base(_0x4156fb),this[_0x5bda11(0x422)]['opacity']=0x0,this['addChild'](this[_0x5bda11(0x422)]),this[_0x5bda11(0x1cd)]();},Window_ItemCategory['prototype']['isUseModernControls']=function(){const _0x4cb403=_0x23d1fb;return Imported[_0x4cb403(0x297)]&&Window_HorzCommand[_0x4cb403(0x241)][_0x4cb403(0x3bd)][_0x4cb403(0x44b)](this);},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x360)]=function(){},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x315)]=function(){const _0x368543=_0x23d1fb;if(!this['isUseModernControls']())Window_HorzCommand['prototype'][_0x368543(0x315)][_0x368543(0x44b)](this);},Window_ItemCategory[_0x23d1fb(0x241)]['maxCols']=function(){const _0x32f489=_0x23d1fb;return this['_list']?this[_0x32f489(0x22a)]():0x4;},Window_ItemCategory['prototype']['update']=function(){const _0x47f37f=_0x23d1fb;Window_HorzCommand[_0x47f37f(0x241)][_0x47f37f(0x389)][_0x47f37f(0x44b)](this),this[_0x47f37f(0x468)]&&this['_itemWindow']['setCategory'](this[_0x47f37f(0x31f)]());},Window_ItemCategory['prototype']['processCursorMoveModernControls']=function(){const _0x57b942=_0x23d1fb;if(this[_0x57b942(0x351)]()){const _0x14c798=this[_0x57b942(0x276)]();if(this[_0x57b942(0x468)]&&this[_0x57b942(0x468)]['maxCols']()<=0x1)Input[_0x57b942(0x524)](_0x57b942(0x3cb))&&this[_0x57b942(0x348)](Input['isTriggered'](_0x57b942(0x3cb))),Input[_0x57b942(0x524)](_0x57b942(0x4cc))&&this[_0x57b942(0x2b8)](Input['isTriggered'](_0x57b942(0x4cc)));else this[_0x57b942(0x468)]&&this[_0x57b942(0x468)][_0x57b942(0x264)]()>0x1&&(Input['isRepeated']('pagedown')&&!Input[_0x57b942(0x220)](_0x57b942(0x329))&&this[_0x57b942(0x348)](Input[_0x57b942(0x244)](_0x57b942(0x22f))),Input[_0x57b942(0x524)]('pageup')&&!Input[_0x57b942(0x220)]('shift')&&this[_0x57b942(0x2b8)](Input['isTriggered'](_0x57b942(0x529))));this[_0x57b942(0x276)]()!==_0x14c798&&this[_0x57b942(0x26e)]();}},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x1b2)]=function(){const _0xfee6ab=_0x23d1fb;if(this[_0xfee6ab(0x3bd)]())return;Window_HorzCommand[_0xfee6ab(0x241)][_0xfee6ab(0x1b2)]['call'](this);},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x191)]=function(){const _0x4f6a3b=_0x23d1fb;return this['isUseModernControls']()?![]:Window_HorzCommand[_0x4f6a3b(0x241)][_0x4f6a3b(0x191)][_0x4f6a3b(0x44b)](this);},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x2cf)]=function(){const _0xd8578c=_0x23d1fb;if(this[_0xd8578c(0x49b)]()){TouchInput[_0xd8578c(0x244)]()&&this[_0xd8578c(0x37c)](!![]);if(TouchInput['isClicked']())this['onTouchOk']();else TouchInput[_0xd8578c(0x29d)]()&&this[_0xd8578c(0x4a9)]();}},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x37c)]=function(_0x2b62b2){const _0x27dcb0=_0x23d1fb;this[_0x27dcb0(0x3bd)]()?this[_0x27dcb0(0x332)](!![]):Window_HorzCommand[_0x27dcb0(0x241)]['onTouchSelect'][_0x27dcb0(0x44b)](this,_0x2b62b2);},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x332)]=function(_0x2def9b){const _0x48b524=_0x23d1fb;this[_0x48b524(0x230)]=![];if(this[_0x48b524(0x351)]()){const _0x3e53a5=this[_0x48b524(0x276)](),_0x3894e1=this[_0x48b524(0x307)]();_0x3894e1>=0x0&&_0x3894e1!==this['index']()&&this[_0x48b524(0x435)](_0x3894e1),_0x2def9b&&this['index']()!==_0x3e53a5&&this[_0x48b524(0x26e)]();}},Window_ItemCategory['prototype'][_0x23d1fb(0x284)]=function(){const _0x13d4ec=_0x23d1fb;this[_0x13d4ec(0x3da)](),this[_0x13d4ec(0x435)](this[_0x13d4ec(0x276)]());},Window_ItemCategory[_0x23d1fb(0x241)]['addItemCategories']=function(){const _0x1d20e6=_0x23d1fb;for(const _0x3bf912 of Window_ItemCategory[_0x1d20e6(0x26f)]){this[_0x1d20e6(0x2f1)](_0x3bf912);}},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x2f1)]=function(_0x55fa4f){const _0x242bcf=_0x23d1fb,_0x5b2c58=_0x55fa4f['Type'],_0x1d93f6=_0x55fa4f[_0x242bcf(0x211)],_0x16a84c=_0x55fa4f[_0x242bcf(0x1b1)]||0x0;if(_0x16a84c>0x0&&!$gameSwitches[_0x242bcf(0x3f6)](_0x16a84c))return;let _0x2dd25e='',_0x3a7682='category',_0x263266=_0x5b2c58;if(_0x5b2c58[_0x242bcf(0x2fc)](/Category:(.*)/i))_0x2dd25e=String(RegExp['$1'])[_0x242bcf(0x432)]();else{if(Window_ItemCategory['categoryItemTypes'][_0x242bcf(0x39a)](_0x5b2c58))_0x2dd25e=VisuMZ['ItemsEquipsCore']['Settings'][_0x242bcf(0x43b)][_0x5b2c58];else{if(['AllItems',_0x242bcf(0x24c)][_0x242bcf(0x39a)](_0x5b2c58))_0x2dd25e=TextManager[_0x242bcf(0x320)];else{if(_0x5b2c58===_0x242bcf(0x441))_0x2dd25e=TextManager[_0x242bcf(0x1a3)];else{if(_0x5b2c58===_0x242bcf(0x21f))_0x2dd25e=TextManager[_0x242bcf(0x484)];else{if(_0x5b2c58==='AllArmors')_0x2dd25e=TextManager[_0x242bcf(0x288)];else{if(_0x5b2c58[_0x242bcf(0x2fc)](/WTYPE:(\d+)/i))_0x2dd25e=$dataSystem[_0x242bcf(0x419)][Number(RegExp['$1'])]||'';else{if(_0x5b2c58['match'](/ATYPE:(\d+)/i))_0x2dd25e=$dataSystem[_0x242bcf(0x30b)][Number(RegExp['$1'])]||'';else _0x5b2c58[_0x242bcf(0x2fc)](/ETYPE:(\d+)/i)&&(_0x2dd25e=$dataSystem[_0x242bcf(0x1ab)][Number(RegExp['$1'])]||'');}}}}}}}_0x1d93f6>0x0&&this[_0x242bcf(0x2e1)]()!==_0x242bcf(0x2b3)&&(_0x2dd25e=_0x242bcf(0x322)['format'](_0x1d93f6,_0x2dd25e)),this[_0x242bcf(0x4bb)](_0x2dd25e,_0x3a7682,!![],_0x263266);},Window_ItemCategory['prototype'][_0x23d1fb(0x1c7)]=function(){const _0x3a40af=_0x23d1fb;return VisuMZ[_0x3a40af(0x248)]['Settings'][_0x3a40af(0x43b)][_0x3a40af(0x1c6)];},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x453)]=function(_0x540ae0){const _0x3308a6=_0x23d1fb,_0x134b70=this[_0x3308a6(0x2fb)](_0x540ae0);if(_0x134b70===_0x3308a6(0x262))this['drawItemStyleIconText'](_0x540ae0);else _0x134b70===_0x3308a6(0x49f)?this[_0x3308a6(0x245)](_0x540ae0):Window_HorzCommand[_0x3308a6(0x241)][_0x3308a6(0x453)][_0x3308a6(0x44b)](this,_0x540ae0);},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x2e1)]=function(){const _0x548227=_0x23d1fb;return VisuMZ[_0x548227(0x248)][_0x548227(0x357)][_0x548227(0x43b)][_0x548227(0x4fd)];},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x2fb)]=function(_0x408e09){const _0x38b9b5=_0x23d1fb;if(_0x408e09<0x0)return _0x38b9b5(0x2b3);const _0x587db9=this[_0x38b9b5(0x2e1)]();if(_0x587db9!==_0x38b9b5(0x282))return _0x587db9;else{const _0x537924=this['commandName'](_0x408e09);if(_0x537924['match'](/\\I\[(\d+)\]/i)){const _0x51b617=this[_0x38b9b5(0x387)](_0x408e09),_0x26cd32=this[_0x38b9b5(0x1fc)](_0x537924)['width'];return _0x26cd32<=_0x51b617[_0x38b9b5(0x3f4)]?'iconText':_0x38b9b5(0x49f);}else return _0x38b9b5(0x2b3);}},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x2e4)]=function(_0x2675d0){const _0x3744cf=_0x23d1fb,_0x38339a=this[_0x3744cf(0x387)](_0x2675d0),_0x1235b8=this[_0x3744cf(0x393)](_0x2675d0),_0x45e98c=this[_0x3744cf(0x1fc)](_0x1235b8)[_0x3744cf(0x3f4)];this[_0x3744cf(0x45c)](this['isCommandEnabled'](_0x2675d0));const _0x3c281f=this['itemTextAlign']();if(_0x3c281f===_0x3744cf(0x3cb))this[_0x3744cf(0x4d0)](_0x1235b8,_0x38339a['x']+_0x38339a[_0x3744cf(0x3f4)]-_0x45e98c,_0x38339a['y'],_0x45e98c);else{if(_0x3c281f===_0x3744cf(0x1db)){const _0x325e85=_0x38339a['x']+Math[_0x3744cf(0x312)]((_0x38339a[_0x3744cf(0x3f4)]-_0x45e98c)/0x2);this[_0x3744cf(0x4d0)](_0x1235b8,_0x325e85,_0x38339a['y'],_0x45e98c);}else this[_0x3744cf(0x4d0)](_0x1235b8,_0x38339a['x'],_0x38339a['y'],_0x45e98c);}},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x245)]=function(_0x2bbf94){const _0x37cc22=_0x23d1fb,_0x35d6f4=this[_0x37cc22(0x393)](_0x2bbf94);if(_0x35d6f4[_0x37cc22(0x2fc)](/\\I\[(\d+)\]/i)){const _0x23615f=Number(RegExp['$1'])||0x0,_0x5f0311=this['itemLineRect'](_0x2bbf94),_0x41bf9f=_0x5f0311['x']+Math[_0x37cc22(0x312)]((_0x5f0311[_0x37cc22(0x3f4)]-ImageManager[_0x37cc22(0x431)])/0x2),_0x76510b=_0x5f0311['y']+(_0x5f0311[_0x37cc22(0x1f9)]-ImageManager[_0x37cc22(0x31e)])/0x2;this[_0x37cc22(0x48a)](_0x23615f,_0x41bf9f,_0x76510b);}},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x3b3)]=Window_ItemCategory[_0x23d1fb(0x241)]['setItemWindow'],Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x287)]=function(_0x2c723e){const _0x391c98=_0x23d1fb;VisuMZ[_0x391c98(0x248)][_0x391c98(0x3b3)][_0x391c98(0x44b)](this,_0x2c723e),_0x2c723e['_categoryWindow']=this;},Window_ItemCategory['prototype'][_0x23d1fb(0x2c2)]=function(){const _0x25a85b=_0x23d1fb;Window_HorzCommand[_0x25a85b(0x241)][_0x25a85b(0x2c2)]['call'](this);if(this['_categoryNameWindow'])this[_0x25a85b(0x1cd)]();},Window_ItemCategory['prototype'][_0x23d1fb(0x1cd)]=function(){const _0x91d7c4=_0x23d1fb,_0x59fa0c=this[_0x91d7c4(0x422)];_0x59fa0c[_0x91d7c4(0x1c5)][_0x91d7c4(0x475)]();const _0x168ffc=this[_0x91d7c4(0x2fb)](this[_0x91d7c4(0x276)]());if(_0x168ffc===_0x91d7c4(0x49f)){const _0x2e4aa7=this[_0x91d7c4(0x387)](this['index']());let _0x6a6ee5=this['commandName'](this[_0x91d7c4(0x276)]());_0x6a6ee5=_0x6a6ee5[_0x91d7c4(0x3d6)](/\\I\[(\d+)\]/gi,''),_0x59fa0c['resetFontSettings'](),this[_0x91d7c4(0x2b0)](_0x6a6ee5,_0x2e4aa7),this['categoryNameWindowDrawText'](_0x6a6ee5,_0x2e4aa7),this[_0x91d7c4(0x486)](_0x6a6ee5,_0x2e4aa7);}},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x2b0)]=function(_0x5543ef,_0x1ac666){},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x1a5)]=function(_0x581be1,_0x2af2ab){const _0x4a91ff=_0x23d1fb,_0x8eef00=this[_0x4a91ff(0x422)];_0x8eef00[_0x4a91ff(0x341)](_0x581be1,0x0,_0x2af2ab['y'],_0x8eef00[_0x4a91ff(0x4a8)],_0x4a91ff(0x1db));},Window_ItemCategory[_0x23d1fb(0x241)][_0x23d1fb(0x486)]=function(_0x28d028,_0x4b3763){const _0x5e60dd=_0x23d1fb,_0x4db9f9=this[_0x5e60dd(0x422)],_0x2ac7d5=$gameSystem[_0x5e60dd(0x379)](),_0x12dce9=_0x4b3763['x']+Math[_0x5e60dd(0x312)](_0x4b3763['width']/0x2)+_0x2ac7d5;_0x4db9f9['x']=_0x4db9f9[_0x5e60dd(0x3f4)]/-0x2+_0x12dce9,_0x4db9f9['y']=Math['floor'](_0x4b3763['height']/0x2);},Window_ItemList['prototype']['processCursorMoveModernControls']=function(){const _0x2d7c46=_0x23d1fb;if(this[_0x2d7c46(0x351)]()){const _0x40aa8f=this['index']();if(this[_0x2d7c46(0x264)]()<=0x1)!this[_0x2d7c46(0x47c)](_0x2d7c46(0x22f))&&Input[_0x2d7c46(0x244)](_0x2d7c46(0x22f))&&this[_0x2d7c46(0x2ab)](),!this[_0x2d7c46(0x47c)]('pageup')&&Input[_0x2d7c46(0x244)](_0x2d7c46(0x529))&&this[_0x2d7c46(0x221)]();else this[_0x2d7c46(0x264)]()>0x1&&(Input[_0x2d7c46(0x524)](_0x2d7c46(0x3cb))&&this[_0x2d7c46(0x348)](Input[_0x2d7c46(0x244)](_0x2d7c46(0x3cb))),Input[_0x2d7c46(0x524)](_0x2d7c46(0x4cc))&&this['cursorLeft'](Input[_0x2d7c46(0x244)](_0x2d7c46(0x4cc))),this[_0x2d7c46(0x45d)]()?(Input[_0x2d7c46(0x244)]('pagedown')&&Input[_0x2d7c46(0x220)](_0x2d7c46(0x329))&&this[_0x2d7c46(0x2ab)](),Input[_0x2d7c46(0x244)](_0x2d7c46(0x529))&&Input[_0x2d7c46(0x220)](_0x2d7c46(0x329))&&this[_0x2d7c46(0x221)]()):(Input[_0x2d7c46(0x244)](_0x2d7c46(0x22f))&&this[_0x2d7c46(0x2ab)](),Input[_0x2d7c46(0x244)](_0x2d7c46(0x529))&&this['cursorPageup']()));Input[_0x2d7c46(0x524)](_0x2d7c46(0x523))&&(Input[_0x2d7c46(0x220)](_0x2d7c46(0x329))&&this[_0x2d7c46(0x2a0)]()?this[_0x2d7c46(0x2ab)]():this[_0x2d7c46(0x36e)](Input[_0x2d7c46(0x244)]('down'))),Input[_0x2d7c46(0x524)]('up')&&(Input[_0x2d7c46(0x220)](_0x2d7c46(0x329))&&this[_0x2d7c46(0x2a0)]()?this[_0x2d7c46(0x221)]():this[_0x2d7c46(0x440)](Input[_0x2d7c46(0x244)]('up'))),Imported[_0x2d7c46(0x297)]&&this['processCursorHomeEndTrigger'](),this[_0x2d7c46(0x276)]()!==_0x40aa8f&&this['playCursorSound']();}},Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x45d)]=function(){const _0x99a837=_0x23d1fb,_0xc43c4f=SceneManager[_0x99a837(0x2b6)],_0x59b6a8=[Scene_Item,Scene_Shop];return _0x59b6a8[_0x99a837(0x39a)](_0xc43c4f[_0x99a837(0x1f1)]);},Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x408)]=function(){const _0x5466eb=_0x23d1fb;Window_Selectable[_0x5466eb(0x241)][_0x5466eb(0x408)]['call'](this),this[_0x5466eb(0x48d)]&&this[_0x5466eb(0x48d)]['isUseModernControls']()&&this[_0x5466eb(0x48d)][_0x5466eb(0x408)]();},Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x44f)]=function(){const _0x5bc766=_0x23d1fb;Window_Selectable[_0x5bc766(0x241)][_0x5bc766(0x44f)]['call'](this),this['_categoryWindow']&&this['_categoryWindow'][_0x5bc766(0x3bd)]()&&this['_categoryWindow']['deactivate']();},Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x3ba)]=function(_0x5e9ad8){const _0x151a25=_0x23d1fb;this[_0x151a25(0x34e)]!==_0x5e9ad8&&(this['_category']=_0x5e9ad8,this[_0x151a25(0x3c3)](),this[_0x151a25(0x48d)]&&this[_0x151a25(0x48d)][_0x151a25(0x3bd)]()?this[_0x151a25(0x3ea)](0x0):this[_0x151a25(0x4dc)](0x0,0x0));},VisuMZ[_0x23d1fb(0x248)]['Window_ItemList_maxCols']=Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x264)],Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x264)]=function(){const _0x7d72eb=_0x23d1fb;if(SceneManager['_scene'][_0x7d72eb(0x1f1)]===Scene_Battle)return VisuMZ[_0x7d72eb(0x248)][_0x7d72eb(0x4bc)][_0x7d72eb(0x44b)](this);else return SceneManager['_scene'][_0x7d72eb(0x1f1)]===Scene_Map?VisuMZ[_0x7d72eb(0x248)][_0x7d72eb(0x4bc)]['call'](this):VisuMZ['ItemsEquipsCore'][_0x7d72eb(0x357)][_0x7d72eb(0x3fe)][_0x7d72eb(0x443)];},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x463)]=Window_ItemList[_0x23d1fb(0x241)]['colSpacing'],Window_ItemList[_0x23d1fb(0x241)]['colSpacing']=function(){const _0x31fbd1=_0x23d1fb;return this['maxCols']()<=0x1?Window_Selectable[_0x31fbd1(0x241)][_0x31fbd1(0x35a)][_0x31fbd1(0x44b)](this):VisuMZ[_0x31fbd1(0x248)][_0x31fbd1(0x463)][_0x31fbd1(0x44b)](this);},Window_ItemList['prototype'][_0x23d1fb(0x39a)]=function(_0x2e88ed){const _0x467b1c=_0x23d1fb;switch(this[_0x467b1c(0x34e)]){case _0x467b1c(0x436):return DataManager[_0x467b1c(0x1ac)](_0x2e88ed);case'RegularItems':return DataManager[_0x467b1c(0x1ac)](_0x2e88ed)&&_0x2e88ed[_0x467b1c(0x2d5)]===0x1;case'KeyItems':return DataManager[_0x467b1c(0x1ac)](_0x2e88ed)&&_0x2e88ed[_0x467b1c(0x2d5)]===0x2;case'HiddenItemA':return DataManager[_0x467b1c(0x1ac)](_0x2e88ed)&&_0x2e88ed[_0x467b1c(0x2d5)]===0x3;case'HiddenItemB':return DataManager[_0x467b1c(0x1ac)](_0x2e88ed)&&_0x2e88ed[_0x467b1c(0x2d5)]===0x4;case _0x467b1c(0x36f):return DataManager[_0x467b1c(0x1ac)](_0x2e88ed)&&_0x2e88ed[_0x467b1c(0x338)];case'Nonconsumable':return DataManager['isItem'](_0x2e88ed)&&!_0x2e88ed[_0x467b1c(0x338)];case _0x467b1c(0x277):return DataManager['isItem'](_0x2e88ed)&&[0x0][_0x467b1c(0x39a)](_0x2e88ed['occasion']);case _0x467b1c(0x2ef):return DataManager[_0x467b1c(0x1ac)](_0x2e88ed)&&[0x0,0x1][_0x467b1c(0x39a)](_0x2e88ed[_0x467b1c(0x4e3)]);case _0x467b1c(0x4c7):return DataManager[_0x467b1c(0x1ac)](_0x2e88ed)&&[0x0,0x2][_0x467b1c(0x39a)](_0x2e88ed[_0x467b1c(0x4e3)]);case'NeverUsable':return DataManager['isItem'](_0x2e88ed)&&[0x3][_0x467b1c(0x39a)](_0x2e88ed[_0x467b1c(0x4e3)]);case _0x467b1c(0x21f):return DataManager[_0x467b1c(0x4ad)](_0x2e88ed);case'AllArmors':return DataManager[_0x467b1c(0x2bb)](_0x2e88ed);default:if(this['_category'][_0x467b1c(0x2fc)](/WTYPE:(\d+)/i))return DataManager['isWeapon'](_0x2e88ed)&&_0x2e88ed[_0x467b1c(0x471)]===Number(RegExp['$1']);else{if(this[_0x467b1c(0x34e)][_0x467b1c(0x2fc)](/WTYPE:(.*)/i)){const _0x2b7206=$dataSystem[_0x467b1c(0x419)][_0x467b1c(0x41c)](String(RegExp['$1'])[_0x467b1c(0x432)]());return DataManager[_0x467b1c(0x4ad)](_0x2e88ed)&&_0x2e88ed['wtypeId']===_0x2b7206;}else{if(this[_0x467b1c(0x34e)]['match'](/ATYPE:(\d+)/i))return DataManager['isArmor'](_0x2e88ed)&&_0x2e88ed[_0x467b1c(0x22e)]===Number(RegExp['$1']);else{if(this[_0x467b1c(0x34e)][_0x467b1c(0x2fc)](/ATYPE:(.*)/i)){const _0x200cfe=$dataSystem[_0x467b1c(0x30b)][_0x467b1c(0x41c)](String(RegExp['$1'])[_0x467b1c(0x432)]());return DataManager['isArmor'](_0x2e88ed)&&_0x2e88ed[_0x467b1c(0x22e)]===_0x200cfe;}else{if(this[_0x467b1c(0x34e)]['match'](/ETYPE:(\d+)/i))return!!_0x2e88ed&&_0x2e88ed[_0x467b1c(0x394)]===Number(RegExp['$1']);else{if(this[_0x467b1c(0x34e)][_0x467b1c(0x2fc)](/ETYPE:(.*)/i)){const _0x1613b9=$dataSystem['equipTypes']['indexOf'](String(RegExp['$1'])['trim']());return DataManager[_0x467b1c(0x2bb)](_0x2e88ed)&&_0x2e88ed[_0x467b1c(0x394)]===_0x1613b9;}else{if(this[_0x467b1c(0x34e)]['match'](/Category:(.*)/i))return!!_0x2e88ed&&_0x2e88ed[_0x467b1c(0x2e8)][_0x467b1c(0x39a)](String(RegExp['$1'])['toUpperCase']()['trim']());}}}}}}}return![];},Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x200)]=function(){return!![];},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x455)]=Window_ItemList[_0x23d1fb(0x241)]['drawItem'],Window_ItemList[_0x23d1fb(0x241)]['drawItem']=function(_0x33345b){const _0x17d05e=_0x23d1fb;VisuMZ[_0x17d05e(0x248)]['Window_ItemList_drawItem']['call'](this,_0x33345b),this[_0x17d05e(0x2e5)](_0x33345b);},Window_ItemList[_0x23d1fb(0x241)]['drawItemNumber']=function(_0x521543,_0x254206,_0xcffdf7,_0x5015cd){const _0x4ad7dd=_0x23d1fb;Window_Selectable[_0x4ad7dd(0x241)]['drawItemNumber'][_0x4ad7dd(0x44b)](this,_0x521543,_0x254206,_0xcffdf7,_0x5015cd);},Window_ItemList['prototype'][_0x23d1fb(0x2e5)]=function(_0x3894b4){const _0x18abfb=_0x23d1fb,_0x3de2b1=this['itemAt'](_0x3894b4);if(!_0x3de2b1||!this[_0x18abfb(0x200)]())return;if(!$gameParty[_0x18abfb(0x1ff)](_0x3de2b1))return;const _0x581363=this[_0x18abfb(0x387)](_0x3894b4),_0x41480d=_0x581363['x'],_0xc72bf6=_0x581363['y']+(this[_0x18abfb(0x314)]()-ImageManager['iconHeight'])/0x2,_0x3e6fd7=VisuMZ['ItemsEquipsCore']['Settings'][_0x18abfb(0x333)]['OffsetX'],_0x1a0fa8=VisuMZ[_0x18abfb(0x248)][_0x18abfb(0x357)]['New'][_0x18abfb(0x4f9)];this[_0x18abfb(0x44d)](_0x3de2b1,_0x41480d+_0x3e6fd7,_0xc72bf6+_0x1a0fa8);},Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x52c)]=function(_0x5aaaed){this['_statusWindow']=_0x5aaaed,this['callUpdateHelp']();},VisuMZ['ItemsEquipsCore'][_0x23d1fb(0x49c)]=Window_ItemList[_0x23d1fb(0x241)]['updateHelp'],Window_ItemList[_0x23d1fb(0x241)][_0x23d1fb(0x4f1)]=function(){const _0x1ac7cb=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x1ac7cb(0x49c)][_0x1ac7cb(0x44b)](this),this[_0x1ac7cb(0x24d)]&&this[_0x1ac7cb(0x24d)][_0x1ac7cb(0x1f1)]===Window_ShopStatus&&this[_0x1ac7cb(0x24d)][_0x1ac7cb(0x31d)](this[_0x1ac7cb(0x320)]());},Window_BattleItem[_0x23d1fb(0x241)][_0x23d1fb(0x3c6)]=function(_0x43e81d){const _0x27173b=_0x23d1fb;return BattleManager[_0x27173b(0x383)]()?BattleManager[_0x27173b(0x383)]()[_0x27173b(0x226)](_0x43e81d):Window_ItemList[_0x27173b(0x241)]['isEnabled'][_0x27173b(0x44b)](this,_0x43e81d);},Window_EventItem[_0x23d1fb(0x241)][_0x23d1fb(0x200)]=function(){return![];},Window_EquipStatus[_0x23d1fb(0x241)][_0x23d1fb(0x23a)]=function(){const _0x391ef7=_0x23d1fb;return VisuMZ[_0x391ef7(0x248)]['Settings'][_0x391ef7(0x3af)]['EnableLayout'];},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x48e)]=Window_EquipStatus[_0x23d1fb(0x241)][_0x23d1fb(0x3c3)],Window_EquipStatus[_0x23d1fb(0x241)][_0x23d1fb(0x3c3)]=function(){const _0x1492fa=_0x23d1fb;this[_0x1492fa(0x3f9)](),this[_0x1492fa(0x425)]();if(this[_0x1492fa(0x255)])this[_0x1492fa(0x255)][_0x1492fa(0x3c3)]();this[_0x1492fa(0x23a)]()?this['prepareRefreshItemsEquipsCoreLayout']():VisuMZ[_0x1492fa(0x248)][_0x1492fa(0x48e)][_0x1492fa(0x44b)](this);},Window_EquipStatus[_0x23d1fb(0x241)]['prepareRefreshItemsEquipsCoreLayout']=function(){const _0x400ab1=_0x23d1fb;this[_0x400ab1(0x1c5)]['clear']();if(!this[_0x400ab1(0x255)])return;if(this[_0x400ab1(0x402)]()){const _0x32d666=ImageManager[_0x400ab1(0x239)](this['_actor'][_0x400ab1(0x4e4)]());_0x32d666['addLoadListener'](this[_0x400ab1(0x233)][_0x400ab1(0x36d)](this));}else this['refreshItemsEquipsCoreNoMenuImage']();},Window_EquipStatus['prototype'][_0x23d1fb(0x402)]=function(){const _0x23f543=_0x23d1fb;return Imported['VisuMZ_1_MainMenuCore']&&this['_actor'][_0x23f543(0x4e4)]()!==''&&VisuMZ[_0x23f543(0x248)][_0x23f543(0x357)][_0x23f543(0x3af)][_0x23f543(0x323)];},Window_EquipStatus['prototype']['onMenuImageLoad']=function(){const _0x3ddd43=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x3ddd43(0x357)][_0x3ddd43(0x3af)][_0x3ddd43(0x1e5)][_0x3ddd43(0x44b)](this),this['drawParamsItemsEquipsCore']();},Window_EquipStatus[_0x23d1fb(0x241)][_0x23d1fb(0x181)]=function(){const _0x1ee398=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x1ee398(0x357)][_0x1ee398(0x3af)]['DrawFaceJS'][_0x1ee398(0x44b)](this),this[_0x1ee398(0x2df)]();},Window_EquipStatus[_0x23d1fb(0x241)][_0x23d1fb(0x2df)]=function(){const _0x4d39b7=_0x23d1fb;this['resetFontSettings'](),VisuMZ['ItemsEquipsCore'][_0x4d39b7(0x357)][_0x4d39b7(0x3af)][_0x4d39b7(0x43e)][_0x4d39b7(0x44b)](this);},Window_EquipStatus['prototype']['drawItemActorMenuImage']=function(_0x5ee631,_0x592420,_0x22dbb0,_0x41790e,_0x4a8879){const _0x48faad=_0x23d1fb,_0x5d400f=ImageManager[_0x48faad(0x239)](_0x5ee631['getMenuImage']()),_0x10e119=this[_0x48faad(0x4a8)]-_0x5d400f[_0x48faad(0x3f4)];_0x592420+=_0x10e119/0x2;if(_0x10e119<0x0)_0x41790e-=_0x10e119;Window_StatusBase[_0x48faad(0x241)]['drawItemActorMenuImage']['call'](this,_0x5ee631,_0x592420,_0x22dbb0,_0x41790e,_0x4a8879);},Window_EquipStatus[_0x23d1fb(0x241)][_0x23d1fb(0x3ee)]=function(){const _0x2242d7=_0x23d1fb;return Imported[_0x2242d7(0x297)]?VisuMZ['CoreEngine'][_0x2242d7(0x357)][_0x2242d7(0x4fc)][_0x2242d7(0x249)]:[0x0,0x1,0x2,0x3,0x4,0x5,0x6,0x7];},Window_EquipStatus[_0x23d1fb(0x241)][_0x23d1fb(0x183)]=function(){const _0x1325e1=_0x23d1fb;return VisuMZ[_0x1325e1(0x248)][_0x1325e1(0x357)]['EquipScene']['ParamValueFontSize'];},Window_EquipStatus['prototype'][_0x23d1fb(0x1ce)]=function(){const _0xa455bc=_0x23d1fb;return Imported[_0xa455bc(0x297)]&&VisuMZ[_0xa455bc(0x305)][_0xa455bc(0x357)][_0xa455bc(0x4fc)][_0xa455bc(0x4e9)];},Window_EquipStatus[_0x23d1fb(0x241)][_0x23d1fb(0x46c)]=function(_0x25dcd3,_0x4b6bf4,_0x327bf6,_0x3c3333){const _0x24a09b=_0x23d1fb,_0x4e3d6e=this[_0x24a09b(0x2a5)]();Imported[_0x24a09b(0x297)]?this[_0x24a09b(0x47d)](_0x4b6bf4+_0x4e3d6e,_0x327bf6,_0x3c3333,_0x25dcd3,![]):this[_0x24a09b(0x341)](TextManager['param'](_0x25dcd3),_0x4b6bf4+_0x4e3d6e,_0x327bf6,_0x3c3333);},Window_EquipStatus['prototype']['drawUpdatedBeforeParamValue']=function(_0x53fa70,_0x1f03b1,_0x25aa3c,_0x1b9733){const _0x1ba1ad=_0x23d1fb,_0x56cf91=this['itemPadding']();let _0x43e892=0x0;Imported[_0x1ba1ad(0x297)]?_0x43e892=this[_0x1ba1ad(0x255)]['paramValueByName'](_0x53fa70,!![]):_0x43e892=this['_actor'][_0x1ba1ad(0x3bf)](_0x53fa70);const _0x4cf477=_0x43e892;this[_0x1ba1ad(0x341)](_0x43e892,_0x1f03b1,_0x25aa3c,_0x1b9733-_0x56cf91,_0x1ba1ad(0x3cb));},Window_EquipStatus[_0x23d1fb(0x241)][_0x23d1fb(0x4d8)]=function(_0x9b613c,_0x5c82f8,_0xc7c946,_0x50d72b){const _0x433a8e=_0x23d1fb,_0x565d13=this[_0x433a8e(0x2a5)]();let _0x1fb792=0x0,_0x49b391=0x0,_0x383e47='';if(this[_0x433a8e(0x31b)]){Imported[_0x433a8e(0x297)]?(_0x1fb792=this['_actor'][_0x433a8e(0x491)](_0x9b613c,![]),_0x49b391=this[_0x433a8e(0x31b)]['paramValueByName'](_0x9b613c,![]),_0x383e47=this[_0x433a8e(0x31b)][_0x433a8e(0x491)](_0x9b613c,!![])):(_0x1fb792=this[_0x433a8e(0x255)]['param'](_0x9b613c),_0x49b391=this['_tempActor'][_0x433a8e(0x3bf)](_0x9b613c),_0x383e47=this[_0x433a8e(0x31b)][_0x433a8e(0x3bf)](_0x9b613c));const _0x5daf2f=_0x1fb792,_0x3007d7=_0x49b391;diffValue=_0x3007d7-_0x5daf2f,this['changeTextColor'](ColorManager[_0x433a8e(0x317)](diffValue)),this['drawText'](_0x383e47,_0x5c82f8,_0xc7c946,_0x50d72b-_0x565d13,_0x433a8e(0x3cb));}},Window_EquipStatus['prototype'][_0x23d1fb(0x26a)]=function(_0xbb4caa,_0x5bac3b,_0x4e6fc5,_0x713751){const _0x23eb46=_0x23d1fb,_0x4e2385=this['itemPadding']();let _0x965c68=0x0,_0x15490b=0x0,_0x81eaa3=![];if(this[_0x23eb46(0x31b)]){Imported['VisuMZ_0_CoreEngine']?(_0x965c68=this[_0x23eb46(0x255)]['paramValueByName'](_0xbb4caa,![]),_0x15490b=this[_0x23eb46(0x31b)][_0x23eb46(0x491)](_0xbb4caa,![]),_0x81eaa3=String(this[_0x23eb46(0x255)][_0x23eb46(0x491)](_0xbb4caa,!![]))[_0x23eb46(0x2fc)](/([%％])/i)):(_0x965c68=this[_0x23eb46(0x255)][_0x23eb46(0x3bf)](_0xbb4caa),_0x15490b=this[_0x23eb46(0x31b)][_0x23eb46(0x3bf)](_0xbb4caa),_0x81eaa3=_0x965c68%0x1!==0x0||_0x15490b%0x1!==0x0);const _0x17b1c2=_0x965c68,_0x3a0f01=_0x15490b,_0x4aca6f=_0x3a0f01-_0x17b1c2;let _0x2f4c56=_0x4aca6f;if(_0x81eaa3)_0x2f4c56=Math[_0x23eb46(0x291)](_0x4aca6f*0x64)+'%';_0x4aca6f!==0x0&&(this[_0x23eb46(0x391)](ColorManager['paramchangeTextColor'](_0x4aca6f)),_0x2f4c56=(_0x4aca6f>0x0?_0x23eb46(0x51d):_0x23eb46(0x190))[_0x23eb46(0x325)](_0x2f4c56),this[_0x23eb46(0x341)](_0x2f4c56,_0x5bac3b+_0x4e2385,_0x4e6fc5,_0x713751,_0x23eb46(0x4cc)));}},Window_EquipStatus[_0x23d1fb(0x241)][_0x23d1fb(0x23b)]=function(_0x318c08,_0x35035f,_0x1addfe,_0x1f7908,_0x31c4a5){const _0x4fd9a7=_0x23d1fb;if(VisuMZ['ItemsEquipsCore'][_0x4fd9a7(0x357)][_0x4fd9a7(0x3af)][_0x4fd9a7(0x2db)]===![])return;_0x31c4a5=Math[_0x4fd9a7(0x2e0)](_0x31c4a5||0x1,0x1);while(_0x31c4a5--){_0x1f7908=_0x1f7908||this['lineHeight'](),this[_0x4fd9a7(0x1c5)][_0x4fd9a7(0x4f7)]=0xa0;const _0x17ded8=ColorManager[_0x4fd9a7(0x1b5)]();this[_0x4fd9a7(0x1c5)]['fillRect'](_0x318c08+0x1,_0x35035f+0x1,_0x1addfe-0x2,_0x1f7908-0x2,_0x17ded8),this[_0x4fd9a7(0x1c5)][_0x4fd9a7(0x4f7)]=0xff;}},ColorManager['getItemsEquipsCoreBackColor2']=function(){const _0x72a8d2=_0x23d1fb,_0x13aa96=VisuMZ[_0x72a8d2(0x248)][_0x72a8d2(0x357)]['EquipScene'];let _0x57a018=_0x13aa96[_0x72a8d2(0x19a)]!==undefined?_0x13aa96['BackRectColor']:0x13;return ColorManager[_0x72a8d2(0x3c5)](_0x57a018);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x398)]=Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x415)],Window_EquipCommand['prototype'][_0x23d1fb(0x415)]=function(_0x4176ac){const _0x533b07=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x533b07(0x398)][_0x533b07(0x44b)](this,_0x4176ac),this[_0x533b07(0x50b)](_0x4176ac);},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x50b)]=function(_0x42c490){const _0x519e7a=_0x23d1fb,_0x1bfee8=new Rectangle(0x0,0x0,_0x42c490['width'],_0x42c490[_0x519e7a(0x1f9)]);this[_0x519e7a(0x3cf)]=new Window_Base(_0x1bfee8),this[_0x519e7a(0x3cf)][_0x519e7a(0x1d7)]=0x0,this[_0x519e7a(0x3bb)](this[_0x519e7a(0x3cf)]),this['updateCommandNameWindow']();},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x2c2)]=function(){const _0x3776a6=_0x23d1fb;Window_HorzCommand[_0x3776a6(0x241)][_0x3776a6(0x2c2)][_0x3776a6(0x44b)](this);if(this[_0x3776a6(0x3cf)])this[_0x3776a6(0x52d)]();},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x52d)]=function(){const _0x6bd712=_0x23d1fb,_0x5aa4c5=this[_0x6bd712(0x3cf)];_0x5aa4c5['contents'][_0x6bd712(0x475)]();const _0x33839a=this['commandStyleCheck'](this['index']());if(_0x33839a==='icon'){const _0xfecd0a=this[_0x6bd712(0x387)](this['index']());let _0xd7c4cc=this[_0x6bd712(0x393)](this[_0x6bd712(0x276)]());_0xd7c4cc=_0xd7c4cc['replace'](/\\I\[(\d+)\]/gi,''),_0x5aa4c5[_0x6bd712(0x425)](),this['commandNameWindowDrawBackground'](_0xd7c4cc,_0xfecd0a),this['commandNameWindowDrawText'](_0xd7c4cc,_0xfecd0a),this['commandNameWindowCenter'](_0xd7c4cc,_0xfecd0a);}},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x250)]=function(_0x14469e,_0x551fc4){},Window_EquipCommand[_0x23d1fb(0x241)]['commandNameWindowDrawText']=function(_0x3a7f78,_0x215a6a){const _0x1bafd4=_0x23d1fb,_0x20a551=this['_commandNameWindow'];_0x20a551['drawText'](_0x3a7f78,0x0,_0x215a6a['y'],_0x20a551[_0x1bafd4(0x4a8)],'center');},Window_EquipCommand[_0x23d1fb(0x241)]['commandNameWindowCenter']=function(_0x18f871,_0x2b62cd){const _0x16b7e0=_0x23d1fb,_0xee0fd5=this[_0x16b7e0(0x3cf)],_0x38919d=$gameSystem['windowPadding'](),_0x2f5e30=_0x2b62cd['x']+Math[_0x16b7e0(0x312)](_0x2b62cd[_0x16b7e0(0x3f4)]/0x2)+_0x38919d;_0xee0fd5['x']=_0xee0fd5['width']/-0x2+_0x2f5e30,_0xee0fd5['y']=Math[_0x16b7e0(0x312)](_0x2b62cd[_0x16b7e0(0x1f9)]/0x2);},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x3bd)]=function(){const _0x376947=_0x23d1fb;return Imported['VisuMZ_0_CoreEngine']&&Window_HorzCommand[_0x376947(0x241)][_0x376947(0x3bd)][_0x376947(0x44b)](this);},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x315)]=function(){const _0x48b8d1=_0x23d1fb;if(this[_0x48b8d1(0x2c9)]()==='equip')Window_HorzCommand['prototype']['playOkSound'][_0x48b8d1(0x44b)](this);},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x34d)]=function(){const _0x1eaa42=_0x23d1fb;!this[_0x1eaa42(0x197)]()&&Window_HorzCommand[_0x1eaa42(0x241)][_0x1eaa42(0x34d)][_0x1eaa42(0x44b)](this);},Window_EquipCommand[_0x23d1fb(0x241)]['processCursorSpecialCheckModernControls']=function(){const _0x4a5fc3=_0x23d1fb;if(!this['isCursorMovable']())return![];if(SceneManager[_0x4a5fc3(0x2b6)]['constructor']!==Scene_Equip)return![];return Input[_0x4a5fc3(0x244)](_0x4a5fc3(0x523))&&(this[_0x4a5fc3(0x26e)](),SceneManager[_0x4a5fc3(0x2b6)][_0x4a5fc3(0x337)](),SceneManager['_scene']['_slotWindow'][_0x4a5fc3(0x3ea)](-0x1)),![];},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x264)]=function(){const _0x159a88=_0x23d1fb;return this[_0x159a88(0x43f)]?this[_0x159a88(0x43f)][_0x159a88(0x401)]:0x3;},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x2cf)]=function(){const _0xa9e33f=_0x23d1fb;if(this['isOpen']()&&this[_0xa9e33f(0x2a1)]&&SceneManager[_0xa9e33f(0x2b6)][_0xa9e33f(0x1f1)]===Scene_Equip){if(this['isHoverEnabled']()&&TouchInput[_0xa9e33f(0x260)]())this['onTouchSelectModernControls'](![]);else TouchInput[_0xa9e33f(0x244)]()&&this[_0xa9e33f(0x37d)](!![]);TouchInput[_0xa9e33f(0x2ee)]()&&this[_0xa9e33f(0x4ca)]();}},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x37d)]=function(_0x443b64){const _0x34f1a9=_0x23d1fb;this[_0x34f1a9(0x230)]=![];const _0xe25b94=this[_0x34f1a9(0x276)](),_0x4032b5=this[_0x34f1a9(0x307)](),_0x5a57d8=SceneManager[_0x34f1a9(0x2b6)]['_slotWindow'];if(_0x5a57d8['isOpen']()&&_0x5a57d8[_0x34f1a9(0x2a1)]){if(_0x4032b5>=0x0)_0x4032b5===this[_0x34f1a9(0x276)]()&&(this['_doubleTouch']=!![]),this['activate'](),this['select'](_0x4032b5);else _0x5a57d8['hitIndex']()>=0x0&&(this[_0x34f1a9(0x44f)](),this['deselect']());}_0x443b64&&this[_0x34f1a9(0x276)]()!==_0xe25b94&&this[_0x34f1a9(0x26e)]();},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x284)]=function(){const _0x1438c9=_0x23d1fb;this[_0x1438c9(0x42a)](),this[_0x1438c9(0x501)](),this[_0x1438c9(0x3eb)]();},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x3c3)]=function(){const _0x2924e4=_0x23d1fb;Window_HorzCommand[_0x2924e4(0x241)][_0x2924e4(0x3c3)][_0x2924e4(0x44b)](this),this[_0x2924e4(0x4f4)]();},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x42a)]=function(){const _0x1985b4=_0x23d1fb;if(!this[_0x1985b4(0x222)]())return;const _0x8d1a95=this[_0x1985b4(0x51c)](),_0x5ecc8c=VisuMZ[_0x1985b4(0x248)][_0x1985b4(0x357)]['EquipScene'][_0x1985b4(0x271)],_0x1abab0=_0x8d1a95===_0x1985b4(0x2b3)?TextManager[_0x1985b4(0x353)]:_0x1985b4(0x322)[_0x1985b4(0x325)](_0x5ecc8c,TextManager[_0x1985b4(0x353)]),_0x6dcfcc=this[_0x1985b4(0x2c5)]();this[_0x1985b4(0x4bb)](_0x1abab0,_0x1985b4(0x2f2),_0x6dcfcc);},Window_EquipCommand[_0x23d1fb(0x241)]['isEquipCommandAdded']=function(){const _0x1297a0=_0x23d1fb;return!this[_0x1297a0(0x3bd)]();},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x2c5)]=function(){return!![];},Window_EquipCommand[_0x23d1fb(0x241)]['addOptimizeCommand']=function(){const _0x5004e1=_0x23d1fb;if(!this[_0x5004e1(0x278)]())return;const _0x3d5169=this['commandStyle'](),_0xd4daf2=VisuMZ[_0x5004e1(0x248)][_0x5004e1(0x357)][_0x5004e1(0x3af)][_0x5004e1(0x4d5)],_0x44f039=_0x3d5169===_0x5004e1(0x2b3)?TextManager['optimize']:'\x5cI[%1]%2'[_0x5004e1(0x325)](_0xd4daf2,TextManager[_0x5004e1(0x479)]),_0x4aa3ce=this['isOptimizeCommandEnabled']();this[_0x5004e1(0x4bb)](_0x44f039,_0x5004e1(0x479),_0x4aa3ce);},Window_EquipCommand[_0x23d1fb(0x241)]['isOptimizeCommandAdded']=function(){const _0x2a7a46=_0x23d1fb;return VisuMZ[_0x2a7a46(0x248)][_0x2a7a46(0x357)]['EquipScene'][_0x2a7a46(0x3df)];},Window_EquipCommand['prototype'][_0x23d1fb(0x4d3)]=function(){return!![];},Window_EquipCommand[_0x23d1fb(0x241)]['addClearCommand']=function(){const _0x3ab012=_0x23d1fb;if(!this[_0x3ab012(0x470)]())return;const _0x9c0034=this[_0x3ab012(0x51c)](),_0x3a0753=VisuMZ['ItemsEquipsCore'][_0x3ab012(0x357)][_0x3ab012(0x3af)][_0x3ab012(0x19e)],_0x2f6e4f=_0x9c0034===_0x3ab012(0x2b3)?TextManager[_0x3ab012(0x475)]:'\x5cI[%1]%2'[_0x3ab012(0x325)](_0x3a0753,TextManager['clear']),_0xf4e175=this['isClearCommandEnabled']();this['addCommand'](_0x2f6e4f,_0x3ab012(0x475),_0xf4e175);},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x470)]=function(){const _0x3a8eab=_0x23d1fb;return VisuMZ[_0x3a8eab(0x248)][_0x3a8eab(0x357)]['EquipScene'][_0x3a8eab(0x4c0)];},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x182)]=function(){return!![];},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x1c7)]=function(){const _0xd0a2c9=_0x23d1fb;return VisuMZ['ItemsEquipsCore'][_0xd0a2c9(0x357)][_0xd0a2c9(0x3af)]['CmdTextAlign'];},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x453)]=function(_0x4ec694){const _0x5d1d72=_0x23d1fb,_0x15a27f=this[_0x5d1d72(0x4c9)](_0x4ec694);if(_0x15a27f===_0x5d1d72(0x262))this[_0x5d1d72(0x2e4)](_0x4ec694);else _0x15a27f===_0x5d1d72(0x49f)?this[_0x5d1d72(0x245)](_0x4ec694):Window_HorzCommand[_0x5d1d72(0x241)]['drawItem'][_0x5d1d72(0x44b)](this,_0x4ec694);},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x51c)]=function(){const _0x38a18e=_0x23d1fb;return VisuMZ['ItemsEquipsCore'][_0x38a18e(0x357)][_0x38a18e(0x3af)][_0x38a18e(0x3ae)];},Window_EquipCommand['prototype'][_0x23d1fb(0x4c9)]=function(_0x28e662){const _0x43e4f6=_0x23d1fb;if(_0x28e662<0x0)return _0x43e4f6(0x2b3);const _0xb5d125=this[_0x43e4f6(0x51c)]();if(_0xb5d125!==_0x43e4f6(0x282))return _0xb5d125;else{if(this[_0x43e4f6(0x22a)]()>0x0){const _0x4d96b5=this[_0x43e4f6(0x393)](_0x28e662);if(_0x4d96b5[_0x43e4f6(0x2fc)](/\\I\[(\d+)\]/i)){const _0x368932=this[_0x43e4f6(0x387)](_0x28e662),_0x323f5d=this[_0x43e4f6(0x1fc)](_0x4d96b5)['width'];return _0x323f5d<=_0x368932[_0x43e4f6(0x3f4)]?_0x43e4f6(0x262):_0x43e4f6(0x49f);}}}return'text';},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x2e4)]=function(_0x568417){const _0x59671a=_0x23d1fb,_0x1128de=this[_0x59671a(0x387)](_0x568417),_0xb4edd3=this[_0x59671a(0x393)](_0x568417),_0x42a652=this[_0x59671a(0x1fc)](_0xb4edd3)[_0x59671a(0x3f4)];this[_0x59671a(0x45c)](this[_0x59671a(0x42d)](_0x568417));const _0x45e933=this[_0x59671a(0x1c7)]();if(_0x45e933===_0x59671a(0x3cb))this[_0x59671a(0x4d0)](_0xb4edd3,_0x1128de['x']+_0x1128de[_0x59671a(0x3f4)]-_0x42a652,_0x1128de['y'],_0x42a652);else{if(_0x45e933===_0x59671a(0x1db)){const _0x2b4a5e=_0x1128de['x']+Math[_0x59671a(0x312)]((_0x1128de[_0x59671a(0x3f4)]-_0x42a652)/0x2);this[_0x59671a(0x4d0)](_0xb4edd3,_0x2b4a5e,_0x1128de['y'],_0x42a652);}else this[_0x59671a(0x4d0)](_0xb4edd3,_0x1128de['x'],_0x1128de['y'],_0x42a652);}},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x245)]=function(_0x5ac661){const _0x1fb789=_0x23d1fb;this[_0x1fb789(0x393)](_0x5ac661)[_0x1fb789(0x2fc)](/\\I\[(\d+)\]/i);const _0x506fcf=Number(RegExp['$1'])||0x0,_0x500f75=this[_0x1fb789(0x387)](_0x5ac661),_0x1d75ec=_0x500f75['x']+Math[_0x1fb789(0x312)]((_0x500f75[_0x1fb789(0x3f4)]-ImageManager[_0x1fb789(0x431)])/0x2),_0x409169=_0x500f75['y']+(_0x500f75[_0x1fb789(0x1f9)]-ImageManager[_0x1fb789(0x31e)])/0x2;this[_0x1fb789(0x48a)](_0x506fcf,_0x1d75ec,_0x409169);},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x383)]=function(){const _0x4abd5d=_0x23d1fb,_0x35a56d=SceneManager[_0x4abd5d(0x2b6)];if(_0x35a56d&&_0x35a56d[_0x4abd5d(0x2e3)])return _0x35a56d[_0x4abd5d(0x2e3)]();return null;},Window_EquipCommand[_0x23d1fb(0x241)][_0x23d1fb(0x4f1)]=function(){const _0x57dcba=_0x23d1fb;Window_Command[_0x57dcba(0x241)][_0x57dcba(0x4f1)][_0x57dcba(0x44b)](this),this[_0x57dcba(0x22c)]['setText'](this[_0x57dcba(0x23d)]());},Window_EquipCommand['prototype'][_0x23d1fb(0x23d)]=function(){const _0x5a70cf=_0x23d1fb,_0x409d61=this['currentSymbol']();switch(_0x409d61){case'equip':return TextManager[_0x5a70cf(0x4dd)][_0x5a70cf(0x216)][_0x5a70cf(0x2f2)];case _0x5a70cf(0x479):return TextManager[_0x5a70cf(0x4dd)][_0x5a70cf(0x216)]['optimize'];case _0x5a70cf(0x475):return TextManager[_0x5a70cf(0x4dd)]['helpDesc']['clear'];default:return'';}},Window_EquipSlot[_0x23d1fb(0x241)][_0x23d1fb(0x3bd)]=function(){const _0xa01550=_0x23d1fb;return Imported['VisuMZ_0_CoreEngine']&&Window_HorzCommand['prototype'][_0xa01550(0x3bd)]['call'](this);},Window_EquipSlot[_0x23d1fb(0x241)][_0x23d1fb(0x408)]=function(){const _0x11ed16=_0x23d1fb;Window_StatusBase[_0x11ed16(0x241)]['activate'][_0x11ed16(0x44b)](this),this[_0x11ed16(0x2c2)]();},Window_EquipSlot['prototype'][_0x23d1fb(0x51b)]=function(){const _0x48fdfb=_0x23d1fb;Window_StatusBase['prototype'][_0x48fdfb(0x51b)][_0x48fdfb(0x44b)](this),this[_0x48fdfb(0x482)]();},Window_EquipSlot[_0x23d1fb(0x241)]['checkShiftRemoveShortcut']=function(){const _0x266318=_0x23d1fb;if(!this[_0x266318(0x186)]())return;if(Input[_0x266318(0x244)](_0x266318(0x329))&&this[_0x266318(0x320)]()){const _0x472909=SceneManager[_0x266318(0x2b6)][_0x266318(0x255)];_0x472909&&(this[_0x266318(0x3fb)](this['index']())?(this[_0x266318(0x28a)](),this[_0x266318(0x4f1)]()):this[_0x266318(0x21a)]());}},Window_EquipSlot[_0x23d1fb(0x241)][_0x23d1fb(0x3fb)]=function(_0x1e7e48){const _0x1fc0d0=_0x23d1fb,_0x4f39d2=SceneManager['_scene']['_actor'];if(!_0x4f39d2)return;if(!_0x4f39d2[_0x1fc0d0(0x3c8)](this['index']()))return![];const _0xa0c2fe=_0x4f39d2[_0x1fc0d0(0x3c7)]()[this[_0x1fc0d0(0x276)]()];if(_0x4f39d2['nonRemovableEtypes']()[_0x1fc0d0(0x39a)](_0xa0c2fe))return![];return!![];;},Window_EquipSlot[_0x23d1fb(0x241)]['processShiftRemoveShortcut']=function(){const _0x34a3ce=_0x23d1fb;SoundManager[_0x34a3ce(0x508)]();const _0x583a84=SceneManager[_0x34a3ce(0x2b6)][_0x34a3ce(0x255)];_0x583a84[_0x34a3ce(0x2eb)](this[_0x34a3ce(0x276)](),null),this[_0x34a3ce(0x3c3)](),this[_0x34a3ce(0x468)][_0x34a3ce(0x3c3)](),this['callUpdateHelp']();const _0x5907ec=SceneManager[_0x34a3ce(0x2b6)][_0x34a3ce(0x24d)];if(_0x5907ec)_0x5907ec['refresh']();},Window_EquipSlot[_0x23d1fb(0x241)][_0x23d1fb(0x186)]=function(){const _0x5df5f2=_0x23d1fb;if(!this[_0x5df5f2(0x235)])return![];if(!VisuMZ['ItemsEquipsCore']['Settings'][_0x5df5f2(0x3af)][_0x5df5f2(0x29b)])return![];return!![];},Window_EquipSlot[_0x23d1fb(0x241)][_0x23d1fb(0x34d)]=function(){const _0x25f641=_0x23d1fb;!this[_0x25f641(0x197)]()&&Window_StatusBase[_0x25f641(0x241)][_0x25f641(0x34d)]['call'](this);},Window_EquipSlot[_0x23d1fb(0x241)][_0x23d1fb(0x197)]=function(){const _0x450fda=_0x23d1fb;if(!this[_0x450fda(0x351)]())return![];if(SceneManager['_scene'][_0x450fda(0x1f1)]!==Scene_Equip)return![];if(this[_0x450fda(0x1f4)]())return this[_0x450fda(0x26e)](),Input[_0x450fda(0x475)](),SceneManager[_0x450fda(0x2b6)][_0x450fda(0x3a0)](),![];else{if(Input['isRepeated'](_0x450fda(0x523))){const _0x1d7970=this[_0x450fda(0x276)]();return Input[_0x450fda(0x220)](_0x450fda(0x329))?this['cursorPagedown']():this['cursorDown'](Input[_0x450fda(0x244)](_0x450fda(0x523))),this[_0x450fda(0x276)]()!==_0x1d7970&&this[_0x450fda(0x26e)](),!![];}else{if(this[_0x450fda(0x3e9)]()&&Input[_0x450fda(0x244)]('shift'))return!![];}}return![];},Window_EquipSlot['prototype'][_0x23d1fb(0x1f4)]=function(){const _0xb9392c=_0x23d1fb;if(this[_0xb9392c(0x276)]()!==0x0)return![];const _0xc408d0=VisuMZ[_0xb9392c(0x248)][_0xb9392c(0x357)][_0xb9392c(0x3af)];if(!_0xc408d0[_0xb9392c(0x3df)]&&!_0xc408d0[_0xb9392c(0x4c0)])return![];return Input[_0xb9392c(0x244)]('up');},Window_EquipSlot[_0x23d1fb(0x241)][_0x23d1fb(0x3e9)]=function(){const _0x36813d=_0x23d1fb;return VisuMZ['ItemsEquipsCore'][_0x36813d(0x357)][_0x36813d(0x3af)]['ShiftShortcutKey'];},Window_EquipSlot[_0x23d1fb(0x241)][_0x23d1fb(0x2cf)]=function(){const _0x4deb4a=_0x23d1fb;if(this['isOpen']()&&this['visible']&&SceneManager[_0x4deb4a(0x2b6)]['constructor']===Scene_Equip){if(this[_0x4deb4a(0x191)]()&&TouchInput[_0x4deb4a(0x260)]())this[_0x4deb4a(0x37d)](![]);else TouchInput[_0x4deb4a(0x244)]()&&this[_0x4deb4a(0x37d)](!![]);if(TouchInput[_0x4deb4a(0x2ee)]())this[_0x4deb4a(0x4ca)]();else TouchInput[_0x4deb4a(0x29d)]()&&this['onTouchCancel']();}},Window_EquipSlot[_0x23d1fb(0x241)][_0x23d1fb(0x37d)]=function(_0x4ee040){const _0x2dac8c=_0x23d1fb;this[_0x2dac8c(0x230)]=![];const _0x43f38b=this[_0x2dac8c(0x276)](),_0x41ed80=this[_0x2dac8c(0x307)](),_0x3e6c4c=SceneManager[_0x2dac8c(0x2b6)]['_commandWindow'];if(_0x3e6c4c[_0x2dac8c(0x340)]()&&_0x3e6c4c[_0x2dac8c(0x2a1)]){if(_0x41ed80>=0x0)_0x41ed80===this[_0x2dac8c(0x276)]()&&(this[_0x2dac8c(0x230)]=!![]),this[_0x2dac8c(0x408)](),this[_0x2dac8c(0x435)](_0x41ed80);else _0x3e6c4c['hitIndex']()>=0x0&&(this['deactivate'](),this[_0x2dac8c(0x4e5)]());}_0x4ee040&&this[_0x2dac8c(0x276)]()!==_0x43f38b&&this['playCursorSound']();},Window_EquipSlot[_0x23d1fb(0x241)][_0x23d1fb(0x2ce)]=function(){const _0x4dc060=_0x23d1fb;return this[_0x4dc060(0x276)]();},VisuMZ[_0x23d1fb(0x248)]['Window_EquipItem_includes']=Window_EquipItem[_0x23d1fb(0x241)]['includes'],Window_EquipItem[_0x23d1fb(0x241)][_0x23d1fb(0x39a)]=function(_0x2d6a22){const _0x52fb3b=_0x23d1fb;return _0x2d6a22===null&&this[_0x52fb3b(0x1e6)]()[_0x52fb3b(0x39a)](this[_0x52fb3b(0x394)]())?![]:VisuMZ[_0x52fb3b(0x248)][_0x52fb3b(0x39b)]['call'](this,_0x2d6a22);},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x40b)]=Window_EquipItem[_0x23d1fb(0x241)][_0x23d1fb(0x3c6)],Window_EquipItem['prototype'][_0x23d1fb(0x3c6)]=function(_0x2c5485){const _0x3ff7d8=_0x23d1fb;if(_0x2c5485&&this['_actor']){if(this['itemHasEquipLimit'](_0x2c5485))return![];if(this[_0x3ff7d8(0x494)](_0x2c5485))return![];if(this[_0x3ff7d8(0x253)](_0x2c5485))return![];}if(!_0x2c5485)return!this[_0x3ff7d8(0x1e6)]()['includes'](this[_0x3ff7d8(0x394)]());return VisuMZ[_0x3ff7d8(0x248)]['Window_EquipItem_isEnabled'][_0x3ff7d8(0x44b)](this,_0x2c5485);},Window_EquipItem[_0x23d1fb(0x241)][_0x23d1fb(0x2a3)]=function(_0x237949){const _0x20b8bb=_0x23d1fb,_0x591373=_0x237949[_0x20b8bb(0x4fe)];if(_0x591373['match'](/<EQUIP COPY LIMIT:[ ](\d+)>/i)){const _0x407dac=Number(RegExp['$1'])||0x1;let _0xdd0974=0x0;const _0x1f9e83=this['_actor'][_0x20b8bb(0x38e)](),_0x1bd402=SceneManager[_0x20b8bb(0x2b6)][_0x20b8bb(0x4c4)][_0x20b8bb(0x2ce)]();_0x1f9e83[_0x1bd402]=null;for(const _0x5ed6d4 of _0x1f9e83){if(!_0x5ed6d4)continue;if(DataManager[_0x20b8bb(0x4ad)](_0x237949)===DataManager['isWeapon'](_0x5ed6d4)){if(_0x237949['id']===_0x5ed6d4['id'])_0xdd0974+=0x1;}}return _0xdd0974>=_0x407dac;}else return![];},Window_EquipItem[_0x23d1fb(0x241)][_0x23d1fb(0x494)]=function(_0x379e45){const _0x41da77=_0x23d1fb;if(!DataManager[_0x41da77(0x4ad)](_0x379e45))return![];const _0x3b9863=/<EQUIP WEAPON TYPE LIMIT:[ ](\d+)>/i;let _0x6cec07=0x0;const _0x236c69=this[_0x41da77(0x255)]['equips'](),_0x3122ec=SceneManager['_scene']['_slotWindow']['equipSlotIndex']();_0x236c69[_0x3122ec]=null;for(const _0x25cff8 of _0x236c69){if(!_0x25cff8)continue;if(!DataManager[_0x41da77(0x4ad)](_0x25cff8))continue;if(_0x379e45[_0x41da77(0x471)]===_0x25cff8[_0x41da77(0x471)]){_0x6cec07+=0x1;if(_0x379e45[_0x41da77(0x4fe)][_0x41da77(0x2fc)](_0x3b9863)){const _0x8275af=Number(RegExp['$1'])||0x1;if(_0x6cec07>=_0x8275af)return!![];}if(_0x25cff8[_0x41da77(0x4fe)][_0x41da77(0x2fc)](_0x3b9863)){const _0x34958b=Number(RegExp['$1'])||0x1;if(_0x6cec07>=_0x34958b)return!![];}}}return![];},Window_EquipItem[_0x23d1fb(0x241)][_0x23d1fb(0x253)]=function(_0x1f8005){const _0x2e88b4=_0x23d1fb;if(!DataManager[_0x2e88b4(0x2bb)](_0x1f8005))return![];const _0x234198=/<EQUIP ARMOR TYPE LIMIT:[ ](\d+)>/i;let _0x156286=0x0;const _0x57d06b=this['_actor'][_0x2e88b4(0x38e)](),_0xeade4a=SceneManager[_0x2e88b4(0x2b6)]['_slotWindow'][_0x2e88b4(0x2ce)]();_0x57d06b[_0xeade4a]=null;for(const _0x1b8d80 of _0x57d06b){if(!_0x1b8d80)continue;if(!DataManager[_0x2e88b4(0x2bb)](_0x1b8d80))continue;if(_0x1f8005[_0x2e88b4(0x22e)]===_0x1b8d80['atypeId']){_0x156286+=0x1;if(_0x1f8005[_0x2e88b4(0x4fe)]['match'](_0x234198)){const _0x4a5141=Number(RegExp['$1'])||0x1;if(_0x156286>=_0x4a5141)return!![];}if(_0x1b8d80[_0x2e88b4(0x4fe)][_0x2e88b4(0x2fc)](_0x234198)){const _0x1804d=Number(RegExp['$1'])||0x1;if(_0x156286>=_0x1804d)return!![];}}}return![];},Window_EquipItem[_0x23d1fb(0x241)][_0x23d1fb(0x1e6)]=function(){const _0x2130ec=_0x23d1fb;return VisuMZ['ItemsEquipsCore'][_0x2130ec(0x357)][_0x2130ec(0x3af)][_0x2130ec(0x412)];},Window_EquipItem['prototype'][_0x23d1fb(0x453)]=function(_0x239bfe){const _0x47683a=_0x23d1fb,_0x541f93=this[_0x47683a(0x215)](_0x239bfe);_0x541f93?Window_ItemList['prototype'][_0x47683a(0x453)][_0x47683a(0x44b)](this,_0x239bfe):this[_0x47683a(0x1bb)](_0x239bfe);},Window_EquipItem[_0x23d1fb(0x241)][_0x23d1fb(0x1bb)]=function(_0x3bd21a){const _0xcc9de7=_0x23d1fb;this[_0xcc9de7(0x45c)](this[_0xcc9de7(0x3c6)](null));const _0x59a7da=VisuMZ[_0xcc9de7(0x248)]['Settings']['EquipScene'],_0x2616aa=this[_0xcc9de7(0x387)](_0x3bd21a),_0x58087d=_0x2616aa['y']+(this['lineHeight']()-ImageManager[_0xcc9de7(0x31e)])/0x2,_0x4d0529=ImageManager[_0xcc9de7(0x431)]+0x4,_0x3bbc08=Math[_0xcc9de7(0x2e0)](0x0,_0x2616aa[_0xcc9de7(0x3f4)]-_0x4d0529);this[_0xcc9de7(0x29a)](),this[_0xcc9de7(0x48a)](_0x59a7da[_0xcc9de7(0x44a)],_0x2616aa['x'],_0x58087d),this[_0xcc9de7(0x341)](_0x59a7da[_0xcc9de7(0x423)],_0x2616aa['x']+_0x4d0529,_0x2616aa['y'],_0x3bbc08),this[_0xcc9de7(0x45c)](!![]);},Window_EquipItem[_0x23d1fb(0x241)][_0x23d1fb(0x4f1)]=function(){const _0x210dc0=_0x23d1fb;Window_ItemList[_0x210dc0(0x241)][_0x210dc0(0x4f1)][_0x210dc0(0x44b)](this);if(this[_0x210dc0(0x255)]&&this[_0x210dc0(0x24d)]&&this['_slotId']>=0x0){const _0x224f7d=JsonEx[_0x210dc0(0x213)](this['_actor']);_0x224f7d[_0x210dc0(0x31b)]=!![],_0x224f7d[_0x210dc0(0x507)](this[_0x210dc0(0x203)],this[_0x210dc0(0x320)]()),this[_0x210dc0(0x24d)][_0x210dc0(0x3e3)](_0x224f7d);}},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x1bd)]=Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x415)],Window_ShopCommand[_0x23d1fb(0x241)]['initialize']=function(_0x5200b6){const _0x2a53b9=_0x23d1fb;VisuMZ['ItemsEquipsCore'][_0x2a53b9(0x1bd)][_0x2a53b9(0x44b)](this,_0x5200b6),this[_0x2a53b9(0x50b)](_0x5200b6);},Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x50b)]=function(_0x50bd74){const _0x1e703c=_0x23d1fb,_0x1c9a82=new Rectangle(0x0,0x0,_0x50bd74['width'],_0x50bd74[_0x1e703c(0x1f9)]);this[_0x1e703c(0x3cf)]=new Window_Base(_0x1c9a82),this[_0x1e703c(0x3cf)][_0x1e703c(0x1d7)]=0x0,this[_0x1e703c(0x3bb)](this[_0x1e703c(0x3cf)]),this['updateCommandNameWindow']();},Window_ShopCommand[_0x23d1fb(0x241)]['callUpdateHelp']=function(){const _0x11099f=_0x23d1fb;Window_HorzCommand[_0x11099f(0x241)][_0x11099f(0x2c2)][_0x11099f(0x44b)](this);if(this[_0x11099f(0x3cf)])this['updateCommandNameWindow']();},Window_ShopCommand[_0x23d1fb(0x241)]['updateCommandNameWindow']=function(){const _0x1b4299=_0x23d1fb,_0x3c1264=this['_commandNameWindow'];_0x3c1264[_0x1b4299(0x1c5)][_0x1b4299(0x475)]();const _0x2d5412=this[_0x1b4299(0x4c9)](this['index']());if(_0x2d5412===_0x1b4299(0x49f)){const _0x32a0e3=this[_0x1b4299(0x387)](this['index']());let _0x54bc76=this['commandName'](this[_0x1b4299(0x276)]());_0x54bc76=_0x54bc76[_0x1b4299(0x3d6)](/\\I\[(\d+)\]/gi,''),_0x3c1264[_0x1b4299(0x425)](),this[_0x1b4299(0x250)](_0x54bc76,_0x32a0e3),this[_0x1b4299(0x46e)](_0x54bc76,_0x32a0e3),this[_0x1b4299(0x490)](_0x54bc76,_0x32a0e3);}},Window_ShopCommand[_0x23d1fb(0x241)]['commandNameWindowDrawBackground']=function(_0x5bcac5,_0xf75d8e){},Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x46e)]=function(_0x362db9,_0x25116e){const _0x326fb6=_0x23d1fb,_0x1d1c0b=this['_commandNameWindow'];_0x1d1c0b[_0x326fb6(0x341)](_0x362db9,0x0,_0x25116e['y'],_0x1d1c0b[_0x326fb6(0x4a8)],_0x326fb6(0x1db));},Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x490)]=function(_0x15025b,_0x2b784e){const _0x12753f=_0x23d1fb,_0x256a0b=this['_commandNameWindow'],_0x463c26=$gameSystem[_0x12753f(0x379)](),_0x52d29e=_0x2b784e['x']+Math['floor'](_0x2b784e[_0x12753f(0x3f4)]/0x2)+_0x463c26;_0x256a0b['x']=_0x256a0b[_0x12753f(0x3f4)]/-0x2+_0x52d29e,_0x256a0b['y']=Math[_0x12753f(0x312)](_0x2b784e[_0x12753f(0x1f9)]/0x2);},Window_ShopCommand['prototype'][_0x23d1fb(0x264)]=function(){const _0x19dd18=_0x23d1fb;return this['_list']?this['_list'][_0x19dd18(0x401)]:0x3;},Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x418)]=function(){const _0x3a592d=_0x23d1fb;return VisuMZ[_0x3a592d(0x248)][_0x3a592d(0x357)][_0x3a592d(0x3db)][_0x3a592d(0x4a6)];},Window_ShopCommand[_0x23d1fb(0x241)]['makeCommandList']=function(){const _0x4fa258=_0x23d1fb;this[_0x4fa258(0x51a)](),this[_0x4fa258(0x2d9)](),this[_0x4fa258(0x4f5)]();},Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x3c3)]=function(){const _0x4f2011=_0x23d1fb;Window_HorzCommand[_0x4f2011(0x241)]['refresh'][_0x4f2011(0x44b)](this),this['refreshCursor']();},Window_ShopCommand['prototype'][_0x23d1fb(0x51a)]=function(){const _0x5254e1=_0x23d1fb,_0x4dca7a=this[_0x5254e1(0x51c)](),_0x4219f7=VisuMZ['ItemsEquipsCore'][_0x5254e1(0x357)][_0x5254e1(0x3db)][_0x5254e1(0x1f5)],_0xfcc52=_0x4dca7a===_0x5254e1(0x2b3)?TextManager[_0x5254e1(0x198)]:_0x5254e1(0x322)[_0x5254e1(0x325)](_0x4219f7,TextManager[_0x5254e1(0x198)]),_0x3cfcd1=this[_0x5254e1(0x4ea)]();if(this[_0x5254e1(0x418)]()&&!_0x3cfcd1)return;this[_0x5254e1(0x4bb)](_0xfcc52,_0x5254e1(0x198),_0x3cfcd1);},Window_ShopCommand[_0x23d1fb(0x241)]['isBuyCommandEnabled']=function(){const _0x31e13f=_0x23d1fb;return SceneManager[_0x31e13f(0x2b6)][_0x31e13f(0x1f1)]===Scene_Shop?SceneManager['_scene'][_0x31e13f(0x21c)]>0x0:!![];},Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x2d9)]=function(){const _0x375840=_0x23d1fb,_0x2b7707=this[_0x375840(0x51c)](),_0x13707a=VisuMZ[_0x375840(0x248)][_0x375840(0x357)][_0x375840(0x3db)][_0x375840(0x476)],_0x1ef0a0=_0x2b7707===_0x375840(0x2b3)?TextManager['sell']:_0x375840(0x322)['format'](_0x13707a,TextManager[_0x375840(0x3d3)]),_0x16c75a=this['isSellCommandEnabled']();if(this[_0x375840(0x418)]()&&!_0x16c75a)return;this[_0x375840(0x4bb)](_0x1ef0a0,_0x375840(0x3d3),_0x16c75a);},Window_ShopCommand['prototype'][_0x23d1fb(0x243)]=function(){const _0x53a660=_0x23d1fb;return!this[_0x53a660(0x39f)];},Window_ShopCommand['prototype'][_0x23d1fb(0x4f5)]=function(){const _0x2f9266=_0x23d1fb,_0x20412d=this[_0x2f9266(0x51c)](),_0x5884eb=VisuMZ[_0x2f9266(0x248)][_0x2f9266(0x357)][_0x2f9266(0x3db)][_0x2f9266(0x406)],_0x2603fc=VisuMZ[_0x2f9266(0x248)][_0x2f9266(0x357)]['ShopScene'][_0x2f9266(0x2e7)],_0x13364a=_0x20412d==='text'?_0x2603fc:_0x2f9266(0x322)[_0x2f9266(0x325)](_0x5884eb,_0x2603fc);this['addCommand'](_0x13364a,_0x2f9266(0x2ff));},Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x1c7)]=function(){const _0x15e748=_0x23d1fb;return VisuMZ[_0x15e748(0x248)]['Settings'][_0x15e748(0x3db)][_0x15e748(0x20e)];},Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x453)]=function(_0x3e4aa9){const _0x195dc1=_0x23d1fb,_0x497436=this[_0x195dc1(0x4c9)](_0x3e4aa9);if(_0x497436===_0x195dc1(0x262))this['drawItemStyleIconText'](_0x3e4aa9);else _0x497436===_0x195dc1(0x49f)?this[_0x195dc1(0x245)](_0x3e4aa9):Window_HorzCommand[_0x195dc1(0x241)][_0x195dc1(0x453)][_0x195dc1(0x44b)](this,_0x3e4aa9);},Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x51c)]=function(){const _0x2a18ad=_0x23d1fb;return VisuMZ[_0x2a18ad(0x248)][_0x2a18ad(0x357)][_0x2a18ad(0x3db)][_0x2a18ad(0x3ae)];},Window_ShopCommand[_0x23d1fb(0x241)]['commandStyleCheck']=function(_0x1d5f8b){const _0x996993=_0x23d1fb;if(_0x1d5f8b<0x0)return _0x996993(0x2b3);const _0xdd79ff=this[_0x996993(0x51c)]();if(_0xdd79ff!=='auto')return _0xdd79ff;else{if(this[_0x996993(0x22a)]()>0x0){const _0x33401a=this[_0x996993(0x393)](_0x1d5f8b);if(_0x33401a['match'](/\\I\[(\d+)\]/i)){const _0x34698b=this[_0x996993(0x387)](_0x1d5f8b),_0x23d31c=this[_0x996993(0x1fc)](_0x33401a)['width'];return _0x23d31c<=_0x34698b[_0x996993(0x3f4)]?_0x996993(0x262):_0x996993(0x49f);}}}return _0x996993(0x2b3);},Window_ShopCommand['prototype'][_0x23d1fb(0x2e4)]=function(_0xee90b6){const _0x4b0fd7=_0x23d1fb,_0x22bb9a=this[_0x4b0fd7(0x387)](_0xee90b6),_0x5ee1a8=this[_0x4b0fd7(0x393)](_0xee90b6),_0x565379=this['textSizeEx'](_0x5ee1a8)[_0x4b0fd7(0x3f4)];this[_0x4b0fd7(0x45c)](this[_0x4b0fd7(0x42d)](_0xee90b6));const _0x2df355=this['itemTextAlign']();if(_0x2df355===_0x4b0fd7(0x3cb))this['drawTextEx'](_0x5ee1a8,_0x22bb9a['x']+_0x22bb9a[_0x4b0fd7(0x3f4)]-_0x565379,_0x22bb9a['y'],_0x565379);else{if(_0x2df355==='center'){const _0x2b8c38=_0x22bb9a['x']+Math[_0x4b0fd7(0x312)]((_0x22bb9a[_0x4b0fd7(0x3f4)]-_0x565379)/0x2);this[_0x4b0fd7(0x4d0)](_0x5ee1a8,_0x2b8c38,_0x22bb9a['y'],_0x565379);}else this[_0x4b0fd7(0x4d0)](_0x5ee1a8,_0x22bb9a['x'],_0x22bb9a['y'],_0x565379);}},Window_ShopCommand[_0x23d1fb(0x241)][_0x23d1fb(0x245)]=function(_0x1043df){const _0x385897=_0x23d1fb;this[_0x385897(0x393)](_0x1043df)[_0x385897(0x2fc)](/\\I\[(\d+)\]/i);const _0x339705=Number(RegExp['$1'])||0x0,_0x5938e7=this['itemLineRect'](_0x1043df),_0x22ec2d=_0x5938e7['x']+Math[_0x385897(0x312)]((_0x5938e7[_0x385897(0x3f4)]-ImageManager[_0x385897(0x431)])/0x2),_0x9fdd7d=_0x5938e7['y']+(_0x5938e7[_0x385897(0x1f9)]-ImageManager[_0x385897(0x31e)])/0x2;this[_0x385897(0x48a)](_0x339705,_0x22ec2d,_0x9fdd7d);},VisuMZ[_0x23d1fb(0x248)]['Window_ShopBuy_refresh']=Window_ShopBuy[_0x23d1fb(0x241)][_0x23d1fb(0x3c3)],Window_ShopBuy['prototype']['refresh']=function(){const _0x26ae8f=_0x23d1fb;this['updateMoneyAmount'](),VisuMZ[_0x26ae8f(0x248)][_0x26ae8f(0x2b9)][_0x26ae8f(0x44b)](this);},Window_ShopBuy[_0x23d1fb(0x241)][_0x23d1fb(0x518)]=function(){const _0x4c4c74=_0x23d1fb;SceneManager[_0x4c4c74(0x2b6)][_0x4c4c74(0x1f1)]===Scene_Shop&&(this['_money']=SceneManager['_scene'][_0x4c4c74(0x212)]());},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x247)]=Window_ShopBuy[_0x23d1fb(0x241)][_0x23d1fb(0x403)],Window_ShopBuy['prototype']['price']=function(_0x4c65d8){const _0x642fb2=_0x23d1fb;if(!_0x4c65d8)return 0x0;let _0xa09501=VisuMZ[_0x642fb2(0x248)][_0x642fb2(0x247)][_0x642fb2(0x44b)](this,_0x4c65d8);return Math['max'](0x0,this[_0x642fb2(0x3b2)](_0x4c65d8,_0xa09501));},Window_ShopBuy[_0x23d1fb(0x241)][_0x23d1fb(0x3b2)]=function(_0x3ecc58,_0x23ed6c){const _0x3aa075=_0x23d1fb,_0x1f6448=_0x3ecc58['note'];if(_0x1f6448[_0x3aa075(0x2fc)](/<JS BUY PRICE>\s*([\s\S]*)\s*<\/JS BUY PRICE>/i)){const _0x4c387e=String(RegExp['$1']);try{eval(_0x4c387e);}catch(_0x54b104){if($gameTemp[_0x3aa075(0x26d)]())console['log'](_0x54b104);}}_0x23ed6c=VisuMZ[_0x3aa075(0x248)]['Settings'][_0x3aa075(0x3db)][_0x3aa075(0x4eb)][_0x3aa075(0x44b)](this,_0x3ecc58,_0x23ed6c);if(isNaN(_0x23ed6c))_0x23ed6c=0x0;return Math[_0x3aa075(0x312)](_0x23ed6c);},Window_ShopBuy['prototype'][_0x23d1fb(0x453)]=function(_0x5be658){const _0x163423=_0x23d1fb;this[_0x163423(0x425)]();const _0x1bb2e5=this['itemAt'](_0x5be658),_0x3e0363=this[_0x163423(0x387)](_0x5be658),_0x5057cd=_0x3e0363[_0x163423(0x3f4)];this[_0x163423(0x45c)](this['isEnabled'](_0x1bb2e5)),this[_0x163423(0x1a2)](_0x1bb2e5,_0x3e0363['x'],_0x3e0363['y'],_0x5057cd),this[_0x163423(0x488)](_0x1bb2e5,_0x3e0363),this['changePaintOpacity'](!![]);},Window_ShopBuy['prototype'][_0x23d1fb(0x488)]=function(_0x218dc8,_0x465414){const _0x5e0f39=_0x23d1fb,_0x510c87=this[_0x5e0f39(0x403)](_0x218dc8);this[_0x5e0f39(0x28b)](_0x510c87,TextManager[_0x5e0f39(0x1d3)],_0x465414['x'],_0x465414['y'],_0x465414['width']);},Window_ShopSell[_0x23d1fb(0x241)][_0x23d1fb(0x264)]=function(){const _0x179d3c=_0x23d1fb;return SceneManager[_0x179d3c(0x2b6)]['isUseItemsEquipsCoreUpdatedLayout']()?0x1:0x2;},VisuMZ[_0x23d1fb(0x248)][_0x23d1fb(0x404)]=Window_ShopSell['prototype'][_0x23d1fb(0x3c6)],Window_ShopSell[_0x23d1fb(0x241)][_0x23d1fb(0x3c6)]=function(_0x3b895d){const _0x3fd389=_0x23d1fb;if(!_0x3b895d)return![];const _0x24aced=_0x3b895d[_0x3fd389(0x4fe)];if(_0x24aced[_0x3fd389(0x2fc)](/<CANNOT SELL>/i))return![];if(_0x24aced[_0x3fd389(0x2fc)](/<CAN SELL>/i))return!![];if(_0x24aced['match'](/<CANNOT SELL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x5ba278=JSON[_0x3fd389(0x257)]('['+RegExp['$1'][_0x3fd389(0x2fc)](/\d+/g)+']');for(const _0xd9484f of _0x5ba278){if(!$gameSwitches[_0x3fd389(0x3f6)](_0xd9484f))return![];}}if(_0x24aced[_0x3fd389(0x2fc)](/<CANNOT SELL ALL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x71b6b1=JSON[_0x3fd389(0x257)]('['+RegExp['$1'][_0x3fd389(0x2fc)](/\d+/g)+']');for(const _0x22dcf1 of _0x71b6b1){if(!$gameSwitches[_0x3fd389(0x3f6)](_0x22dcf1))return![];}}if(_0x24aced['match'](/<CANNOT SELL ANY[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)){const _0x247085=JSON[_0x3fd389(0x257)]('['+RegExp['$1'][_0x3fd389(0x2fc)](/\d+/g)+']');for(const _0x262a46 of _0x247085){if($gameSwitches['value'](_0x262a46))return![];}}return VisuMZ[_0x3fd389(0x248)]['Window_ShopSell_isEnabled'][_0x3fd389(0x44b)](this,_0x3b895d);},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x25a)]=function(){return![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x1dc)]=function(){const _0x4f015c=_0x23d1fb;Window_StatusBase['prototype'][_0x4f015c(0x1dc)][_0x4f015c(0x44b)](this);for(const _0x50079e of $gameParty[_0x4f015c(0x368)]()){ImageManager[_0x4f015c(0x3a8)](_0x50079e[_0x4f015c(0x51e)]());}},Window_ShopStatus['prototype'][_0x23d1fb(0x500)]=function(){const _0x2de6bf=_0x23d1fb;return VisuMZ[_0x2de6bf(0x248)]['Settings'][_0x2de6bf(0x4c6)][_0x2de6bf(0x460)];},Window_ShopStatus[_0x23d1fb(0x241)]['refresh']=function(){const _0x8ce33e=_0x23d1fb;this[_0x8ce33e(0x1c5)]['clear'](),this['contentsBack']['clear'](),this[_0x8ce33e(0x2bc)]&&(this[_0x8ce33e(0x425)](),this[_0x8ce33e(0x45c)](!![]),this[_0x8ce33e(0x28d)](),this['isEquipItem']()?this['drawEquipData']():this[_0x8ce33e(0x18f)](),this[_0x8ce33e(0x3b6)]());},Window_ShopStatus['prototype'][_0x23d1fb(0x3bc)]=function(_0x569e54,_0x1d82f0){const _0x476880=_0x23d1fb;if(!this[_0x476880(0x52b)]()&&!DataManager[_0x476880(0x1ac)](this[_0x476880(0x2bc)]))return;const _0x3b0543=this[_0x476880(0x4a8)]-this[_0x476880(0x2a5)]()-_0x569e54,_0xc5d043=this[_0x476880(0x2cc)](_0x476880(0x2d0));this[_0x476880(0x391)](ColorManager[_0x476880(0x4b6)]()),this[_0x476880(0x341)](TextManager['possession'],_0x569e54+this[_0x476880(0x2a5)](),_0x1d82f0,_0x3b0543-_0xc5d043),this[_0x476880(0x29a)](),this[_0x476880(0x522)](this[_0x476880(0x2bc)],_0x569e54,_0x1d82f0,_0x3b0543);},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x23b)]=function(_0x47497c,_0x32ddc2,_0x22e920,_0x30f3e7,_0x693791){const _0x113228=_0x23d1fb;if(VisuMZ[_0x113228(0x248)][_0x113228(0x357)]['StatusWindow']['DrawBackRect']===![])return;_0x693791=Math[_0x113228(0x2e0)](_0x693791||0x1,0x1);while(_0x693791--){_0x30f3e7=_0x30f3e7||this[_0x113228(0x314)](),this[_0x113228(0x4bf)][_0x113228(0x4f7)]=0xa0;const _0x3fa239=ColorManager[_0x113228(0x46a)]();this[_0x113228(0x4bf)][_0x113228(0x409)](_0x47497c+0x1,_0x32ddc2+0x1,_0x22e920-0x2,_0x30f3e7-0x2,_0x3fa239),this[_0x113228(0x4bf)]['paintOpacity']=0xff;}},ColorManager[_0x23d1fb(0x46a)]=function(){const _0x1eb338=_0x23d1fb,_0x2b0a47=VisuMZ[_0x1eb338(0x248)][_0x1eb338(0x357)]['StatusWindow'];let _0x12e7d6=_0x2b0a47[_0x1eb338(0x19a)]!==undefined?_0x2b0a47[_0x1eb338(0x19a)]:0x13;return ColorManager[_0x1eb338(0x3c5)](_0x12e7d6);},Window_ShopStatus[_0x23d1fb(0x241)]['drawEquipData']=function(){const _0x1b5310=_0x23d1fb;if(VisuMZ[_0x1b5310(0x248)][_0x1b5310(0x357)][_0x1b5310(0x4c6)][_0x1b5310(0x474)]){VisuMZ[_0x1b5310(0x248)][_0x1b5310(0x357)][_0x1b5310(0x4c6)][_0x1b5310(0x474)][_0x1b5310(0x44b)](this);return;}const _0x228333=this['lineHeight'](),_0x580af6=this[_0x1b5310(0x1a9)]()+0x8;let _0x3d4494=0x0,_0x54cf26=0x0,_0x2c8921=this[_0x1b5310(0x4a8)],_0x32517d=this['innerHeight'],_0x60a510=Math[_0x1b5310(0x312)](_0x2c8921/0x2),_0x21d19b=_0x3d4494+_0x2c8921-_0x60a510;this['drawItemName'](this[_0x1b5310(0x2bc)],_0x3d4494+this[_0x1b5310(0x2a5)](),_0x54cf26,_0x2c8921-this[_0x1b5310(0x2a5)]()*0x2),this[_0x1b5310(0x23b)](_0x3d4494,_0x54cf26,_0x2c8921),_0x54cf26+=_0x228333;if(this[_0x1b5310(0x28e)](_0x3d4494,_0x54cf26,_0x60a510))_0x54cf26+=0x0;if(this[_0x1b5310(0x483)](_0x21d19b,_0x54cf26,_0x60a510))_0x54cf26+=_0x228333;const _0x5b2cf1=this['actorParams'](),_0x3b2622=_0x54cf26;_0x54cf26=_0x32517d-_0x5b2cf1[_0x1b5310(0x401)]*_0x580af6-0x4;let _0x191840=_0x3d4494,_0x2b933b=0x0,_0x5817bd=_0x54cf26;for(const _0x507163 of _0x5b2cf1){_0x2b933b=Math['max'](this[_0x1b5310(0x369)](_0x507163,_0x3d4494+0x4,_0x54cf26+0x4,_0x2c8921),_0x2b933b),_0x54cf26+=_0x580af6;}const _0x1e8a2d=$gameParty['maxBattleMembers'](),_0x2e595c=Math[_0x1b5310(0x312)]((_0x2c8921-_0x2b933b)/_0x1e8a2d);_0x2b933b=_0x2c8921-_0x2e595c*_0x1e8a2d;for(const _0x450b89 of $gameParty[_0x1b5310(0x4a7)]()){const _0x10f044=$gameParty['battleMembers']()[_0x1b5310(0x41c)](_0x450b89),_0x332069=_0x191840+_0x2b933b+_0x10f044*_0x2e595c;this[_0x1b5310(0x45c)](_0x450b89[_0x1b5310(0x2fa)](this[_0x1b5310(0x2bc)])),this[_0x1b5310(0x3a5)](_0x450b89,_0x332069+_0x2e595c/0x2,_0x5817bd);let _0x5813d8=_0x5817bd;for(const _0x30b9b9 of _0x5b2cf1){const _0x2bcf84=_0x5813d8-(_0x228333-_0x580af6)/0x2;this[_0x1b5310(0x492)](_0x450b89,_0x30b9b9,_0x332069,_0x2bcf84,_0x2e595c),_0x5813d8+=_0x580af6;}}this['drawItemDarkRect'](_0x191840,_0x3b2622,_0x2b933b,_0x5817bd-_0x3b2622);for(let _0x10774e=0x0;_0x10774e<_0x1e8a2d;_0x10774e++){const _0x9cc6ed=_0x191840+_0x2b933b+_0x10774e*_0x2e595c;this[_0x1b5310(0x23b)](_0x9cc6ed,_0x3b2622,_0x2e595c,_0x5817bd-_0x3b2622);}for(const _0x522026 of _0x5b2cf1){this[_0x1b5310(0x23b)](_0x191840,_0x5817bd,_0x2b933b,_0x580af6);for(let _0x1f6a12=0x0;_0x1f6a12<_0x1e8a2d;_0x1f6a12++){const _0x217c99=_0x191840+_0x2b933b+_0x1f6a12*_0x2e595c;this['drawItemDarkRect'](_0x217c99,_0x5817bd,_0x2e595c,_0x580af6);}_0x5817bd+=_0x580af6;}},Window_ShopStatus['prototype'][_0x23d1fb(0x28e)]=function(_0x35ef21,_0x318275,_0x48273e){const _0x2e7d9f=_0x23d1fb;if(!this[_0x2e7d9f(0x52b)]())return![];const _0x2d3813=$dataSystem[_0x2e7d9f(0x1ab)][this['_item']['etypeId']];return this[_0x2e7d9f(0x34f)](_0x2d3813,_0x35ef21,_0x318275,_0x48273e,!![]),this['drawItemDarkRect'](_0x35ef21,_0x318275,_0x48273e),this[_0x2e7d9f(0x425)](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x2a8)]=function(){const _0x1287b8=_0x23d1fb,_0x5afb0f=VisuMZ[_0x1287b8(0x248)][_0x1287b8(0x357)][_0x1287b8(0x3fe)][_0x1287b8(0x517)];return _0x5afb0f[_0x1287b8(0x325)]($gameParty[_0x1287b8(0x4b0)](this['_item']));},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x3ee)]=function(){const _0x3c4948=_0x23d1fb;let _0x59acaf=[0x0,0x1,0x2,0x3,0x4,0x5,0x6,0x7];return Imported[_0x3c4948(0x297)]&&(_0x59acaf=VisuMZ[_0x3c4948(0x305)][_0x3c4948(0x357)][_0x3c4948(0x4fc)][_0x3c4948(0x249)]),_0x59acaf=_0x59acaf[_0x3c4948(0x344)](_0x26a9c2=>typeof _0x26a9c2===_0x3c4948(0x204)?_0x26a9c2:_0x26a9c2[_0x3c4948(0x25d)]()[_0x3c4948(0x432)]()),_0x59acaf;},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x274)]=function(){const _0x59289c=_0x23d1fb;return VisuMZ[_0x59289c(0x248)][_0x59289c(0x357)][_0x59289c(0x4c6)]['ParamChangeFontSize'];},Window_ShopStatus[_0x23d1fb(0x241)]['drawParamName']=function(_0x37f611,_0x31fbbd,_0x48009d,_0x194874){const _0x4dd3fd=_0x23d1fb;this[_0x4dd3fd(0x425)](),this[_0x4dd3fd(0x1c5)]['fontSize']=this[_0x4dd3fd(0x274)]();let _0x50e4af=this['textWidth'](TextManager[_0x4dd3fd(0x3bf)](_0x37f611))+0x4+_0x31fbbd;return Imported[_0x4dd3fd(0x297)]?(this[_0x4dd3fd(0x47d)](_0x31fbbd,_0x48009d,_0x194874,_0x37f611,!![]),VisuMZ[_0x4dd3fd(0x305)][_0x4dd3fd(0x357)]['Param'][_0x4dd3fd(0x4e9)]&&(_0x50e4af+=ImageManager[_0x4dd3fd(0x431)]+0x4)):(this['changeTextColor'](ColorManager[_0x4dd3fd(0x4b6)]()),this[_0x4dd3fd(0x341)](TextManager['param'](_0x37f611),_0x31fbbd,_0x48009d,_0x194874)),this[_0x4dd3fd(0x425)](),_0x50e4af;},Window_ShopStatus['prototype']['drawActorParamDifference']=function(_0x33152c,_0x3520d9,_0x47e7ce,_0x143a3b,_0x5e214a){const _0x400393=_0x23d1fb;_0x47e7ce+=this['itemPadding'](),_0x5e214a-=this[_0x400393(0x2a5)]()*0x2;const _0x4562d5=VisuMZ['ItemsEquipsCore'][_0x400393(0x357)][_0x400393(0x4c6)];this['contents'][_0x400393(0x428)]=_0x4562d5[_0x400393(0x477)],this[_0x400393(0x45c)](_0x33152c[_0x400393(0x2fa)](this[_0x400393(0x2bc)]));if(_0x33152c[_0x400393(0x23f)](this['_item'])&&!_0x33152c[_0x400393(0x299)](this[_0x400393(0x2bc)])){const _0x56f5b9=_0x4562d5[_0x400393(0x298)];this[_0x400393(0x341)](_0x56f5b9,_0x47e7ce,_0x143a3b,_0x5e214a,_0x400393(0x1db));}else{if(_0x33152c[_0x400393(0x2fa)](this[_0x400393(0x2bc)])){const _0x55ec32=JsonEx['makeDeepCopy'](_0x33152c);_0x55ec32['_tempActor']=!![];const _0x97bf78=_0x55ec32[_0x400393(0x30c)](this['_item']);_0x97bf78>=0x0&&_0x55ec32[_0x400393(0x507)](_0x97bf78,this['_item']);let _0x3d293d=0x0,_0x2fc038=0x0,_0x446c38=0x0;Imported[_0x400393(0x297)]?(_0x3d293d=_0x55ec32[_0x400393(0x491)](_0x3520d9),_0x2fc038=_0x3d293d-_0x33152c[_0x400393(0x491)](_0x3520d9),this['changeTextColor'](ColorManager[_0x400393(0x317)](_0x2fc038)),_0x446c38=(_0x2fc038>=0x0?'+':'')+VisuMZ[_0x400393(0x1f2)](_0x2fc038,0x0,_0x3520d9)):(_0x3d293d=_0x55ec32[_0x400393(0x3bf)](_0x3520d9),_0x2fc038=_0x3d293d-_0x33152c[_0x400393(0x3bf)](_0x3520d9),this[_0x400393(0x391)](ColorManager[_0x400393(0x317)](_0x2fc038)),_0x446c38=(_0x2fc038>=0x0?'+':'')+_0x2fc038),_0x446c38==='+0'&&(_0x446c38=_0x4562d5[_0x400393(0x256)]),this[_0x400393(0x341)](_0x446c38,_0x47e7ce,_0x143a3b,_0x5e214a,_0x400393(0x1db));}else{const _0x59ea90=_0x4562d5[_0x400393(0x520)];this['drawText'](_0x59ea90,_0x47e7ce,_0x143a3b,_0x5e214a,_0x400393(0x1db));}}this['resetFontSettings'](),this[_0x400393(0x45c)](!![]);},Game_Actor[_0x23d1fb(0x241)]['anyEmptyEquipSlotsOfSameEtype']=function(_0x3d0b76){const _0x41fdcb=_0x23d1fb;if(!_0x3d0b76)return![];const _0x2c5b34=_0x3d0b76['etypeId'],_0xa40f72=this[_0x41fdcb(0x3c7)]();for(let _0x3f962e=0x0;_0x3f962e<_0xa40f72[_0x41fdcb(0x401)];_0x3f962e++){const _0x4f4a5a=_0xa40f72[_0x3f962e];if(_0x4f4a5a!==_0x2c5b34)continue;if(!this[_0x41fdcb(0x38e)]()[_0x3f962e])return!![];}return![];},Game_Actor[_0x23d1fb(0x241)][_0x23d1fb(0x30c)]=function(_0x372b9f){const _0x29e401=_0x23d1fb;if(!_0x372b9f)return-0x1;const _0x464152=_0x372b9f['etypeId'],_0x47a05b=this[_0x29e401(0x3c7)]();let _0x9aeada=-0x1;for(let _0x3d7af7=0x0;_0x3d7af7<_0x47a05b[_0x29e401(0x401)];_0x3d7af7++){const _0x48c9b7=_0x47a05b[_0x3d7af7];if(_0x48c9b7!==_0x464152)continue;if(!this['equips']()[_0x3d7af7])return _0x3d7af7;if(_0x9aeada<0x0)_0x9aeada=_0x3d7af7;}return _0x9aeada;},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x18f)]=function(){const _0x19f5af=_0x23d1fb;VisuMZ[_0x19f5af(0x248)][_0x19f5af(0x357)][_0x19f5af(0x4c6)]['DrawItemData'][_0x19f5af(0x44b)](this);},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x1a2)]=function(_0xca07e4,_0x2964d9,_0x3539ad,_0x9c008c){const _0x4f758b=_0x23d1fb,_0x400043=DataManager[_0x4f758b(0x3d9)](_0xca07e4,_0x2964d9,_0x3539ad,_0x9c008c)&&Imported[_0x4f758b(0x4b1)],_0x5c6631=_0xca07e4?_0xca07e4[_0x4f758b(0x285)]:'';if(_0x400043)Window_SkillList[_0x4f758b(0x241)]['alterSkillName'][_0x4f758b(0x44b)](this,_0xca07e4);Window_Base[_0x4f758b(0x241)][_0x4f758b(0x1a2)][_0x4f758b(0x44b)](this,_0xca07e4,_0x2964d9,_0x3539ad,_0x9c008c);if(_0x400043)_0xca07e4[_0x4f758b(0x285)]=_0x5c6631;},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x28d)]=function(){const _0x480907=_0x23d1fb;this[_0x480907(0x4c2)]={};if(!this[_0x480907(0x2bc)])return;const _0x4dbc3b=this[_0x480907(0x2bc)][_0x480907(0x4fe)];if(_0x4dbc3b[_0x480907(0x2fc)](/<STATUS INFO>\s*([\s\S]*)\s*<\/STATUS INFO>/i)){const _0x3081fa=String(RegExp['$1'])[_0x480907(0x504)](/[\r\n]+/);for(const _0x37559a of _0x3081fa){if(_0x37559a[_0x480907(0x2fc)](/(.*):[ ](.*)/i)){const _0x702901=String(RegExp['$1'])[_0x480907(0x25d)]()[_0x480907(0x432)](),_0x5667c5=String(RegExp['$2'])[_0x480907(0x432)]();this[_0x480907(0x4c2)][_0x702901]=_0x5667c5;}}}},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x50d)]=function(){const _0x2651f3=_0x23d1fb;return Math['max'](0x1,$gameSystem[_0x2651f3(0x4a0)]()-0x4);},Window_ShopStatus['prototype'][_0x23d1fb(0x425)]=function(){const _0xb9e476=_0x23d1fb;Window_StatusBase[_0xb9e476(0x241)][_0xb9e476(0x425)][_0xb9e476(0x44b)](this),this['contents'][_0xb9e476(0x428)]=this[_0xb9e476(0x514)]||this[_0xb9e476(0x1c5)][_0xb9e476(0x428)],this[_0xb9e476(0x1c5)]['textColor']=this[_0xb9e476(0x451)]||this[_0xb9e476(0x1c5)][_0xb9e476(0x296)];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x254)]=function(){const _0x45c43c=_0x23d1fb;return this[_0x45c43c(0x1c5)]['fontSize']/$gameSystem['mainFontSize']();},Window_ShopStatus['prototype'][_0x23d1fb(0x48a)]=function(_0x30d340,_0x3c4a2f,_0x1af43c){const _0x2aadd8=_0x23d1fb,_0x1eeb73=ImageManager[_0x2aadd8(0x405)]('IconSet'),_0x441387=ImageManager[_0x2aadd8(0x431)],_0x3a5258=ImageManager[_0x2aadd8(0x31e)],_0x572161=_0x30d340%0x10*_0x441387,_0x1c638a=Math[_0x2aadd8(0x312)](_0x30d340/0x10)*_0x3a5258,_0x39fa7b=Math['ceil'](_0x441387*this[_0x2aadd8(0x254)]()),_0xbbabc9=Math['ceil'](_0x3a5258*this[_0x2aadd8(0x254)]());this[_0x2aadd8(0x1c5)][_0x2aadd8(0x1b8)](_0x1eeb73,_0x572161,_0x1c638a,_0x441387,_0x3a5258,_0x3c4a2f,_0x1af43c,_0x39fa7b,_0xbbabc9);},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x234)]=function(_0x3c0636,_0x2b2d2d){const _0x525653=_0x23d1fb;_0x2b2d2d[_0x525653(0x46f)]&&this[_0x525653(0x48a)](_0x3c0636,_0x2b2d2d['x'],_0x2b2d2d['y']+0x2);_0x2b2d2d['x']+=Math[_0x525653(0x29f)](ImageManager['iconWidth']*this['fontSizeRatio']());if(this[_0x525653(0x254)]()===0x1)_0x2b2d2d['x']+=0x4;},Window_ShopStatus[_0x23d1fb(0x241)]['drawItemKeyData']=function(_0x3d46df,_0x4abc7c,_0x5e4c9f,_0x119be9,_0x3e93ea,_0x439fef){const _0x2f7477=_0x23d1fb;_0x3d46df=_0x3d46df||'',_0x439fef=_0x439fef||'left',this['_resetFontSize']=this[_0x2f7477(0x50d)](),this[_0x2f7477(0x451)]=_0x3e93ea?ColorManager[_0x2f7477(0x4b6)]():this[_0x2f7477(0x1c5)][_0x2f7477(0x296)],_0x4abc7c+=this[_0x2f7477(0x2a5)](),_0x119be9-=this[_0x2f7477(0x2a5)]()*0x2;const _0x35d530=this['textSizeEx'](_0x3d46df);if(_0x439fef===_0x2f7477(0x1db))_0x4abc7c=_0x4abc7c+Math[_0x2f7477(0x312)]((_0x119be9-_0x35d530[_0x2f7477(0x3f4)])/0x2);else _0x439fef===_0x2f7477(0x3cb)&&(_0x4abc7c=_0x4abc7c+_0x119be9-_0x35d530['width']);_0x5e4c9f+=(this[_0x2f7477(0x314)]()-_0x35d530[_0x2f7477(0x1f9)])/0x2,this[_0x2f7477(0x4d0)](_0x3d46df,_0x4abc7c,_0x5e4c9f,_0x119be9),this[_0x2f7477(0x514)]=undefined,this[_0x2f7477(0x451)]=undefined,this[_0x2f7477(0x425)]();},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x381)]=function(_0x2e7f4d,_0x9facdf,_0x40ff68){const _0x21cac1=_0x23d1fb;if(!DataManager[_0x21cac1(0x1ac)](this[_0x21cac1(0x2bc)]))return![];const _0x1c7a32=this[_0x21cac1(0x208)]();this['drawItemKeyData'](_0x1c7a32,_0x2e7f4d,_0x9facdf,_0x40ff68,!![]);const _0x3c7d5a=this[_0x21cac1(0x4cd)]();return this[_0x21cac1(0x34f)](_0x3c7d5a,_0x2e7f4d,_0x9facdf,_0x40ff68,![],_0x21cac1(0x3cb)),this[_0x21cac1(0x23b)](_0x2e7f4d,_0x9facdf,_0x40ff68),this['resetFontSettings'](),!![];},Window_ShopStatus['prototype']['getItemConsumableLabel']=function(){const _0xfb040f=_0x23d1fb;return VisuMZ[_0xfb040f(0x248)][_0xfb040f(0x357)][_0xfb040f(0x4c6)][_0xfb040f(0x37f)];},Window_ShopStatus['prototype'][_0x23d1fb(0x4cd)]=function(){const _0x48f83f=_0x23d1fb,_0x204077=_0x48f83f(0x414);if(this[_0x48f83f(0x4c2)][_0x204077])return this[_0x48f83f(0x4c2)][_0x204077];return this[_0x48f83f(0x2dd)]()?VisuMZ[_0x48f83f(0x248)]['Settings'][_0x48f83f(0x4c6)][_0x48f83f(0x36f)]:VisuMZ[_0x48f83f(0x248)][_0x48f83f(0x357)][_0x48f83f(0x4c6)][_0x48f83f(0x31c)];},Window_ShopStatus['prototype']['canConsumeItem']=function(){const _0x2f7e79=_0x23d1fb;return VisuMZ['CoreEngine']&&VisuMZ[_0x2f7e79(0x305)][_0x2f7e79(0x357)][_0x2f7e79(0x361)][_0x2f7e79(0x272)]&&DataManager[_0x2f7e79(0x376)](this['_item'])?![]:this['_item'][_0x2f7e79(0x338)];},Window_ShopStatus['prototype']['drawItemQuantity']=function(_0x52d9ae,_0x428c17,_0x5ed600){const _0xe82e49=_0x23d1fb;if(!this[_0xe82e49(0x52b)]()&&!DataManager[_0xe82e49(0x1ac)](this[_0xe82e49(0x2bc)]))return![];if(DataManager[_0xe82e49(0x376)](this['_item'])&&!$dataSystem['optKeyItemsNumber']){const _0x2acd27=TextManager[_0xe82e49(0x1a3)];this[_0xe82e49(0x34f)](_0x2acd27,_0x52d9ae,_0x428c17,_0x5ed600,!![],_0xe82e49(0x1db));}else{const _0x11bfa2=TextManager[_0xe82e49(0x4a4)];this[_0xe82e49(0x34f)](_0x11bfa2,_0x52d9ae,_0x428c17,_0x5ed600,!![]);const _0x3c81fe=this['getItemQuantityText']();this[_0xe82e49(0x34f)](_0x3c81fe,_0x52d9ae,_0x428c17,_0x5ed600,![],_0xe82e49(0x3cb));}return this[_0xe82e49(0x23b)](_0x52d9ae,_0x428c17,_0x5ed600),this['resetFontSettings'](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x2a8)]=function(){const _0x293807=_0x23d1fb,_0x426077=_0x293807(0x515);if(this[_0x293807(0x4c2)][_0x426077])return this[_0x293807(0x4c2)][_0x426077];const _0x2e87f2=VisuMZ['ItemsEquipsCore']['Settings'][_0x293807(0x3fe)]['ItemQuantityFmt'];return _0x2e87f2[_0x293807(0x325)]($gameParty[_0x293807(0x4b0)](this[_0x293807(0x2bc)]));},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x3d8)]=function(_0x2daa21,_0x56c41c,_0x23eb31){const _0x57a14e=_0x23d1fb,_0xd6de17=this[_0x57a14e(0x493)]();return this[_0x57a14e(0x34f)](_0xd6de17,_0x2daa21,_0x56c41c,_0x23eb31,![],'center'),this['drawItemDarkRect'](_0x2daa21,_0x56c41c,_0x23eb31),this['resetFontSettings'](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x493)]=function(){const _0x50ca6a=_0x23d1fb,_0x11920c='OCCASION';if(this[_0x50ca6a(0x4c2)][_0x11920c])return this[_0x50ca6a(0x4c2)][_0x11920c];const _0x421d57=VisuMZ[_0x50ca6a(0x248)]['Settings']['StatusWindow'],_0x2c27d1='Occasion%1'[_0x50ca6a(0x325)](this[_0x50ca6a(0x2bc)][_0x50ca6a(0x4e3)]);return _0x421d57[_0x2c27d1];},Window_ShopStatus[_0x23d1fb(0x241)]['drawItemScope']=function(_0x40383c,_0x2b49f3,_0x3c9128){const _0xed6206=_0x23d1fb,_0x5e3e62=this['getItemScopeText']();return this[_0xed6206(0x34f)](_0x5e3e62,_0x40383c,_0x2b49f3,_0x3c9128,![],'center'),this[_0xed6206(0x23b)](_0x40383c,_0x2b49f3,_0x3c9128),this['resetFontSettings'](),!![];},Window_ShopStatus['prototype'][_0x23d1fb(0x205)]=function(){const _0xf76616=_0x23d1fb,_0x9e397c=_0xf76616(0x1da);if(this['_customItemInfo'][_0x9e397c])return this[_0xf76616(0x4c2)][_0x9e397c];const _0x5a63fb=VisuMZ['ItemsEquipsCore'][_0xf76616(0x357)][_0xf76616(0x4c6)];if(Imported['VisuMZ_1_BattleCore']){const _0x2e2852=this[_0xf76616(0x2bc)][_0xf76616(0x4fe)];if(_0x2e2852[_0xf76616(0x2fc)](/<TARGET:[ ](.*)>/i)){const _0x29deed=String(RegExp['$1']);if(_0x29deed[_0xf76616(0x2fc)](/(\d+) RANDOM ANY/i))return _0x5a63fb[_0xf76616(0x2f6)][_0xf76616(0x325)](Number(RegExp['$1']));else{if(_0x29deed[_0xf76616(0x2fc)](/(\d+) RANDOM (?:ENEMY|ENEMIES|FOE|FOES)/i))return _0x5a63fb['ScopeRandomEnemies'][_0xf76616(0x325)](Number(RegExp['$1']));else{if(_0x29deed[_0xf76616(0x2fc)](/(\d+) RANDOM (?:ALLY|ALLIES|FRIEND|FRIENDS)/i))return _0x5a63fb[_0xf76616(0x2b1)][_0xf76616(0x325)](Number(RegExp['$1']));else{if(_0x29deed[_0xf76616(0x2fc)](/ALL (?:ALLY|ALLIES|FRIEND|FRIENDS) (?:BUT|EXCEPT) (?:USER|SELF)/i))return _0x5a63fb[_0xf76616(0x3c4)];}}}}}const _0x3b9c62=_0xf76616(0x47a)[_0xf76616(0x325)](this[_0xf76616(0x2bc)]['scope']);return _0x5a63fb[_0x3b9c62];},Window_ShopStatus['prototype']['drawItemSpeed']=function(_0x322d51,_0x224a53,_0x1632de){const _0x19fe21=_0x23d1fb,_0x3b6be8=this[_0x19fe21(0x18a)]();this[_0x19fe21(0x34f)](_0x3b6be8,_0x322d51,_0x224a53,_0x1632de,!![]);const _0x215456=this['getItemSpeedText']();return this[_0x19fe21(0x34f)](_0x215456,_0x322d51,_0x224a53,_0x1632de,![],'right'),this[_0x19fe21(0x23b)](_0x322d51,_0x224a53,_0x1632de),this['resetFontSettings'](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x18a)]=function(){const _0x162823=_0x23d1fb;return VisuMZ[_0x162823(0x248)][_0x162823(0x357)][_0x162823(0x4c6)][_0x162823(0x3d7)];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x416)]=function(){const _0x56956a=_0x23d1fb,_0x284227='SPEED';if(this[_0x56956a(0x4c2)][_0x284227])return this['_customItemInfo'][_0x284227];const _0x296898=this['_item'][_0x56956a(0x392)];if(_0x296898>=0x7d0)return VisuMZ[_0x56956a(0x248)][_0x56956a(0x357)]['StatusWindow'][_0x56956a(0x509)];else{if(_0x296898>=0x3e8)return VisuMZ[_0x56956a(0x248)][_0x56956a(0x357)][_0x56956a(0x4c6)][_0x56956a(0x2da)];else{if(_0x296898>0x0)return VisuMZ[_0x56956a(0x248)]['Settings'][_0x56956a(0x4c6)][_0x56956a(0x3e2)];else{if(_0x296898===0x0)return VisuMZ['ItemsEquipsCore'][_0x56956a(0x357)][_0x56956a(0x4c6)][_0x56956a(0x1cc)];else{if(_0x296898>-0x3e8)return VisuMZ['ItemsEquipsCore'][_0x56956a(0x357)][_0x56956a(0x4c6)]['SpeedNeg999'];else{if(_0x296898>-0x7d0)return VisuMZ[_0x56956a(0x248)]['Settings'][_0x56956a(0x4c6)][_0x56956a(0x2f5)];else return _0x296898<=-0x7d0?VisuMZ[_0x56956a(0x248)][_0x56956a(0x357)][_0x56956a(0x4c6)][_0x56956a(0x1e9)]:'?????';}}}}}},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x2fd)]=function(_0x426d21,_0x53527a,_0x3d5be1){const _0x4c1776=_0x23d1fb,_0xa78411=this[_0x4c1776(0x316)]();this['drawItemKeyData'](_0xa78411,_0x426d21,_0x53527a,_0x3d5be1,!![]);const _0x3b5bed=this[_0x4c1776(0x384)]();return this['drawItemKeyData'](_0x3b5bed,_0x426d21,_0x53527a,_0x3d5be1,![],_0x4c1776(0x3cb)),this[_0x4c1776(0x23b)](_0x426d21,_0x53527a,_0x3d5be1),this['resetFontSettings'](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x316)]=function(){const _0x49b541=_0x23d1fb;return VisuMZ[_0x49b541(0x248)]['Settings'][_0x49b541(0x4c6)]['LabelSuccessRate'];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x384)]=function(){const _0xf830f2=_0x23d1fb,_0x24ecf7=_0xf830f2(0x3b9);if(this[_0xf830f2(0x4c2)][_0x24ecf7])return this[_0xf830f2(0x4c2)][_0x24ecf7];if(Imported['VisuMZ_1_BattleCore']){const _0x1db1a3=this[_0xf830f2(0x2bc)][_0xf830f2(0x4fe)];if(_0x1db1a3['match'](/<ALWAYS HIT>/i))return _0xf830f2(0x358);else{if(_0x1db1a3[_0xf830f2(0x2fc)](/<ALWAYS HIT RATE: (\d+)([%％])>/i))return _0xf830f2(0x3de)['format'](Number(RegExp['$1']));}}return _0xf830f2(0x3de)[_0xf830f2(0x325)](this[_0xf830f2(0x2bc)][_0xf830f2(0x510)]);},Window_ShopStatus['prototype'][_0x23d1fb(0x3a3)]=function(_0x40a9ad,_0x4a7c6d,_0x49d65a){const _0x55c37f=_0x23d1fb,_0xcb8639=this[_0x55c37f(0x3fc)]();this[_0x55c37f(0x34f)](_0xcb8639,_0x40a9ad,_0x4a7c6d,_0x49d65a,!![]);const _0x42a42b=this['getItemRepeatsText']();return this[_0x55c37f(0x34f)](_0x42a42b,_0x40a9ad,_0x4a7c6d,_0x49d65a,![],_0x55c37f(0x3cb)),this[_0x55c37f(0x23b)](_0x40a9ad,_0x4a7c6d,_0x49d65a),this[_0x55c37f(0x425)](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x3fc)]=function(){const _0x2a4f4b=_0x23d1fb;return VisuMZ[_0x2a4f4b(0x248)][_0x2a4f4b(0x357)]['StatusWindow'][_0x2a4f4b(0x300)];},Window_ShopStatus['prototype'][_0x23d1fb(0x466)]=function(){const _0x78e0f8=_0x23d1fb,_0x5387d7='REPEAT';if(this['_customItemInfo'][_0x5387d7])return this[_0x78e0f8(0x4c2)][_0x5387d7];const _0x16e2fd=_0x78e0f8(0x294);return _0x16e2fd[_0x78e0f8(0x325)](this[_0x78e0f8(0x2bc)][_0x78e0f8(0x4ee)]);},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x1f7)]=function(_0xcc4894,_0x346ca0,_0xfd1201){const _0x453c3b=_0x23d1fb,_0x6371ae=this['getItemHitTypeLabel']();this[_0x453c3b(0x34f)](_0x6371ae,_0xcc4894,_0x346ca0,_0xfd1201,!![]);const _0x434931=this[_0x453c3b(0x395)]();return this['drawItemKeyData'](_0x434931,_0xcc4894,_0x346ca0,_0xfd1201,![],_0x453c3b(0x3cb)),this[_0x453c3b(0x23b)](_0xcc4894,_0x346ca0,_0xfd1201),this['resetFontSettings'](),!![];},Window_ShopStatus['prototype']['getItemHitTypeLabel']=function(){const _0x20d8b7=_0x23d1fb;return VisuMZ[_0x20d8b7(0x248)][_0x20d8b7(0x357)][_0x20d8b7(0x4c6)][_0x20d8b7(0x273)];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x395)]=function(){const _0x551624=_0x23d1fb,_0x22a446=_0x551624(0x1c2);if(this[_0x551624(0x4c2)][_0x22a446])return this[_0x551624(0x4c2)][_0x22a446];const _0x30c626=VisuMZ[_0x551624(0x248)][_0x551624(0x357)][_0x551624(0x4c6)],_0x1313e7=_0x551624(0x292)[_0x551624(0x325)](this[_0x551624(0x2bc)][_0x551624(0x41d)]);return _0x30c626[_0x1313e7];},Window_ShopStatus['prototype'][_0x23d1fb(0x32b)]=function(_0x50b7d,_0x46fca4,_0x136ab6){const _0x3cd473=_0x23d1fb;if(this['_item'][_0x3cd473(0x3cc)][_0x3cd473(0x3ec)]<=0x0)return _0x46fca4;if(this['drawItemDamageElement'](_0x50b7d,_0x46fca4,_0x136ab6))_0x46fca4+=this[_0x3cd473(0x314)]();if(this[_0x3cd473(0x321)](_0x50b7d,_0x46fca4,_0x136ab6))_0x46fca4+=this['lineHeight']();return this['resetFontSettings'](),_0x46fca4;},Window_ShopStatus['prototype'][_0x23d1fb(0x458)]=function(_0x577a53,_0xc0a265,_0x4240cb){const _0x4991b2=_0x23d1fb,_0x10344b=this[_0x4991b2(0x38b)]();this['drawItemKeyData'](_0x10344b,_0x577a53,_0xc0a265,_0x4240cb,!![]);const _0x1be815=this[_0x4991b2(0x24a)]();return this[_0x4991b2(0x34f)](_0x1be815,_0x577a53,_0xc0a265,_0x4240cb,![],_0x4991b2(0x3cb)),this['drawItemDarkRect'](_0x577a53,_0xc0a265,_0x4240cb),this['resetFontSettings'](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x38b)]=function(){const _0x5df292=_0x23d1fb;return VisuMZ[_0x5df292(0x248)][_0x5df292(0x357)][_0x5df292(0x4c6)][_0x5df292(0x2f0)];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x24a)]=function(){const _0x14451f=_0x23d1fb,_0x1fdb0c=_0x14451f(0x275);if(this[_0x14451f(0x4c2)][_0x1fdb0c])return this[_0x14451f(0x4c2)][_0x1fdb0c];if(this[_0x14451f(0x2bc)]['damage'][_0x14451f(0x26c)]<=-0x1)return VisuMZ['ItemsEquipsCore']['Settings']['StatusWindow'][_0x14451f(0x385)];else return this[_0x14451f(0x2bc)]['damage']['elementId']===0x0?VisuMZ[_0x14451f(0x248)][_0x14451f(0x357)][_0x14451f(0x4c6)]['ElementNone']:$dataSystem[_0x14451f(0x2ea)][this[_0x14451f(0x2bc)][_0x14451f(0x3cc)][_0x14451f(0x26c)]];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x321)]=function(_0x2770e1,_0x40061a,_0x39c4fc){const _0x8f3117=_0x23d1fb,_0x1493f1=this[_0x8f3117(0x33a)]();this['drawItemKeyData'](_0x1493f1,_0x2770e1,_0x40061a,_0x39c4fc,!![]),this[_0x8f3117(0x48f)]();const _0x22393a=this['getItemDamageAmountText'](),_0x3c60c1=ColorManager[_0x8f3117(0x304)]([0x0,0x0,0x2,0x1,0x3,0x1,0x3][this[_0x8f3117(0x2bc)][_0x8f3117(0x3cc)][_0x8f3117(0x3ec)]]);return this['changeTextColor'](_0x3c60c1),this[_0x8f3117(0x34f)](_0x22393a,_0x2770e1,_0x40061a,_0x39c4fc,![],_0x8f3117(0x3cb)),this[_0x8f3117(0x23b)](_0x2770e1,_0x40061a,_0x39c4fc),this[_0x8f3117(0x425)](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x33a)]=function(){const _0x4fa8ef=_0x23d1fb;return Imported[_0x4fa8ef(0x2cb)]&&DataManager['getDamageStyle'](this[_0x4fa8ef(0x2bc)])!==_0x4fa8ef(0x420)?this[_0x4fa8ef(0x30f)]():this['getItemDamageAmountLabelOriginal']();},Window_ShopStatus['prototype']['getItemDamageAmountLabelOriginal']=function(){const _0x536960=_0x23d1fb,_0x486dec=VisuMZ[_0x536960(0x248)][_0x536960(0x357)]['StatusWindow'],_0x4d5b8d=_0x536960(0x429)[_0x536960(0x325)](this['_item'][_0x536960(0x3cc)][_0x536960(0x3ec)]),_0x3e25e7=[null,TextManager['hp'],TextManager['mp'],TextManager['hp'],TextManager['mp'],TextManager['hp'],TextManager['mp']][this[_0x536960(0x2bc)]['damage'][_0x536960(0x3ec)]];return _0x486dec[_0x4d5b8d][_0x536960(0x325)](_0x3e25e7);},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x48f)]=function(){const _0x31ba6d=_0x23d1fb,_0x26102a=$gameActors[_0x31ba6d(0x383)](0x1);this['_tempActorA']=JsonEx[_0x31ba6d(0x213)](_0x26102a),this['_tempActorB']=JsonEx[_0x31ba6d(0x213)](_0x26102a);},Window_ShopStatus[_0x23d1fb(0x241)]['getItemDamageAmountText']=function(){const _0x4d47ec=_0x23d1fb,_0x4314ad=_0x4d47ec(0x1a1);if(this[_0x4d47ec(0x4c2)][_0x4314ad])return this['_customItemInfo'][_0x4314ad];return Imported['VisuMZ_1_BattleCore']&&DataManager[_0x4d47ec(0x290)](this['_item'])!==_0x4d47ec(0x420)?this[_0x4d47ec(0x45a)]():this[_0x4d47ec(0x3f3)]();},Window_ShopStatus[_0x23d1fb(0x241)]['getItemDamageAmountTextOriginal']=function(){const _0x3a4579=_0x23d1fb;window['a']=this['_tempActorA'],window['b']=this[_0x3a4579(0x218)],this['_tempActorA'][_0x3a4579(0x452)](!![]),this[_0x3a4579(0x218)][_0x3a4579(0x452)]([0x3,0x4][_0x3a4579(0x39a)](this[_0x3a4579(0x2bc)][_0x3a4579(0x3cc)][_0x3a4579(0x3ec)]));let _0x3150b1=this[_0x3a4579(0x2bc)]['damage']['formula'];try{const _0xb05034=Math[_0x3a4579(0x2e0)](eval(_0x3150b1),0x0)/window['a'][_0x3a4579(0x2b7)];return this['revertGlobalNamespaceVariables'](),isNaN(_0xb05034)?_0x3a4579(0x38f):_0x3a4579(0x3de)[_0x3a4579(0x325)](Math[_0x3a4579(0x291)](_0xb05034*0x64));}catch(_0x47ab2d){return $gameTemp[_0x3a4579(0x26d)]()&&(console[_0x3a4579(0x3b1)](_0x3a4579(0x187)[_0x3a4579(0x325)](this[_0x3a4579(0x2bc)][_0x3a4579(0x285)])),console[_0x3a4579(0x3b1)](_0x47ab2d)),this[_0x3a4579(0x27c)](),_0x3a4579(0x38f);}},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x27c)]=function(){window['a']=undefined,window['b']=undefined;},Window_ShopStatus[_0x23d1fb(0x241)]['drawItemEffects']=function(_0x55b4a,_0x49522c,_0x4b3f3f){const _0x3a988c=_0x23d1fb;if(!this[_0x3a988c(0x49a)]())return _0x49522c;if(this['drawItemEffectsHpRecovery'](_0x55b4a,_0x49522c,_0x4b3f3f))_0x49522c+=this[_0x3a988c(0x314)]();if(this['drawItemEffectsMpRecovery'](_0x55b4a,_0x49522c,_0x4b3f3f))_0x49522c+=this[_0x3a988c(0x314)]();if(this[_0x3a988c(0x266)](_0x55b4a,_0x49522c,_0x4b3f3f))_0x49522c+=this[_0x3a988c(0x314)]();if(this[_0x3a988c(0x1b3)](_0x55b4a,_0x49522c,_0x4b3f3f))_0x49522c+=this[_0x3a988c(0x314)]();if(this[_0x3a988c(0x4b3)](_0x55b4a,_0x49522c,_0x4b3f3f))_0x49522c+=this[_0x3a988c(0x314)]();if(this[_0x3a988c(0x44e)](_0x55b4a,_0x49522c,_0x4b3f3f))_0x49522c+=this[_0x3a988c(0x314)]();if(this['drawItemEffectsSelfTpGain'](_0x55b4a,_0x49522c,_0x4b3f3f))_0x49522c+=this['lineHeight']();if(this['drawItemEffectsAddedStatesBuffs'](_0x55b4a,_0x49522c,_0x4b3f3f))_0x49522c+=this[_0x3a988c(0x314)]();if(this['drawItemEffectsRemovedStatesBuffs'](_0x55b4a,_0x49522c,_0x4b3f3f))_0x49522c+=this[_0x3a988c(0x314)]();return this[_0x3a988c(0x425)](),_0x49522c;},Window_ShopStatus[_0x23d1fb(0x241)]['getItemEffects']=function(){const _0x1fc96f=_0x23d1fb;return this[_0x1fc96f(0x2bc)][_0x1fc96f(0x309)];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x49a)]=function(){const _0x4e78a1=_0x23d1fb;let _0x594db0=![];this[_0x4e78a1(0x2d3)]={'rateHP':0x0,'flatHP':0x0,'rateMP':0x0,'flatMP':0x0,'gainTP':0x0,'selfTP':0x0,'addState':[],'removeState':[],'changeBuff':[0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0],'removeBuff':[],'removeDebuff':[],'addStateBuffChanges':![],'removeStateBuffChanges':![]};const _0x5d8714=this[_0x4e78a1(0x199)]();for(const _0x4a6745 of _0x5d8714){switch(_0x4a6745['code']){case Game_Action['EFFECT_RECOVER_HP']:this[_0x4e78a1(0x2d3)][_0x4e78a1(0x185)]+=_0x4a6745[_0x4e78a1(0x52a)],this['_itemData'][_0x4e78a1(0x1c9)]+=_0x4a6745['value2'],_0x594db0=!![];break;case Game_Action[_0x4e78a1(0x34a)]:this['_itemData']['rateMP']+=_0x4a6745[_0x4e78a1(0x52a)],this['_itemData']['flatMP']+=_0x4a6745[_0x4e78a1(0x3ce)],_0x594db0=!![];break;case Game_Action[_0x4e78a1(0x502)]:this['_itemData'][_0x4e78a1(0x400)]+=_0x4a6745[_0x4e78a1(0x52a)],_0x594db0=!![];break;case Game_Action[_0x4e78a1(0x217)]:this[_0x4e78a1(0x2d3)][_0x4e78a1(0x29c)][_0x4e78a1(0x1dd)](_0x4a6745[_0x4e78a1(0x210)]),_0x594db0=!![];break;case Game_Action[_0x4e78a1(0x378)]:this['_itemData']['removeState'][_0x4e78a1(0x1dd)](_0x4a6745['dataId']),this['_itemData'][_0x4e78a1(0x3ca)]=!![],_0x594db0=!![];break;case Game_Action[_0x4e78a1(0x4f8)]:this[_0x4e78a1(0x2d3)][_0x4e78a1(0x1c3)][_0x4a6745['dataId']]+=0x1,_0x594db0=!![];break;case Game_Action['EFFECT_ADD_DEBUFF']:this[_0x4e78a1(0x2d3)][_0x4e78a1(0x1c3)][_0x4a6745['dataId']]-=0x1,_0x594db0=!![];break;case Game_Action[_0x4e78a1(0x375)]:this['_itemData']['removeBuff'][_0x4e78a1(0x1dd)](_0x4a6745[_0x4e78a1(0x210)]),this[_0x4e78a1(0x2d3)][_0x4e78a1(0x3ca)]=!![],_0x594db0=!![];break;case Game_Action[_0x4e78a1(0x3a4)]:this[_0x4e78a1(0x2d3)][_0x4e78a1(0x3ad)][_0x4e78a1(0x1dd)](_0x4a6745['dataId']),this[_0x4e78a1(0x2d3)][_0x4e78a1(0x3ca)]=!![],_0x594db0=!![];break;}}if(this[_0x4e78a1(0x2d3)][_0x4e78a1(0x29c)][_0x4e78a1(0x401)]>0x0)this['_itemData'][_0x4e78a1(0x388)]=!![];for(let _0x3347fa=0x0;_0x3347fa<this[_0x4e78a1(0x2d3)]['changeBuff'][_0x4e78a1(0x401)];_0x3347fa++){if(this['_itemData'][_0x4e78a1(0x1c3)][_0x3347fa]!==0x0)this[_0x4e78a1(0x2d3)][_0x4e78a1(0x388)]=!![];}this[_0x4e78a1(0x2bc)][_0x4e78a1(0x2e2)]!==0x0&&(this[_0x4e78a1(0x2d3)][_0x4e78a1(0x35b)]=this['_item'][_0x4e78a1(0x2e2)],_0x594db0=!![]);const _0x42cfa2=[_0x4e78a1(0x286),'MP\x20RECOVERY','TP\x20RECOVERY','HP\x20DAMAGE','MP\x20DAMAGE','TP\x20DAMAGE',_0x4e78a1(0x214),_0x4e78a1(0x268),'REMOVED\x20EFFECTS'];for(const _0x4aa153 of _0x42cfa2){if(this[_0x4e78a1(0x4c2)][_0x4aa153]){_0x594db0=!![];break;}}return _0x594db0;},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x2c4)]=function(_0x575d0e,_0x78efbe,_0xaccb5f){const _0x536d13=_0x23d1fb,_0x321aef=_0x536d13(0x286);if(this['_itemData'][_0x536d13(0x185)]<=0x0&&this['_itemData'][_0x536d13(0x1c9)]<=0x0&&!this[_0x536d13(0x4c2)][_0x321aef])return![];const _0x5c620d=this[_0x536d13(0x39c)]();this[_0x536d13(0x34f)](_0x5c620d,_0x575d0e,_0x78efbe,_0xaccb5f,!![]);const _0x4e4eba=this[_0x536d13(0x42b)]();return this['changeTextColor'](ColorManager[_0x536d13(0x304)](0x1)),this[_0x536d13(0x34f)](_0x4e4eba,_0x575d0e,_0x78efbe,_0xaccb5f,![],_0x536d13(0x3cb)),this[_0x536d13(0x23b)](_0x575d0e,_0x78efbe,_0xaccb5f),this[_0x536d13(0x425)](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x39c)]=function(){const _0x4d6536=_0x23d1fb,_0x2739d1=VisuMZ[_0x4d6536(0x248)][_0x4d6536(0x357)][_0x4d6536(0x4c6)][_0x4d6536(0x343)];return _0x2739d1[_0x4d6536(0x325)](TextManager['hp']);},Window_ShopStatus['prototype'][_0x23d1fb(0x42b)]=function(){const _0xa425b2=_0x23d1fb,_0x30ef6a=_0xa425b2(0x286);if(this[_0xa425b2(0x4c2)][_0x30ef6a])return this[_0xa425b2(0x4c2)][_0x30ef6a];let _0x5271be='';if(this[_0xa425b2(0x2d3)]['rateHP']>0x0)_0x5271be+=_0xa425b2(0x3e8)[_0xa425b2(0x325)](Math[_0xa425b2(0x312)](this[_0xa425b2(0x2d3)][_0xa425b2(0x185)]*0x64));if(this[_0xa425b2(0x2d3)]['rateHP']>0x0&&this[_0xa425b2(0x2d3)][_0xa425b2(0x1c9)]>0x0)_0x5271be+='\x20';if(this[_0xa425b2(0x2d3)][_0xa425b2(0x1c9)]>0x0)_0x5271be+='+%1'['format'](this[_0xa425b2(0x2d3)][_0xa425b2(0x1c9)]);return _0x5271be;},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x4d9)]=function(_0x163814,_0x2b7efb,_0x289673){const _0x4b7c00=_0x23d1fb,_0x265bb5=_0x4b7c00(0x362);if(this['_itemData'][_0x4b7c00(0x1a0)]<=0x0&&this[_0x4b7c00(0x2d3)][_0x4b7c00(0x3d1)]<=0x0&&!this[_0x4b7c00(0x4c2)][_0x265bb5])return![];const _0x521577=this[_0x4b7c00(0x279)]();this[_0x4b7c00(0x34f)](_0x521577,_0x163814,_0x2b7efb,_0x289673,!![]);const _0x2388fe=this[_0x4b7c00(0x25f)]();return this[_0x4b7c00(0x391)](ColorManager[_0x4b7c00(0x304)](0x3)),this[_0x4b7c00(0x34f)](_0x2388fe,_0x163814,_0x2b7efb,_0x289673,![],_0x4b7c00(0x3cb)),this[_0x4b7c00(0x23b)](_0x163814,_0x2b7efb,_0x289673),this[_0x4b7c00(0x425)](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x279)]=function(){const _0x36d559=_0x23d1fb,_0x2770e9=VisuMZ[_0x36d559(0x248)]['Settings']['StatusWindow']['LabelRecoverMP'];return _0x2770e9['format'](TextManager['mp']);},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x25f)]=function(){const _0x4d96cc=_0x23d1fb,_0x184e93=_0x4d96cc(0x362);if(this[_0x4d96cc(0x4c2)][_0x184e93])return this['_customItemInfo'][_0x184e93];let _0x464b4d='';if(this[_0x4d96cc(0x2d3)][_0x4d96cc(0x1a0)]>0x0)_0x464b4d+=_0x4d96cc(0x3e8)[_0x4d96cc(0x325)](Math[_0x4d96cc(0x312)](this[_0x4d96cc(0x2d3)]['rateMP']*0x64));if(this['_itemData'][_0x4d96cc(0x1a0)]>0x0&&this[_0x4d96cc(0x2d3)][_0x4d96cc(0x3d1)]>0x0)_0x464b4d+='\x20';if(this[_0x4d96cc(0x2d3)][_0x4d96cc(0x3d1)]>0x0)_0x464b4d+='+%1'['format'](this[_0x4d96cc(0x2d3)][_0x4d96cc(0x3d1)]);return _0x464b4d;},Window_ShopStatus[_0x23d1fb(0x241)]['drawItemEffectsTpRecovery']=function(_0x2805a8,_0x17bbbf,_0x9d8b42){const _0x489939=_0x23d1fb,_0x2302fa=_0x489939(0x410);if(this['_itemData'][_0x489939(0x400)]<=0x0&&!this['_customItemInfo'][_0x2302fa])return![];const _0x36edc6=this[_0x489939(0x3cd)]();this[_0x489939(0x34f)](_0x36edc6,_0x2805a8,_0x17bbbf,_0x9d8b42,!![]);const _0x106e4e=this[_0x489939(0x2d6)]();return this[_0x489939(0x391)](ColorManager[_0x489939(0x3b0)]()),this[_0x489939(0x34f)](_0x106e4e,_0x2805a8,_0x17bbbf,_0x9d8b42,![],_0x489939(0x3cb)),this[_0x489939(0x23b)](_0x2805a8,_0x17bbbf,_0x9d8b42),this['resetFontSettings'](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x3cd)]=function(){const _0x4c87d8=_0x23d1fb,_0x46f13a=VisuMZ[_0x4c87d8(0x248)][_0x4c87d8(0x357)][_0x4c87d8(0x4c6)][_0x4c87d8(0x3be)];return _0x46f13a[_0x4c87d8(0x325)](TextManager['tp']);},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x2d6)]=function(){const _0x219dcb=_0x23d1fb,_0x314ab7=_0x219dcb(0x410);if(this[_0x219dcb(0x4c2)][_0x314ab7])return this[_0x219dcb(0x4c2)][_0x314ab7];let _0x5ab2d5='';return _0x5ab2d5+='+%1'[_0x219dcb(0x325)](this[_0x219dcb(0x2d3)][_0x219dcb(0x400)]),_0x5ab2d5;},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x372)]=function(_0x6e3ed6,_0x1bcb0a,_0x21bf7e){const _0x579425=_0x23d1fb,_0x1af22a=_0x579425(0x214);if(this[_0x579425(0x2d3)][_0x579425(0x35b)]===0x0&&!this['_customItemInfo'][_0x1af22a])return![];const _0x3fbc70=this['getItemEffectsSelfTpGainLabel']();this[_0x579425(0x34f)](_0x3fbc70,_0x6e3ed6,_0x1bcb0a,_0x21bf7e,!![]);const _0x21dc3b=this[_0x579425(0x1eb)]();return this['_itemData'][_0x579425(0x35b)]>0x0?this['changeTextColor'](ColorManager[_0x579425(0x3b0)]()):this['changeTextColor'](ColorManager[_0x579425(0x2ec)]()),this[_0x579425(0x34f)](_0x21dc3b,_0x6e3ed6,_0x1bcb0a,_0x21bf7e,![],_0x579425(0x3cb)),this[_0x579425(0x23b)](_0x6e3ed6,_0x1bcb0a,_0x21bf7e),this[_0x579425(0x425)](),!![];},Window_ShopStatus[_0x23d1fb(0x241)]['getItemEffectsSelfTpGainLabel']=function(){const _0x1965f5=_0x23d1fb,_0x5e6b54=VisuMZ[_0x1965f5(0x248)][_0x1965f5(0x357)]['StatusWindow'][_0x1965f5(0x4f6)];return _0x5e6b54['format'](TextManager['tp']);},Window_ShopStatus['prototype'][_0x23d1fb(0x1eb)]=function(){const _0x5c6276=_0x23d1fb,_0x34af3e='USER\x20TP\x20GAIN';if(this[_0x5c6276(0x4c2)][_0x34af3e])return this[_0x5c6276(0x4c2)][_0x34af3e];let _0x28a409='';return this['_itemData'][_0x5c6276(0x35b)]>0x0?_0x28a409+='+%1'[_0x5c6276(0x325)](this[_0x5c6276(0x2d3)][_0x5c6276(0x35b)]):_0x28a409+='%1'[_0x5c6276(0x325)](this[_0x5c6276(0x2d3)]['selfTP']),_0x28a409;},Window_ShopStatus['prototype'][_0x23d1fb(0x1b3)]=function(_0x506240,_0x29203c,_0x2139d5){const _0x2e46de=_0x23d1fb,_0x5a347c=_0x2e46de(0x2bd);if(this[_0x2e46de(0x2d3)][_0x2e46de(0x185)]>=0x0&&this[_0x2e46de(0x2d3)][_0x2e46de(0x1c9)]>=0x0&&!this[_0x2e46de(0x4c2)][_0x5a347c])return![];const _0xeae13a=this[_0x2e46de(0x4c3)]();this[_0x2e46de(0x34f)](_0xeae13a,_0x506240,_0x29203c,_0x2139d5,!![]);const _0x2a8461=this[_0x2e46de(0x39e)]();return this['changeTextColor'](ColorManager[_0x2e46de(0x304)](0x0)),this[_0x2e46de(0x34f)](_0x2a8461,_0x506240,_0x29203c,_0x2139d5,![],_0x2e46de(0x3cb)),this['drawItemDarkRect'](_0x506240,_0x29203c,_0x2139d5),this[_0x2e46de(0x425)](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x4c3)]=function(){const _0x1b3615=_0x23d1fb,_0x199a4d=VisuMZ[_0x1b3615(0x248)][_0x1b3615(0x357)][_0x1b3615(0x4c6)][_0x1b3615(0x251)];return _0x199a4d[_0x1b3615(0x325)](TextManager['hp']);},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x39e)]=function(){const _0x20cf1e=_0x23d1fb,_0x5d028b=_0x20cf1e(0x2bd);if(this[_0x20cf1e(0x4c2)][_0x5d028b])return this[_0x20cf1e(0x4c2)][_0x5d028b];let _0x5be85d='';if(this[_0x20cf1e(0x2d3)][_0x20cf1e(0x185)]<0x0)_0x5be85d+=_0x20cf1e(0x3de)['format'](Math['floor'](this[_0x20cf1e(0x2d3)][_0x20cf1e(0x185)]*0x64));if(this[_0x20cf1e(0x2d3)][_0x20cf1e(0x185)]<0x0&&this[_0x20cf1e(0x2d3)][_0x20cf1e(0x1c9)]<0x0)_0x5be85d+='\x20';if(this[_0x20cf1e(0x2d3)][_0x20cf1e(0x1c9)]<0x0)_0x5be85d+='%1'[_0x20cf1e(0x325)](this[_0x20cf1e(0x2d3)][_0x20cf1e(0x1c9)]);return _0x5be85d;},Window_ShopStatus[_0x23d1fb(0x241)]['drawItemEffectsMpDamage']=function(_0x39fefe,_0x11e283,_0x417e86){const _0xee56da=_0x23d1fb,_0x25ebba=_0xee56da(0x485);if(this['_itemData'][_0xee56da(0x1a0)]>=0x0&&this[_0xee56da(0x2d3)][_0xee56da(0x3d1)]>=0x0&&!this[_0xee56da(0x4c2)][_0x25ebba])return![];const _0x3a40bc=this[_0xee56da(0x370)]();this[_0xee56da(0x34f)](_0x3a40bc,_0x39fefe,_0x11e283,_0x417e86,!![]);const _0x444a51=this[_0xee56da(0x342)]();return this[_0xee56da(0x391)](ColorManager[_0xee56da(0x304)](0x2)),this['drawItemKeyData'](_0x444a51,_0x39fefe,_0x11e283,_0x417e86,![],_0xee56da(0x3cb)),this[_0xee56da(0x23b)](_0x39fefe,_0x11e283,_0x417e86),this[_0xee56da(0x425)](),!![];},Window_ShopStatus['prototype'][_0x23d1fb(0x370)]=function(){const _0x385659=_0x23d1fb,_0x53b6c8=VisuMZ[_0x385659(0x248)][_0x385659(0x357)][_0x385659(0x4c6)]['LabelDamageMP'];return _0x53b6c8[_0x385659(0x325)](TextManager['mp']);},Window_ShopStatus[_0x23d1fb(0x241)]['getItemEffectsMpDamageText']=function(){const _0x1b2451=_0x23d1fb,_0x5f33e0='MP\x20DAMAGE';if(this['_customItemInfo'][_0x5f33e0])return this['_customItemInfo'][_0x5f33e0];let _0x514738='';if(this['_itemData']['rateMP']<0x0)_0x514738+='%1%'[_0x1b2451(0x325)](Math[_0x1b2451(0x312)](this[_0x1b2451(0x2d3)]['rateMP']*0x64));if(this[_0x1b2451(0x2d3)][_0x1b2451(0x1a0)]<0x0&&this[_0x1b2451(0x2d3)][_0x1b2451(0x3d1)]<0x0)_0x514738+='\x20';if(this[_0x1b2451(0x2d3)][_0x1b2451(0x3d1)]<0x0)_0x514738+='%1'['format'](this[_0x1b2451(0x2d3)][_0x1b2451(0x3d1)]);return _0x514738;},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x44e)]=function(_0x574af4,_0x3165a8,_0x51ff50){const _0x3757e5=_0x23d1fb,_0x32beb0=_0x3757e5(0x27d);if(this[_0x3757e5(0x2d3)][_0x3757e5(0x400)]>=0x0&&!this[_0x3757e5(0x4c2)][_0x32beb0])return![];const _0x4727fe=this[_0x3757e5(0x1af)]();this[_0x3757e5(0x34f)](_0x4727fe,_0x574af4,_0x3165a8,_0x51ff50,!![]);const _0x2bb59f=this[_0x3757e5(0x1e4)]();return this['changeTextColor'](ColorManager['powerDownColor']()),this[_0x3757e5(0x34f)](_0x2bb59f,_0x574af4,_0x3165a8,_0x51ff50,![],_0x3757e5(0x3cb)),this[_0x3757e5(0x23b)](_0x574af4,_0x3165a8,_0x51ff50),this[_0x3757e5(0x425)](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x1af)]=function(){const _0x9688a=_0x23d1fb,_0x963e91=VisuMZ[_0x9688a(0x248)][_0x9688a(0x357)][_0x9688a(0x4c6)][_0x9688a(0x293)];return _0x963e91[_0x9688a(0x325)](TextManager['tp']);},Window_ShopStatus[_0x23d1fb(0x241)]['getItemEffectsTpDamageText']=function(){const _0x2ec937=_0x23d1fb,_0x91b26d=_0x2ec937(0x27d);if(this[_0x2ec937(0x4c2)][_0x91b26d])return this[_0x2ec937(0x4c2)][_0x91b26d];let _0x5f0f84='';return _0x5f0f84+='%1'[_0x2ec937(0x325)](this[_0x2ec937(0x2d3)][_0x2ec937(0x400)]),_0x5f0f84;},Window_ShopStatus[_0x23d1fb(0x241)]['drawItemEffectsAddedStatesBuffs']=function(_0xf183b6,_0x21243d,_0x3be268){const _0x394abb=_0x23d1fb,_0x55389d=_0x394abb(0x268);if(!this[_0x394abb(0x2d3)][_0x394abb(0x388)]&&!this[_0x394abb(0x4c2)][_0x55389d])return![];const _0x5de859=this['getItemEffectsAddedStatesBuffsLabel']();this[_0x394abb(0x34f)](_0x5de859,_0xf183b6,_0x21243d,_0x3be268,!![]);const _0x95ac87=this['getItemEffectsAddedStatesBuffsText']();return this[_0x394abb(0x34f)](_0x95ac87,_0xf183b6,_0x21243d,_0x3be268,![],_0x394abb(0x3cb)),this['drawItemDarkRect'](_0xf183b6,_0x21243d,_0x3be268),this[_0x394abb(0x425)](),!![];},Window_ShopStatus['prototype'][_0x23d1fb(0x188)]=function(){const _0xda78a0=_0x23d1fb;return VisuMZ[_0xda78a0(0x248)]['Settings'][_0xda78a0(0x4c6)][_0xda78a0(0x2ed)];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x3e5)]=function(){const _0x32e928=_0x23d1fb,_0x3567eb=_0x32e928(0x268);if(this[_0x32e928(0x4c2)][_0x3567eb])return this[_0x32e928(0x4c2)][_0x3567eb];let _0x133d53='',_0x17d287=0x0;const _0x215efc=0x8;for(const _0x1e0079 of this[_0x32e928(0x2d3)]['addState']){const _0xf3547c=$dataStates[_0x1e0079];if(_0xf3547c&&_0xf3547c[_0x32e928(0x3c9)]>0x0){_0x133d53+=_0x32e928(0x439)[_0x32e928(0x325)](_0xf3547c[_0x32e928(0x3c9)]),_0x17d287++;if(_0x17d287>=_0x215efc)return _0x133d53;}}for(let _0x572819=0x0;_0x572819<this[_0x32e928(0x2d3)][_0x32e928(0x1c3)][_0x32e928(0x401)];_0x572819++){const _0x5d28c1=this[_0x32e928(0x2d3)][_0x32e928(0x1c3)][_0x572819],_0x357959=Game_BattlerBase['prototype'][_0x32e928(0x511)](_0x5d28c1,_0x572819);if(_0x357959>0x0){_0x133d53+=_0x32e928(0x439)['format'](_0x357959),_0x17d287++;if(_0x17d287>=_0x215efc)return _0x133d53;}}return _0x133d53;},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x1fa)]=function(_0x294b83,_0x4e7a04,_0x5b165c){const _0x4087e9=_0x23d1fb,_0x21cc77=_0x4087e9(0x47b);if(!this[_0x4087e9(0x2d3)]['removeStateBuffChanges']&&!this[_0x4087e9(0x4c2)][_0x21cc77])return![];const _0x583608=this[_0x4087e9(0x473)]();this[_0x4087e9(0x34f)](_0x583608,_0x294b83,_0x4e7a04,_0x5b165c,!![]);const _0x135e31=this[_0x4087e9(0x310)]();return this[_0x4087e9(0x34f)](_0x135e31,_0x294b83,_0x4e7a04,_0x5b165c,![],_0x4087e9(0x3cb)),this[_0x4087e9(0x23b)](_0x294b83,_0x4e7a04,_0x5b165c),this['resetFontSettings'](),!![];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x473)]=function(){const _0x1f90ab=_0x23d1fb;return VisuMZ[_0x1f90ab(0x248)][_0x1f90ab(0x357)][_0x1f90ab(0x4c6)][_0x1f90ab(0x1d6)];},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x310)]=function(){const _0x32e9c1=_0x23d1fb,_0x21c2bc=_0x32e9c1(0x47b);if(this[_0x32e9c1(0x4c2)][_0x21c2bc])return this[_0x32e9c1(0x4c2)][_0x21c2bc];let _0x53315f='',_0xb8f311=0x0;const _0x58fe5d=VisuMZ[_0x32e9c1(0x248)][_0x32e9c1(0x357)][_0x32e9c1(0x4c6)][_0x32e9c1(0x219)];for(const _0x1108c9 of this[_0x32e9c1(0x2d3)][_0x32e9c1(0x1ae)]){const _0x71b946=$dataStates[_0x1108c9];if(_0x71b946&&_0x71b946[_0x32e9c1(0x3c9)]>0x0){_0x53315f+=_0x32e9c1(0x439)[_0x32e9c1(0x325)](_0x71b946[_0x32e9c1(0x3c9)]),_0xb8f311++;if(_0xb8f311>=_0x58fe5d)return _0x53315f;}}for(let _0x5aac15=0x0;_0x5aac15<this[_0x32e9c1(0x2d3)][_0x32e9c1(0x3ef)]['length'];_0x5aac15++){const _0x3991f0=Game_BattlerBase[_0x32e9c1(0x241)]['buffIconIndex'](0x1,_0x5aac15);if(_0x3991f0>0x0){_0x53315f+=_0x32e9c1(0x439)['format'](_0x3991f0),_0xb8f311++;if(_0xb8f311>=_0x58fe5d)return _0x53315f;}}for(let _0x2b076b=0x0;_0x2b076b<this[_0x32e9c1(0x2d3)]['removeDebuff'][_0x32e9c1(0x401)];_0x2b076b++){const _0x341ae5=Game_BattlerBase[_0x32e9c1(0x241)][_0x32e9c1(0x511)](-0x1,_0x2b076b);if(_0x341ae5>0x0){_0x53315f+=_0x32e9c1(0x439)[_0x32e9c1(0x325)](_0x341ae5),_0xb8f311++;if(_0xb8f311>=_0x58fe5d)return _0x53315f;}}return _0x53315f;},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x42f)]=function(_0x128996,_0x27031d,_0x3ca65e){const _0xa4ef0=_0x23d1fb;if(this[_0xa4ef0(0x2bc)]['note'][_0xa4ef0(0x2fc)](/<CUSTOM STATUS INFO>\s*([\s\S]*)\s*<\/CUSTOM STATUS INFO>/i)){const _0x1c17cc=String(RegExp['$1'])[_0xa4ef0(0x504)](/[\r\n]+/);for(const _0x141603 of _0x1c17cc){if(_0x141603['match'](/(.*):[ ](.*)/i)){const _0x433f98=String(RegExp['$1'])['trim'](),_0x446b46=String(RegExp['$2'])[_0xa4ef0(0x432)]();this[_0xa4ef0(0x2a4)](_0x433f98,_0x446b46,_0x128996,_0x27031d,_0x3ca65e),_0x27031d+=this[_0xa4ef0(0x314)]();}}}return this[_0xa4ef0(0x425)](),_0x27031d;},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x2a4)]=function(_0x26cdb0,_0x237122,_0x3e5b10,_0x6b659b,_0x51aaed){const _0x28a9a7=_0x23d1fb;this[_0x28a9a7(0x34f)](_0x26cdb0,_0x3e5b10,_0x6b659b,_0x51aaed,!![]),this[_0x28a9a7(0x34f)](_0x237122,_0x3e5b10,_0x6b659b,_0x51aaed,![],_0x28a9a7(0x3cb)),this[_0x28a9a7(0x23b)](_0x3e5b10,_0x6b659b,_0x51aaed),this[_0x28a9a7(0x425)]();},Window_ShopStatus[_0x23d1fb(0x241)]['drawCustomShopGraphic']=function(){const _0x586e73=_0x23d1fb;if(!this[_0x586e73(0x2bc)])return;const _0x2e0b52=this['_item'][_0x586e73(0x4fe)],_0x1e3dfd=/<SHOP (?:PICTURE|IMAGE|PICTURE NAME|PICTURE FILENAME|IMAGE NAME|IMAGE FILENAME):[ ](.*)>/gi,_0x3363cb=_0x2e0b52[_0x586e73(0x2fc)](_0x1e3dfd);if(_0x3363cb)for(const _0x492186 of _0x3363cb){_0x492186['match'](_0x1e3dfd);const _0xf4b8c=String(RegExp['$1'])['trim']()||'';if(_0xf4b8c==='')continue;const _0x52f9a2=ImageManager[_0x586e73(0x239)](_0xf4b8c);_0x52f9a2[_0x586e73(0x20c)](this[_0x586e73(0x30d)][_0x586e73(0x36d)](this,_0x52f9a2,this[_0x586e73(0x2bc)]));}},Window_ShopStatus[_0x23d1fb(0x241)][_0x23d1fb(0x30d)]=function(_0x347f6e,_0x2c394b){const _0x35dc63=_0x23d1fb;if(this[_0x35dc63(0x2bc)]!==_0x2c394b)return;if(!_0x347f6e)return;if(_0x347f6e[_0x35dc63(0x3f4)]<=0x0||_0x347f6e['height']<=0x0)return;const _0x26e9da=_0x2c394b['note'];let _0x2c356b=_0x35dc63(0x19d);_0x26e9da[_0x35dc63(0x2fc)](/<SHOP (?:PICTURE|IMAGE) LAYER:[ ]FOREGROUND>/i)&&(_0x2c356b=_0x35dc63(0x33e));const _0x53aad3=_0x2c356b==='background'?this[_0x35dc63(0x4bf)]:this['contents'];let _0x3d1353=this[_0x35dc63(0x4a8)],_0x22ae48=this[_0x35dc63(0x270)];_0x26e9da['match'](/<SHOP (?:PICTURE|IMAGE) MAX WIDTH:[ ](\d+)>/i)&&(_0x3d1353=Number(RegExp['$1']));_0x26e9da[_0x35dc63(0x2fc)](/<SHOP (?:PICTURE|IMAGE) MAX HEIGHT:[ ](\d+)>/i)&&(_0x22ae48=Number(RegExp['$1']));_0x26e9da[_0x35dc63(0x2fc)](/<SHOP (?:PICTURE|IMAGE) MAX DIMENSIONS:[ ](\d+),[ ]*(\d+)>/i)&&(_0x3d1353=Number(RegExp['$1']),_0x22ae48=Number(RegExp['$2']));const _0x1300be=Math['min'](0x1,_0x3d1353/_0x347f6e[_0x35dc63(0x3f4)],_0x22ae48/_0x347f6e[_0x35dc63(0x1f9)]);let _0x1fb58c=0x0,_0x4c6037=0x0,_0x3b6ef5=Math[_0x35dc63(0x312)](_0x347f6e[_0x35dc63(0x3f4)]*_0x1300be),_0x4e4a67=Math[_0x35dc63(0x312)](_0x347f6e['height']*_0x1300be),_0x1e5f6e=_0x35dc63(0x1db);_0x26e9da[_0x35dc63(0x2fc)](/<SHOP (?:PICTURE|IMAGE) (?:ALIGN|ALIGNMENT):[ ](LEFT|CENTER|RIGHT)>/i)&&(_0x1e5f6e=String(RegExp['$1'])[_0x35dc63(0x1bf)]()['trim']());if(_0x1e5f6e==='left')_0x1fb58c=0x0;else _0x1e5f6e==='center'?_0x1fb58c=Math['round']((this[_0x35dc63(0x4a8)]-_0x3b6ef5)/0x2):_0x1fb58c=this[_0x35dc63(0x4a8)]-_0x3b6ef5;let _0x33c6dd='middle';_0x26e9da[_0x35dc63(0x2fc)](/<SHOP (?:PICTURE|IMAGE) POSITION:[ ](TOP|MIDDLE|BOTTOM)>/i)&&(_0x33c6dd=String(RegExp['$1'])['toLowerCase']()[_0x35dc63(0x432)]());if(_0x33c6dd===_0x35dc63(0x43a))_0x4c6037=0x0;else _0x33c6dd==='middle'?_0x4c6037=Math['round']((this[_0x35dc63(0x270)]-_0x4e4a67)/0x2):_0x4c6037=this[_0x35dc63(0x270)]-_0x4e4a67;_0x26e9da['match'](/<SHOP (?:PICTURE|IMAGE) OFFSET X:[ ]([\+\-]\d+)>/i)&&(_0x1fb58c+=Number(RegExp['$1']));_0x26e9da['match'](/<SHOP (?:PICTURE|IMAGE) OFFSET Y:[ ]([\+\-]\d+)>/i)&&(_0x4c6037+=Number(RegExp['$1']));_0x26e9da[_0x35dc63(0x2fc)](/<SHOP (?:PICTURE|IMAGE) OFFSET:[ ]([\+\-]\d+),[ ]*([\+\-]\d+)>/i)&&(_0x1fb58c+=Number(RegExp['$1']),_0x4c6037+=Number(RegExp['$2']));let _0x43f8ce=0xff;if(_0x26e9da[_0x35dc63(0x2fc)](/<SHOP (?:PICTURE|IMAGE) OPACITY:[ ](\d+)>/i))_0x43f8ce=Number(RegExp['$1']);else _0x26e9da[_0x35dc63(0x2fc)](/<SHOP (?:PICTURE|IMAGE) OPACITY:[ ](\d+)([%％])>/i)&&(_0x43f8ce=Math[_0x35dc63(0x291)](Number(RegExp['$1'])*0.01*0xff)[_0x35dc63(0x3b7)](0x0,0xff));_0x53aad3['paintOpacity']=_0x43f8ce,_0x53aad3[_0x35dc63(0x1b8)](_0x347f6e,0x0,0x0,_0x347f6e['width'],_0x347f6e[_0x35dc63(0x1f9)],_0x1fb58c,_0x4c6037,_0x3b6ef5,_0x4e4a67),_0x53aad3[_0x35dc63(0x4f7)]=0xff;};function _0x198d(){const _0x48771e=['ARRAYSTRUCT','mhp','Translucent','adjustHiddenShownGoods','changeEquipById','Window_ItemList_colSpacing','setValue','DEF','getItemRepeatsText','ARRAYFUNC','_itemWindow','ItemMenuStatusRect','getItemsEquipsCoreBackColor1','_bypassNewLabel','drawUpdatedParamName','Scene_Equip_helpWindowRect','commandNameWindowDrawText','drawing','isClearCommandAdded','wtypeId','Scene_Boot_onDatabaseLoaded','getItemEffectsRemovedStatesBuffsLabel','DrawEquipData','clear','CmdIconSell','ParamChangeFontSize','setObject','optimize','Scope%1','REMOVED\x20EFFECTS','isHandled','drawParamText','helpAreaTop','createStatusWindow','activateItemWindow','ARRAYEVAL','checkShiftRemoveShortcut','drawItemQuantity','weapon','MP\x20DAMAGE','categoryNameWindowCenter','Scene_Equip_itemWindowRect','drawItemCost','Scene_Shop_onCategoryCancel','drawIcon','item-%1','uiMenuStyle','_categoryWindow','Window_EquipStatus_refresh','setupItemDamageTempActors','commandNameWindowCenter','paramValueByName','drawActorParamDifference','getItemOccasionText','isSoleWeaponType','buttonAssistText2','SellPriceJS','armors','meetsItemConditionsJS','List','makeItemData','isOpenAndActive','Window_ItemList_updateHelp','Actors','13714IZtsmc','icon','mainFontSize','isGoodShown','helpWindowRectItemsEquipsCore','itemWindowRectItemsEquipsCore','possession','parameters','CmdHideDisabled','battleMembers','innerWidth','onTouchCancel','FontFace','Scene_Item_create','armor-%1','isWeapon','equipAdjustHpMp','FadeSpeed','numItems','VisuMZ_1_SkillsStatesCore','setHp','drawItemEffectsMpDamage','_equips','Game_Party_setupBattleTestItems_artifact','systemColor','ConvertParams','commandBuyItemsEquipsCore','exit','6647292sxfTfn','addCommand','Window_ItemList_maxCols','Scene_Equip_onSlotOk','_newLabelOpacity','contentsBack','CommandAddClear','LayoutStyle','_customItemInfo','getItemEffectsHpDamageLabel','_slotWindow','setBackgroundType','StatusWindow','FieldUsable','_armorIDs','commandStyleCheck','onTouchOk','buttonAssistText3','left','getItemConsumableText','artifacts','getNextAvailableEtypeId','drawTextEx','Scene_Shop_commandSell','Scene_Equip_slotWindowRect','isOptimizeCommandEnabled','hide','CmdIconOptimize','setNewItem','create','drawUpdatedAfterParamValue','drawItemEffectsMpRecovery','ARRAYJSON','removeBattleTestArtifacts','scrollTo','ITEMS_EQUIPS_CORE','refreshActorEquipSlotsIfUpdated','buttonAssistText1','isOptimizeEquipOk','clearEquipments','updateChangedSlots','occasion','getMenuImage','deselect','calcWindowHeight','Scene_Shop_activateSellWindow','_allowArtifactParamBase','DrawIcons','isBuyCommandEnabled','BuyPriceJS','onDatabaseLoaded','remove','repeats','_data','createCommandWindow','updateHelp','_newLabelOpacityChange','forceChangeEquipSlots','refreshCursor','addCancelCommand','LabelSelfGainTP','paintOpacity','EFFECT_ADD_BUFF','OffsetY','buttonAssistSlotWindowShift','bitmap','Param','Style','note','_buyWindowLastIndex','translucentOpacity','addOptimizeCommand','EFFECT_GAIN_TP','FadeLimit','split','uiHelpPosition','mainCommandWidth','forceChangeEquip','playEquip','Speed2000','Scene_Shop_onBuyOk','createCommandNameWindow','W%1','itemDataFontSize','updateSmoothScroll','hideNewLabelSprites','successRate','buffIconIndex','Game_Actor_changeEquip','1285144yHLfla','_resetFontSize','QUANTITY','reloadMapIfUpdated','ItemQuantityFmt','updateMoneyAmount','Game_Actor_artifact','addBuyCommand','processCursorMove','commandStyle','(+%1)','characterName','initNewItemsList','CannotEquipMarker','onSellOkItemsEquipsCore','drawItemNumber','down','isRepeated','mpRate','getWeaponIdWithName','Game_Party_gainItem','EquipAdjustHpMp','pageup','value1','isEquipItem','setStatusWindow','updateCommandNameWindow','setHelpWindow','refreshItemsEquipsCoreNoMenuImage','isClearCommandEnabled','paramValueFontSize','_bypassProxy','rateHP','isShiftRemoveShortcutEnabled','Damage\x20Formula\x20Error\x20for\x20%1','getItemEffectsAddedStatesBuffsLabel','%1\x27s\x20version\x20does\x20not\x20match\x20plugin\x27s.\x20Please\x20update\x20it\x20in\x20the\x20Plugin\x20Manager.','getItemSpeedLabel','EquipParams','Scene_Shop_onBuyCancel','Scene_Shop_onSellOk','<%1:[\x20]([\x5c+\x5c-]\x5cd+)>','drawItemData','(%1)','isHoverEnabled','normalColor','isProxyItem','categoryItemTypes','mainAreaTop','_newLabelOpacityUpperLimit','processCursorSpecialCheckModernControls','buy','getItemEffects','BackRectColor','Game_Enemy_traitObjects_artifact','buttonAssistKey3','background','CmdIconClear','show','rateMP','DAMAGE\x20MULTIPLIER','drawItemName','keyItem','Game_Item_setObject','categoryNameWindowDrawText','MaxWeapons','ShopMenuStatusStandard','initNewLabelSprites','gaugeLineHeight','_scrollDuration','equipTypes','isItem','Parse_Notetags_ParamValues','removeState','getItemEffectsTpDamageLabel','Scene_Shop_prepare','SwitchID','processHandling','drawItemEffectsHpDamage','optimizeCmdDesc','getItemsEquipsCoreBackColor2','onCategoryCancelItemsEquipsCore','11130TVPXqa','blt','popScene','getInputButtonString','drawRemoveItem','getMatchingInitEquip','Window_ShopCommand_initialize','_weaponIDs','toLowerCase','JSON','concat','HIT\x20TYPE','changeBuff','statusWindowRectItemsEquipsCore','contents','TextAlign','itemTextAlign','Step1Start','flatHP','forceResetEquipSlots','Scene_Shop_buyWindowRect','Speed0','updateCategoryNameWindow','isUseParamNamesWithIcons','Scene_Item_createItemWindow','createBitmap','_bypassReleaseUnequippableItemsItemsEquipsCore','Game_BattlerBase_param_artifact','currencyUnit','STRUCT','sellingPrice','LabelRemove','opacity','Remove\x20all\x20available\x20equipment.','bestEquipItem','SCOPE','center','loadFaceImages','push','EnableLayout','buyWindowRectItemsEquipsCore','Scene_Shop_commandWindowRect','Game_Party_gainItem_artifact','description','getTextColor','getItemEffectsTpDamageText','DrawPortraitJS','nonRemovableEtypes','Scene_Equip_createSlotWindow','Blacklist','SpeedNeg2000','Parse_Notetags_Category','getItemEffectsSelfTpGainText','Game_BattlerBase_param','geUpdatedLayoutStatusWidth','SetupProxyItemGroups','onBuyCancelItemsEquipsCore','status','constructor','ConvertNumberToString','Scene_Shop_helpWindowRect','allowCommandWindowCursorUp','CmdIconBuy','createItemWindow','drawItemHitType','200715VoBmpn','height','drawItemEffectsRemovedStatesBuffs','itemEnableJS','textSizeEx','allowCreateStatusWindow','RegExp','isNewItem','isShowNew','Scene_Shop_sellWindowRect','Game_Party_initialize','_slotId','number','getItemScopeText','Parse_Notetags_EquipSlots','_numberWindow','getItemConsumableLabel','numberWindowRectItemsEquipsCore','ParseItemNotetags','helpWindowRect','addLoadListener','numberWindowRect','CmdTextAlign','values','dataId','Icon','money','makeDeepCopy','USER\x20TP\x20GAIN','itemAt','helpDesc','EFFECT_ADD_STATE','_tempActorB','MaxIcons','playBuzzerSound','_itemIDs','_goodsCount','_sellWindow','categoryWindowRect','AllWeapons','isPressed','cursorPageup','isEquipCommandAdded','Window_ItemList_item','_shopStatusMenuAlly','createSlotWindow','canUse','Game_Actor_paramPlus','buttonAssistKey2','buttonAssistItemListRequirement','maxItems','buttonAssistCategory','_helpWindow','postCreateSellWindowItemsEquipsCore','atypeId','pagedown','_doubleTouch','helpAreaHeight','PurchaseOnly','onMenuImageLoad','processDrawIcon','active','meetsItemConditionsNotetags','onCategoryCancel','updatedLayoutStyle','loadPicture','isUseItemsEquipsCoreUpdatedLayout','drawItemDarkRect','maxItemAmount','helpDescriptionText','setTopRow','isEquipped','prepare','prototype','params','isSellCommandEnabled','isTriggered','drawItemStyleIcon','Scene_Shop_doBuy','Window_ShopBuy_price','ItemsEquipsCore','ExtDisplayedParams','getItemDamageElementText','BorderRegExp','RegularItems','_statusWindow','paramJS','Window_Selectable_initialize','commandNameWindowDrawBackground','LabelDamageHP','STR','isSoleArmorType','fontSizeRatio','_actor','NoChangeMarker','parse','Scene_Shop_onSellCancel','Scene_Equip_onSlotCancel','isPageChangeRequested','goldWindowRectItemsEquipsCore','commandWindowRect','toUpperCase','checkItemConditionsSwitchNotetags','getItemEffectsMpRecoveryText','isHovered','pop','iconText','Scene_Shop_numberWindowRect','maxCols','buttonAssistSmallIncrement','drawItemEffectsTpRecovery','createNewLabelSprite','ADDED\x20EFFECTS','Scene_Shop_categoryWindowRect','drawUpdatedParamValueDiff','determineBaseSellingPrice','elementId','isPlaytest','playCursorSound','categoryList','innerHeight','CmdIconEquip','KeyItemProtect','LabelHitType','smallParamFontSize','ELEMENT','index','AlwaysUsable','isOptimizeCommandAdded','getItemEffectsMpRecoveryLabel','doSell','Game_Actor_discardEquip','revertGlobalNamespaceVariables','TP\x20DAMAGE','uiInputPosition','getItemIdWithName','process_VisuMZ_ItemsEquipsCore_RegExp','Scene_ItemBase_activateItemWindow','auto','postCreateItemWindowModernControls','makeCommandList','name','HP\x20RECOVERY','setItemWindow','armor','HiddenItemA','processShiftRemoveShortcut','drawCurrencyValue','categoryWindowRectItemsEquipsCore','prepareItemCustomData','drawItemEquipType','isDrawItemNumber','getDamageStyle','round','HitType%1','LabelDamageTP','×%1','mainAreaHeight','textColor','VisuMZ_0_CoreEngine','AlreadyEquipMarker','anyEmptyEquipSlotsOfSameEtype','resetTextColor','ShiftShortcutKey','addState','isCancelled','drawNewLabelText','ceil','allowShiftScrolling','visible','buyWindowRect','itemHasEquipLimit','drawItemCustomEntryLine','itemPadding','slotWindowRect','weapon-%1','getItemQuantityText','SwitchSell','setupBattleTestItems','cursorPagedown','process_VisuMZ_ItemsEquipsCore_Notetags','4145888JDElcX','Scene_Equip_onActorChange','troopArtifacts','categoryNameWindowDrawBackground','ScopeRandomAllies','FUNC','text','_forcedSlots','smoothScrollTo','_scene','atk','cursorLeft','Window_ShopBuy_refresh','gaugeBackColor','isArmor','_item','HP\x20DAMAGE','Scene_Item_itemWindowRect','convertInitEquipsToItems','fill','_handlers','callUpdateHelp','mmp','drawItemEffectsHpRecovery','isEquipCommandEnabled','_newLabelSprites','Game_Party_numItems','MultiplierStandard','currentSymbol','Scene_Equip_commandEquip','VisuMZ_1_BattleCore','textWidth','sellPriceOfItem','equipSlotIndex','processTouchModernControls','0000','tradeItemWithParty','_buyWindow','_itemData','sellWindowRectItemsEquipsCore','itypeId','getItemEffectsTpRecoveryText','Scene_Equip_commandWindowRect','_allowArtifactTraitObjects','addSellCommand','Speed1000','DrawBackRect','loseItem','canConsumeItem','isArtifact','drawParamsItemsEquipsCore','max','categoryStyle','tpGain','user','drawItemStyleIconText','placeItemNewLabel','getItemColor','CmdCancelRename','categories','_cache','elements','changeEquip','powerDownColor','LabelApply','isClicked','BattleUsable','LabelElement','addItemCategory','equip','isTroopArtifact','%1\x20is\x20missing\x20a\x20required\x20plugin.\x0aPlease\x20install\x20%2\x20into\x20the\x20Plugin\x20Manager.','SpeedNeg1999','ScopeRandomAny','4120417HQqGPH','version','Window_Selectable_update','canEquip','categoryStyleCheck','match','drawItemSuccessRate','ActorChangeEquipSlots','cancel','LabelRepeats','Game_BattlerBase_paramPlus_artifact','NonOptimizeETypes','releaseUnequippableItems','damageColor','CoreEngine','Step3End','hitIndex','MaxItems','effects','BatchShop','armorTypes','getEmptyEquipSlotOfSameEtype','drawCustomShopGraphicLoad','resetShopSwitches','getItemDamageAmountLabelBattleCore','getItemEffectsRemovedStatesBuffsText','Scene_Shop_doSell','floor','newLabelEnabled','lineHeight','playOkSound','getItemSuccessRateLabel','paramchangeTextColor','Step2Start','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20let\x20enabled\x20=\x20true;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20const\x20user\x20=\x20this;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20const\x20target\x20=\x20this;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20const\x20a\x20=\x20this;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20const\x20b\x20=\x20this;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20try\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20%1\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x20catch\x20(e)\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20if\x20($gameTemp.isPlaytest())\x20console.log(e);\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20return\x20enabled;\x0a\x20\x20\x20\x20\x20\x20\x20\x20','Game_BattlerBase_canEquip_artifact','_tempActor','NotConsumable','setItem','iconHeight','currentExt','item','drawItemDamageAmount','\x5cI[%1]%2','MenuPortraits','filter','format','Scene_Shop_createSellWindow','doBuy','onBuyOk','shift','ParseAllNotetags','drawItemDamage','255bFvNjT','#%1','createSellWindow','%1-%2','isRightInputMode','FontSize','onTouchSelectModern','New','buyingPrice','onBuyCancel','statusWindowRect','commandEquip','consumable','ActorResetEquipSlots','getItemDamageAmountLabel','Text','_calculatingJSParameters','LUK','foreground','splice','isOpen','drawText','getItemEffectsMpDamageText','LabelRecoverHP','map','Step1End','sellPriceRate','_newItemsList','cursorRight','Scene_Item_categoryWindowRect','EFFECT_RECOVER_MP','Step2End','Scene_Load_reloadMapIfUpdated','processCursorMoveModernControls','_category','drawItemKeyData','%1\x20is\x20incorrectly\x20placed\x20on\x20the\x20plugin\x20list.\x0aIt\x20is\x20a\x20Tier\x20%2\x20plugin\x20placed\x20over\x20other\x20Tier\x20%3\x20plugins.\x0aPlease\x20reorder\x20the\x20plugin\x20list\x20from\x20smallest\x20to\x20largest\x20tier\x20numbers.','isCursorMovable','boxWidth','equip2','optKeyItemsNumber','partyArtifacts','_goods','Settings','100%','Parse_Notetags_Prices','colSpacing','selfTP','MDF','onCategoryOk','statusWidth','commandBuy','processCursorHomeEndTrigger','QoL','MP\x20RECOVERY','gainItem','getInputMultiButtonStrings','A%1','Parse_Notetags_EnableJS','Scene_Shop_create','members','drawParamName','adjustItemWidthByStatus','previousActor','FontColor','bind','cursorDown','Consumable','getItemEffectsMpDamageLabel','SetupProxyItemGroup','drawItemEffectsSelfTpGain','isClearEquipOk','_shopStatusMenuMode','EFFECT_REMOVE_BUFF','isKeyItem','paramPlus','EFFECT_REMOVE_STATE','windowPadding','currentClass','Scene_Equip_create','onTouchSelect','onTouchSelectModernControls','Window_ShopStatus_setItem','LabelConsume','Scene_Shop_buyingPrice','drawItemConsumable','ParseClassNotetags','actor','getItemSuccessRateText','ElementWeapon','isPartyArtifact','itemLineRect','addStateBuffChanges','update','defaultItemMax','getItemDamageElementLabel','onSlotOk','shouldCommandWindowExist','equips','?????','object','changeTextColor','speed','commandName','etypeId','getItemHitTypeText','IncludeShopItem','MaxMP','Window_EquipCommand_initialize','Scene_Equip_createCommandWindow','includes','Window_EquipItem_includes','getItemEffectsHpRecoveryLabel','Scene_Item_createCategoryWindow','getItemEffectsHpDamageText','_purchaseOnly','onSlotCancel','ParseArmorNotetags','initEquips','drawItemRepeats','EFFECT_REMOVE_DEBUFF','drawActorCharacter','meetsItemConditions','createCategoryWindow','loadCharacter','commandSellItemsEquipsCore','Parse_Notetags_Batch','postCreateCategoryWindowItemsEquipsCore','isBattleTest','removeDebuff','CmdStyle','EquipScene','powerUpColor','log','modifiedBuyPriceItemsEquipsCore','Window_ItemCategory_setItemWindow','_dummyWindow','paramPlusItemsEquipsCoreCustomJS','drawCustomShopGraphic','clamp','commandSell','SUCCESS\x20RATE','setCategory','addChild','drawPossession','isUseModernControls','LabelRecoverTP','param','maxVisibleItems','ItemMenuStatusBgType','paramId','refresh','ScopeAlliesButUser','getColor','isEnabled','equipSlots','isEquipChangeOk','iconIndex','removeStateBuffChanges','right','damage','getItemEffectsTpRecoveryLabel','value2','_commandNameWindow','goldWindowRect','flatMP','isStackableArtifact','sell','Step3Start','Window_ItemCategory_initialize','replace','LabelSpeed','drawItemOccasion','isSkill','addItemCategories','ShopScene','fontFace','AGI','%1%','CommandAddOptimize','ARRAYSTR','SwitchBuy','Speed1','setTempActor','Parse_Notetags_ParamJS','getItemEffectsAddedStatesBuffsText','prepareNextScene','slotWindowRectItemsEquipsCore','+%1%','isShiftShortcutKeyForRemove','smoothSelect','addClearCommand','type','EVAL','actorParams','removeBuff','Scene_Shop_goldWindowRect','_commandWindow','Window_ShopBuy_item','getItemDamageAmountTextOriginal','width','MAT','value','Scene_Equip_statusWindowRect','buttonAssistLargeIncrement','hideAdditionalSprites','addInnerChild','canShiftRemoveEquipment','getItemRepeatsLabel','buttonAssistOffset3','ItemScene','activateSellWindow','gainTP','length','isMainMenuCoreMenuImageOptionAvailable','price','Window_ShopSell_isEnabled','loadSystem','CmdIconCancel','Game_Actor_equips_artifacts','activate','fillRect','ParseWeaponNotetags','Window_EquipItem_isEnabled','isSceneShop','86tYIpkK','switchProxyItem','sellWindowRect','TP\x20RECOVERY','onSlotOkAutoSelect','NonRemoveETypes','clearNewItem','CONSUMABLE','initialize','getItemSpeedText','getProxyItem','hideDisabledCommands','weaponTypes','Scene_Item_helpWindowRect','traitObjects','indexOf','hitType','Window_Selectable_setHelpWindowItem','nonOptimizeEtypes','MANUAL','getArmorIdWithName','_categoryNameWindow','RemoveEquipText','itemWindowRect','resetFontSettings','baseSellingPrice','Width','fontSize','DamageType%1','addEquipCommand','getItemEffectsHpRecoveryText','Game_Actor_tradeItemWithParty','isCommandEnabled','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20let\x20MaxHP\x20=\x200;\x20let\x20MaxMP\x20=\x200;\x20let\x20ATK\x20=\x200;\x20let\x20DEF\x20=\x200;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20let\x20MAT\x20=\x200;\x20let\x20MDF\x20=\x200;\x20let\x20AGI\x20=\x200;\x20let\x20LUK\x20=\x200;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20const\x20user\x20=\x20this;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20const\x20target\x20=\x20this;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20const\x20a\x20=\x20this;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20const\x20b\x20=\x20this;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20try\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20%1\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x20catch\x20(e)\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20if\x20($gameTemp.isPlaytest())\x20console.log(e);\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20return\x20[MaxHP,\x20MaxMP,\x20ATK,\x20DEF,\x20MAT,\x20MDF,\x20AGI,\x20LUK][paramId];\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','drawItemCustomEntries','StatusWindowWidth','iconWidth','trim','Game_BattlerBase_meetsItemConditions','updateNewLabelOpacity','select','AllItems','postCreateItemsEquipsCore','SellPriceRate','\x5cI[%1]','top','Categories','commandWindowRectItemsEquipsCore','Game_Actor_forceChangeEquip','DrawParamJS','_list','cursorUp','KeyItems','onSellCancel','ListWindowCols','proxyItem','onSellOk','setHandler','drawNewLabelIcon','IconSet','return\x200','RemoveEquipIcon','call','buttonAssistKey1','placeNewLabel','drawItemEffectsTpDamage','deactivate','MaxArmors','_resetFontColor','setShopStatusWindowMode','drawItem','MaxHP','Window_ItemList_drawItem','isBottomHelpMode','createCategoryNameWindow','drawItemDamageElement','onActorChange','getItemDamageAmountTextBattleCore','prepareNewEquipSlotsOnLoad','changePaintOpacity','limitedPageUpDownSceneCheck'];_0x198d=function(){return _0x48771e;};return _0x198d();}
+//=============================================================================
+// Setup Plugin Parameters
+//=============================================================================
+
+var label = 'ItemsEquipsCore';
+var tier = tier || 0;
+var dependencies = [];
+var pluginData = $plugins.filter(function(p) { return p.status && p.description.includes('['+label+']') })[0];
+VisuMZ[label].Settings = VisuMZ[label].Settings || {};
+
+VisuMZ.ConvertParams = function(obj, data) {
+    for (const key in data) {
+        if (key.match(/(.*):(.*)/i)) {
+            // Key and Type
+            const objKey = String(RegExp.$1);
+            const objType = String(RegExp.$2).toUpperCase().trim();
+
+            // Parse Data
+            let value; let arr; let newData;
+            switch (objType) {
+                case 'NUM':
+                    value = data[key] !== '' ? Number(data[key]) : 0;
+                    break;
+                case 'ARRAYNUM':
+                    arr = data[key] !== '' ? JSON.parse(data[key]) : [];
+                    value = arr.map(i => Number(i));
+                    break;
+                case 'EVAL':
+                    value = data[key] !== '' ? eval(data[key]) : null;
+                    break;
+                case 'ARRAYEVAL':
+                    arr = data[key] !== '' ? JSON.parse(data[key]) : [];
+                    value = arr.map(i => eval(i));
+                    break;
+                case 'JSON':
+                    value = data[key] !== '' ? JSON.parse(data[key]) : '';
+                    break;
+                case 'ARRAYJSON':
+                    arr = data[key] !== '' ? JSON.parse(data[key]) : [];
+                    value = arr.map(i => JSON.parse(i));
+                    break;
+                case 'FUNC':
+                    value = data[key] !== '' ? new Function(JSON.parse(data[key])) : new Function('return 0');
+                    break;
+                case 'ARRAYFUNC':
+                    arr = data[key] !== '' ? JSON.parse(data[key]) : [];
+                    value = arr.map(i => new Function(JSON.parse(i)));
+                    break;
+                case 'STR':
+                    value = data[key] !== '' ? String(data[key]) : '';
+                    break;
+                case 'ARRAYSTR':
+                    arr = data[key] !== '' ? JSON.parse(data[key]) : [];
+                    value = arr.map(i => String(i));
+                    break;
+                case 'STRUCT':
+                    newData = data[key] !== '' ? JSON.parse(data[key]) : {};
+                    obj[objKey] = {};
+                    VisuMZ.ConvertParams(obj[objKey], newData);
+                    continue;
+                case 'ARRAYSTRUCT':
+                    arr = data[key] !== '' ? JSON.parse(data[key]) : [];
+                    value = arr.map(i => VisuMZ.ConvertParams({}, JSON.parse(i)));
+                    break;
+                default:
+                    continue;
+            }
+
+            // Set Value
+            obj[objKey] = value;
+        }
+    }
+    return obj;
+};
+
+((pluginData) => {
+    const name = pluginData.name;
+    // Dependency Check
+    for (const dependency of dependencies) {
+        if (!Imported[dependency]) {
+            alert('%1 is missing a required plugin.\nPlease install %2 into the Plugin Manager.'.format(name, dependency));
+            SceneManager.exit();
+            break;
+        }
+    }
+    // Description Check
+    const desc = pluginData.description;
+    // Version Check
+    if (desc.match(/\[Version[ ](.*?)\]/i)) {
+        const descVersion = Number(RegExp.$1);
+        if (descVersion !== VisuMZ[label].version) {
+            alert('%1\'s version does not match plugin\'s. Please update it in the Plugin Manager.'.format(name, descVersion));
+            SceneManager.exit();
+        }
+    }
+    // Tier Order Check
+    if (desc.match(/\[Tier[ ](\d+)\]/i)) {
+        const descTier = Number(RegExp.$1);
+        if (descTier < tier) {
+            alert('%1 is incorrectly placed on the plugin list.\nIt is a Tier %2 plugin placed over other Tier %3 plugins.\nPlease reorder the plugin list from smallest to largest tier numbers.'.format(name, descTier, tier));
+            SceneManager.exit();
+        } else {
+            tier = Math.max(descTier, tier);
+        }
+    }
+    // Convert Plugin Parameters
+    VisuMZ.ConvertParams(VisuMZ[label].Settings, pluginData.parameters);
+
+})(pluginData);
+
+//-----------------------------------------------------------------------------
+// Plugin Commands
+//
+// Register new plugin commands here.
+
+//-----------------------------------------------------------------------------
+// Actor
+//-----------------------------------------------------------------------------
+
+PluginManager.registerCommand(pluginData.name, "ActorChangeEquipSlots", args => {
+    // Convert Arguments
+    VisuMZ.ConvertParams(args, args);
+
+    // Declare Constants
+    const actors = args.Actors.map(id => $gameActors.actor(id));
+    const slots = args.Slots.map(line => $dataSystem.equipTypes.indexOf(line.trim()));
+    
+    // Perform
+    for (const actor of actors) {
+        if (!actor) continue;
+        actor.forceChangeEquipSlots(slots);
+    }
+});
+
+PluginManager.registerCommand(pluginData.name, "ActorResetEquipSlots", args => {
+    // Convert Arguments
+    VisuMZ.ConvertParams(args, args);
+
+    // Declare Constants
+    const actors = args.Actors.map(id => $gameActors.actor(id));
+    
+    // Perform
+    for (const actor of actors) {
+        if (!actor) continue;
+        actor.forceResetEquipSlots();
+    }
+});
+
+//-----------------------------------------------------------------------------
+// Shop
+//-----------------------------------------------------------------------------
+
+PluginManager.registerCommand(pluginData.name, "BatchShop", args => {
+    // Convert Arguments
+    VisuMZ.ConvertParams(args, args);
+
+    // Declare Variables
+    const goods = [];
+    const blacklist = args.Blacklist.map(str => str.toUpperCase().trim());
+    const whitelist = args.Whitelist.map(str => str.toUpperCase().trim());
+
+    // Step 1
+    const s1 = (args.Step1End >= args.Step1Start) ? args.Step1Start : args.Step1End;
+    const e1 = (args.Step1End >= args.Step1Start) ? args.Step1End : args.Step1Start;
+    const step1 = Array(e1 - s1 + 1).fill().map((_, index) => s1 + index);
+
+    for (const id of step1) {
+        const item = $dataItems[id];
+        if (!item) continue;
+        if (!VisuMZ.ItemsEquipsCore.IncludeShopItem(item, blacklist, whitelist)) continue;
+        goods.push([0, id, 0, item.price]);
+    }
+
+    // Step 2
+    const s2 = (args.Step2End >= args.Step2Start) ? args.Step2Start : args.Step2End;
+    const e2 = (args.Step2End >= args.Step2Start) ? args.Step2End : args.Step2Start;
+    const step2 = Array(e2 - s2 + 1).fill().map((_, index) => s2 + index);
+
+    for (const id of step2) {
+        const item = $dataWeapons[id];
+        if (!item) continue;
+        if (!VisuMZ.ItemsEquipsCore.IncludeShopItem(item, blacklist, whitelist)) continue;
+        goods.push([1, id, 0, item.price]);
+    }
+
+    // Step 3
+    const s3 = (args.Step3End >= args.Step3Start) ? args.Step3Start : args.Step3End;
+    const e3 = (args.Step3End >= args.Step3Start) ? args.Step3End : args.Step3Start;
+    const step3 = Array(e3 - s3 + 1).fill().map((_, index) => s3 + index);
+
+    for (const id of step3) {
+        const item = $dataArmors[id];
+        if (!item) continue;
+        if (!VisuMZ.ItemsEquipsCore.IncludeShopItem(item, blacklist, whitelist)) continue;
+        goods.push([2, id, 0, item.price]);
+    }
+    
+    // Finalize
+    SceneManager.push(Scene_Shop);
+    SceneManager.prepareNextScene(goods, args.PurchaseOnly);
+});
+
+VisuMZ.ItemsEquipsCore.IncludeShopItem = function(item, blacklist, whitelist) {
+    // Smart Filter
+    if (item.name.trim() === '') return false;
+    if (item.name.match(/-----/i)) return false;
+
+    // Categories
+    const categories = item.categories;
+
+    // Blacklist Check
+    if (blacklist.length > 0) {
+        for (const category of blacklist) {
+            if (!category) continue;
+            if (categories.includes(category)) return false;
+        }
+    }
+
+    // Whitelist Check
+    if (whitelist.length > 0) {
+        for (const category of whitelist) {
+            if (!category) continue;
+            if (categories.includes(category)) return true;
+        }
+        return false;
+    }
+
+    // Return True
+    return true;
+};
+
+//-----------------------------------------------------------------------------
+// Scene_Boot
+//
+// The scene class for initializing the entire game.
+
+VisuMZ.ItemsEquipsCore.Scene_Boot_onDatabaseLoaded = Scene_Boot.prototype.onDatabaseLoaded;
+Scene_Boot.prototype.onDatabaseLoaded = function() {
+    this.process_VisuMZ_ItemsEquipsCore_RegExp();
+
+    VisuMZ.ItemsEquipsCore.Scene_Boot_onDatabaseLoaded.call(this);
+
+    this.process_VisuMZ_ItemsEquipsCore_Notetags();
+    VisuMZ.ItemsEquipsCore.SetupProxyItemGroups(); // v1.37 added by Arisu
+    VisuMZ.ItemsEquipsCore.SetupArtifactItemIDs(); // v1.48 added by Olivia
+};
+
+Scene_Boot.prototype.process_VisuMZ_ItemsEquipsCore_RegExp = function() {
+    VisuMZ.ItemsEquipsCore.RegExp = {};
+    VisuMZ.ItemsEquipsCore.RegExp.EquipParams = [];
+    VisuMZ.ItemsEquipsCore.RegExp.BorderRegExp = [];
+    const params = ['MaxHP','MaxMP','ATK','DEF','MAT','MDF','AGI','LUK'];
+    for (const param of params) {
+        const notetag = '<%1:[ ]([\\+\\-]\\d+)>'.format(param);
+        VisuMZ.ItemsEquipsCore.RegExp.EquipParams.push(new RegExp(notetag, 'i'));
+        const borderCheck = '\\b%1\\b'.format(param);
+        VisuMZ.ItemsEquipsCore.RegExp.BorderRegExp.push(new RegExp(borderCheck, 'g'));
+    }
+};
+
+Scene_Boot.prototype.process_VisuMZ_ItemsEquipsCore_Notetags = function() {
+    // v1.13 added by Yanfly
+    // Return Check
+    if (VisuMZ.ParseAllNotetags) return;
+
+    // Classes
+    this.process_VisuMZ_ItemsEquipsCore_EquipSlots();
+    // Item Groups
+    const groups = [$dataItems, $dataWeapons, $dataArmors];
+    for (const group of groups) {
+        for (const obj of group) {
+
+            if (!obj) continue;
+
+            VisuMZ.ItemsEquipsCore.Parse_Notetags_Category(obj, group);
+            VisuMZ.ItemsEquipsCore.Parse_Notetags_Prices(obj, group);
+            VisuMZ.ItemsEquipsCore.Parse_Notetags_ParamValues(obj, group);
+            VisuMZ.ItemsEquipsCore.Parse_Notetags_ParamJS(obj, group);
+            VisuMZ.ItemsEquipsCore.Parse_Notetags_EnableJS(obj, group);
+        }
+    }
+};
+
+Scene_Boot.prototype.process_VisuMZ_ItemsEquipsCore_EquipSlots = function() {
+    for (const obj of $dataClasses) {
+        if (!obj) continue;
+        VisuMZ.ItemsEquipsCore.Parse_Notetags_EquipSlots(obj);
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Notetag Parsing
+//-----------------------------------------------------------------------------
+
+VisuMZ.ItemsEquipsCore.ParseClassNotetags = VisuMZ.ParseClassNotetags;
+VisuMZ.ParseClassNotetags = function(obj) {
+    VisuMZ.ItemsEquipsCore.ParseClassNotetags.call(this, obj);
+
+    VisuMZ.ItemsEquipsCore.Parse_Notetags_EquipSlots(obj);
+};
+
+VisuMZ.ItemsEquipsCore.ParseItemNotetags = VisuMZ.ParseItemNotetags;
+VisuMZ.ParseItemNotetags = function(obj) {
+    VisuMZ.ItemsEquipsCore.ParseItemNotetags.call(this, obj);
+
+    VisuMZ.ItemsEquipsCore.Parse_Notetags_Batch(obj, $dataItems);
+};
+
+VisuMZ.ItemsEquipsCore.ParseWeaponNotetags = VisuMZ.ParseWeaponNotetags;
+VisuMZ.ParseWeaponNotetags = function(obj) {
+    VisuMZ.ItemsEquipsCore.ParseWeaponNotetags.call(this, obj);
+
+    VisuMZ.ItemsEquipsCore.Parse_Notetags_Batch(obj, $dataWeapons);
+};
+
+VisuMZ.ItemsEquipsCore.ParseArmorNotetags = VisuMZ.ParseArmorNotetags;
+VisuMZ.ParseArmorNotetags = function(obj) {
+    VisuMZ.ItemsEquipsCore.ParseArmorNotetags.call(this, obj);
+
+    VisuMZ.ItemsEquipsCore.Parse_Notetags_Batch(obj, $dataArmors);
+};
+
+//-----------------------------------------------------------------------------
+// New Notetag Parsing Functions
+//-----------------------------------------------------------------------------
+
+// v1.13 added by Yanfly
+// For Classes
+VisuMZ.ItemsEquipsCore.Parse_Notetags_EquipSlots = function(obj) {
+    obj.equipSlots = [];
+
+    // v1.45 added by Olivia
+    const equipTypes = $dataSystem.equipTypes.map(str => str ? str.trim() : '');
+
+    // v1.21 modified by Olivia
+    if (!BattleManager.isBattleTest() && obj.note.match(/<EQUIP SLOTS>\s*([\s\S]*)\s*<\/EQUIP SLOTS>/i)) {
+        const results = String(RegExp.$1).split(/[\r\n]+/);
+        for (const line of results) {
+            const index = equipTypes.indexOf(line.trim()); // v1.45 updated by Olivia
+            if (index > 0) obj.equipSlots.push(index);
+        }
+
+    } else {
+        for (const line of equipTypes) { // v1.45 updated by Olivia
+            const index = equipTypes.indexOf(line.trim()); // v1.45 updated by Olivia
+            if (index > 0) obj.equipSlots.push(index);
+        }
+    }
+};
+
+// v1.13 added by Yanfly
+// For Items, Weapons, Armors
+VisuMZ.ItemsEquipsCore.Parse_Notetags_Batch = function(obj, group) {
+    VisuMZ.ItemsEquipsCore.Parse_Notetags_Category(obj, group);
+    VisuMZ.ItemsEquipsCore.Parse_Notetags_Prices(obj, group);
+    VisuMZ.ItemsEquipsCore.Parse_Notetags_ParamValues(obj, group);
+    VisuMZ.ItemsEquipsCore.Parse_Notetags_ParamJS(obj, group);
+    VisuMZ.ItemsEquipsCore.Parse_Notetags_EnableJS(obj, group);
+};
+
+// v1.13 added by Yanfly
+// For Items, Weapons, Armors
+VisuMZ.ItemsEquipsCore.Parse_Notetags_Category = function(obj, group) {
+    obj.categories = [];
+    const note = obj.note;
+    const matches = note.match(/<(?:CATEGORY|CATEGORIES):[ ](.*)>/gi);
+    if (matches) {
+        for (const match of matches) {
+            match.match(/<(?:CATEGORY|CATEGORIES):[ ](.*)>/gi);
+            const results = String(RegExp.$1).toUpperCase().trim().split(',');
+            for (const result of results) {
+                obj.categories.push(result.trim());
+            }
+        }
+    }
+    if (note.match(/<(?:CATEGORY|CATEGORIES)>\s*([\s\S]*)\s*<\/(?:CATEGORY|CATEGORIES)>/i)) {
+        const batch = (RegExp.$1).split(/[\r\n]+/);
+        for (const line of batch) {
+            obj.categories.push(line.toUpperCase().trim());
+        }
+    }
+};
+
+// v1.13 added by Yanfly
+// For Items, Weapons, Armors
+VisuMZ.ItemsEquipsCore.Parse_Notetags_Prices = function(obj, group) {
+    if (obj.note.match(/<PRICE:[ ](\d+)>/i)) {
+        obj.price = Number(RegExp.$1);
+    }
+};
+
+// v1.13 added by Yanfly
+// For Items, Weapons, Armors
+VisuMZ.ItemsEquipsCore.Parse_Notetags_ParamValues = function(obj, group) {
+    if (group === $dataItems) return;
+    for (let i = 0; i < 8; i++) {
+        const notetag = VisuMZ.ItemsEquipsCore.RegExp.EquipParams[i];
+        if (obj.note.match(notetag)) {
+            obj.params[i] = parseInt(RegExp.$1);
+        }
+    }
+};
+
+// v1.13 added by Yanfly
+// For Items, Weapons, Armors
+VisuMZ.ItemsEquipsCore.paramJS = {};
+VisuMZ.ItemsEquipsCore.Parse_Notetags_ParamJS = function(obj, group) {
+    if (group === $dataItems) return;
+    if (obj.note.match(/<JS PARAMETERS>\s*([\s\S]*)\s*<\/JS PARAMETERS>/i)) {
+        const code = String(RegExp.$1);
+        const key = (group === $dataWeapons ? 'W%1' : 'A%1').format(obj.id);
+        const funcCode = `
+            let MaxHP = 0; let MaxMP = 0; let ATK = 0; let DEF = 0;
+            let MAT = 0; let MDF = 0; let AGI = 0; let LUK = 0;
+            const user = this;
+            const target = this;
+            const a = this;
+            const b = this;
+            try {
+                %1
+            } catch (e) {
+                if ($gameTemp.isPlaytest()) console.log(e);
+            }
+            return [MaxHP, MaxMP, ATK, DEF, MAT, MDF, AGI, LUK][paramId];
+            `.format(code);
+        for (let i = 0; i < 8; i++) {
+            if (code.match(VisuMZ.ItemsEquipsCore.RegExp.BorderRegExp[i])) {
+                const paramKey = '%1-%2'.format(key, i);
+                VisuMZ.ItemsEquipsCore.paramJS[paramKey] = new Function('item','paramId', funcCode);
+            }
+        }
+    }
+};
+
+// v1.13 added by Yanfly
+// For Items, Weapons, Armors
+VisuMZ.ItemsEquipsCore.itemEnableJS = {};
+VisuMZ.ItemsEquipsCore.Parse_Notetags_EnableJS = function(obj, group) {
+    if (group !== $dataItems) return;
+    if (obj.note.match(/<JS ITEM ENABLE>\s*([\s\S]*)\s*<\/JS ITEM ENABLE>/i)) {
+        const code = String(RegExp.$1);
+        const funcCode = `
+            let enabled = true;
+            const user = this;
+            const target = this;
+            const a = this;
+            const b = this;
+            try {
+                %1
+            } catch (e) {
+                if ($gameTemp.isPlaytest()) console.log(e);
+            }
+            return enabled;
+        `.format(code);
+        VisuMZ.ItemsEquipsCore.itemEnableJS[obj.id] = new Function('item', funcCode);
+    }
+};
+
+//-----------------------------------------------------------------------------
+// DataManager
+//
+// The static class that manages the database and game objects.
+
+//-----------------------------------------------------------------------------
+// Basic
+//-----------------------------------------------------------------------------
+
+DataManager.isKeyItem = function(item) {
+    return this.isItem(item) && item.itypeId === 2;
+};
+
+DataManager.maxItemAmount = function(item) {
+    if (!item) {
+        return 99;
+    } else if (item.note.match(/<MAX:[ ](\d+)>/i)) {
+        return parseInt(RegExp.$1);
+    } else {
+        return this.defaultItemMax(item);
+    }
+};
+
+DataManager.defaultItemMax = function(item) {
+    if (this.isItem(item)) {
+        return VisuMZ.ItemsEquipsCore.Settings.ItemScene.MaxItems;
+    } else if (this.isWeapon(item)) {
+        return VisuMZ.ItemsEquipsCore.Settings.ItemScene.MaxWeapons;
+    } else if (this.isArmor(item)) {
+        return VisuMZ.ItemsEquipsCore.Settings.ItemScene.MaxArmors;
+    }
+};
+
+//-----------------------------------------------------------------------------
+// String Parsing
+//-----------------------------------------------------------------------------
+
+// v1.44 added by Arisu
+DataManager.getClassIdWithName = function(text) {
+    text = text.toUpperCase().trim();
+    this._classIDs = this._classIDs || {};
+    if (this._classIDs[text]) return this._classIDs[text];
+    for (const obj of $dataClasses) {
+        if (!obj) continue;
+        let name = obj.name;
+        name = name.replace(/\x1I\[(\d+)\]/gi, '');
+        name = name.replace(/\\I\[(\d+)\]/gi, '');
+        this._classIDs[name.toUpperCase().trim()] = obj.id;
+    }
+    return this._classIDs[text] || 0;
+};
+
+// v1.44 added by Arisu
+DataManager.getSkillIdWithName = function(text) {
+    text = text.toUpperCase().trim();
+    this._skillIDs = this._skillIDs || {};
+    if (this._skillIDs[text]) return this._skillIDs[text];
+    for (const obj of $dataSkills) {
+        if (!obj) continue;
+        this._skillIDs[obj.name.toUpperCase().trim()] = obj.id;
+    }
+    return this._skillIDs[text] || 0;
+};
+
+// v1.37 added by Arisu
+DataManager.getItemIdWithName = function(text) {
+    text = text.toUpperCase().trim();
+    this._itemIDs = this._itemIDs || {};
+    if (this._itemIDs[text]) return this._itemIDs[text];
+    for (const obj of $dataItems) {
+        if (!obj) continue;
+        this._itemIDs[obj.name.toUpperCase().trim()] = obj.id;
+    }
+    return this._itemIDs[text] || 0;
+};
+
+// v1.37 added by Arisu
+DataManager.getWeaponIdWithName = function(text) {
+    text = text.toUpperCase().trim();
+    this._weaponIDs = this._weaponIDs || {};
+    if (this._weaponIDs[text]) return this._weaponIDs[text];
+    for (const obj of $dataWeapons) {
+        if (!obj) continue;
+        this._weaponIDs[obj.name.toUpperCase().trim()] = obj.id;
+    }
+    return this._weaponIDs[text] || 0;
+};
+
+// v1.37 added by Arisu
+DataManager.getArmorIdWithName = function(text) {
+    text = text.toUpperCase().trim();
+    this._armorIDs = this._armorIDs || {};
+    if (this._armorIDs[text]) return this._armorIDs[text];
+    for (const obj of $dataArmors) {
+        if (!obj) continue;
+        this._armorIDs[obj.name.toUpperCase().trim()] = obj.id;
+    }
+    return this._armorIDs[text] || 0;
+};
+
+//-----------------------------------------------------------------------------
+// Proxy
+//-----------------------------------------------------------------------------
+
+// v1.37 added by Arisu
+VisuMZ.ItemsEquipsCore.SetupProxyItemGroups = function() {
+    VisuMZ.ItemsEquipsCore.SetupProxyItemGroup($dataItems);
+    VisuMZ.ItemsEquipsCore.SetupProxyItemGroup($dataWeapons);
+    VisuMZ.ItemsEquipsCore.SetupProxyItemGroup($dataArmors);
+};
+
+// v1.37 added by Arisu
+VisuMZ.ItemsEquipsCore.SetupProxyItemGroup = function(group) {
+    for (const obj of group) {
+        if (!obj) continue;
+        if (!DataManager.isProxyItem(obj)) continue;
+
+        const baseObj = DataManager.getProxyItem(obj);
+        const keys = ['name', 'iconIndex', 'description'];
+        for (const key of keys) {
+            obj[key] = baseObj[key];
+        }
+    }
+};
+
+// v1.37 added by Arisu
+DataManager.isProxyItem = function(item) {
+    if (!item) return false;
+    if (!item.note) return false;
+    return item && item.note.match(/<PROXY:[ ](.*)>/i);
+};
+
+// v1.37 added by Arisu
+DataManager.getProxyItem = function(item) {
+    if (this.isProxyItem(item)) {
+        // v1.42 fixed by Arisu
+        return this.switchProxyItem(item) || item;
+        // return this.isProxyItem(item) ? this.getProxyItem(item) : newItem;
+    } else {
+        return item;
+    }
+};
+
+// v1.37 added by Arisu
+DataManager.switchProxyItem = function(item) {
+    // Parse
+    item.note.match(/<PROXY:[ ](.*)>/i);
+    const entry = RegExp.$1.trim();
+    const isNumber = /^\d+$/.test(entry);
+
+    // Get Actual Item
+    if (this.isItem(item)) {
+        const id = isNumber ? Number(RegExp.$1) : DataManager.getItemIdWithName(entry);
+        return $dataItems[id] || item;
+    } else if (this.isWeapon(item)) {
+        const id = isNumber ? Number(RegExp.$1) : DataManager.getWeaponIdWithName(entry);
+        return $dataWeapons[id] || item;
+    } else if (this.isArmor(item)) {
+        const id = isNumber ? Number(RegExp.$1) : DataManager.getArmorIdWithName(entry);
+        return $dataArmors[id] || item;
+    }
+
+    // Failsafe Return Same Item
+    return item;
+};
+
+// v1.37 added by Arisu
+VisuMZ.ItemsEquipsCore.Window_ItemList_item = Window_ItemList.prototype.item;
+Window_ItemList.prototype.item = function() {
+    if ($gameTemp._bypassProxy) return VisuMZ.ItemsEquipsCore.Window_ItemList_item.call(this);
+    return DataManager.getProxyItem(VisuMZ.ItemsEquipsCore.Window_ItemList_item.call(this));
+};
+
+// v1.37 added by Arisu
+Window_ItemList.prototype.proxyItem = function() {
+    return VisuMZ.ItemsEquipsCore.Window_ItemList_item.call(this);
+};
+
+// v1.37 added by Arisu
+VisuMZ.ItemsEquipsCore.Window_ShopBuy_item = Window_ShopBuy.prototype.item;
+Window_ShopBuy.prototype.item = function() {
+    if ($gameTemp._bypassProxy) return VisuMZ.ItemsEquipsCore.Window_ShopBuy_item.call(this);
+    return DataManager.getProxyItem(VisuMZ.ItemsEquipsCore.Window_ShopBuy_item.call(this));
+};
+
+// v1.37 added by Arisu
+Window_ShopBuy.prototype.proxyItem = function() {
+    return VisuMZ.ItemsEquipsCore.Window_ShopBuy_item.call(this);
+};
+
+// v1.37 added by Arisu
+VisuMZ.ItemsEquipsCore.Game_Item_setObject = Game_Item.prototype.setObject;
+Game_Item.prototype.setObject = function(item) {
+    if (DataManager.isProxyItem(item)) return;
+    VisuMZ.ItemsEquipsCore.Game_Item_setObject.call(this, item);
+};
+
+//-----------------------------------------------------------------------------
+// Artifacts
+//-----------------------------------------------------------------------------
+
+// v1.48 added by Olivia
+VisuMZ.ItemsEquipsCore.SetupArtifactItemIDs = function() {
+    this.artifactIDs = {
+        partyArtifactIDs: [],
+        troopArtifactIDs: [],
+    };
+
+    for (const item of $dataArmors) {
+        if (!item) continue;
+        if (!DataManager.isArtifact(item)) continue;
+        if (DataManager.isPartyArtifact(item)) {
+            this.artifactIDs.partyArtifactIDs.push(item.id);
+        }
+        if (DataManager.isTroopArtifact(item)) {
+            this.artifactIDs.troopArtifactIDs.push(item.id);
+        }
+    }
+};
+
+// v1.38 added by Olivia
+DataManager.isArtifact = function(item) {
+    if (!this.isArmor(item)) return false;
+
+    const note = item.note;
+    if (!note) return false;
+    if (note.match(/<(?:PARTY|ALLY) (?:ARTIFACT|RELIC)>/i)) return true;
+    if (note.match(/<(?:STACKABLE|STACK) (?:PARTY|ALLY) (?:ARTIFACT|RELIC)>/i)) return true;
+    if (note.match(/<(?:TROOP|FOE) (?:ARTIFACT|RELIC)>/i)) return true;
+    if (note.match(/<(?:STACKABLE|STACK) (?:TROOP|FOE) (?:ARTIFACT|RELIC)>/i)) return true;
+
+    return false;
+};
+
+// v1.38 added by Olivia
+DataManager.isStackableArtifact = function(item) {
+    if (!this.isArtifact(item)) return false;
+
+    const note = item.note;
+    if (!note) return false;
+    if (note.match(/<(?:STACKABLE|STACK) (?:PARTY|ALLY) (?:ARTIFACT|RELIC)>/i)) return true;
+    if (note.match(/<(?:STACKABLE|STACK) (?:TROOP|FOE) (?:ARTIFACT|RELIC)>/i)) return true;
+
+    return false;
+};
+
+// v1.38 added by Olivia
+DataManager.isPartyArtifact = function(item) {
+    if (!this.isArtifact(item)) return false;
+
+    const note = item.note;
+    if (!note) return false;
+    if (note.match(/<(?:PARTY|ALLY) (?:ARTIFACT|RELIC)>/i)) return true;
+    if (note.match(/<(?:STACKABLE|STACK) (?:PARTY|ALLY) (?:ARTIFACT|RELIC)>/i)) return true;
+
+    return false;
+};
+
+// v1.38 added by Olivia
+DataManager.isTroopArtifact = function(item) {
+    if (!this.isArtifact(item)) return false;
+
+    const note = item.note;
+    if (!note) return false;
+    if (note.match(/<(?:TROOP|FOE) (?:ARTIFACT|RELIC)>/i)) return true;
+    if (note.match(/<(?:STACKABLE|STACK) (?:TROOP|FOE) (?:ARTIFACT|RELIC)>/i)) return true;
+
+    return false;
+};
+
+// v1.38 added by Olivia
+VisuMZ.ItemsEquipsCore.Game_BattlerBase_canEquip_artifact = Game_BattlerBase.prototype.canEquip;
+Game_BattlerBase.prototype.canEquip = function(item) {
+    // v1.38 added by Olivia
+    if (DataManager.isArtifact(item)) return false;
+
+    // v1.44 added by Arisu
+    if (!DataManager.meetsClassRequirements(this, item)) return false;
+    if (!DataManager.meetsEquipRequirements(this, item)) return false;
+
+    // Return Alias
+    return VisuMZ.ItemsEquipsCore.Game_BattlerBase_canEquip_artifact.call(this, item);
+};
+
+// v1.38 added by Olivia
+VisuMZ.ItemsEquipsCore.Game_BattlerBase_param_artifact = Game_BattlerBase.prototype.param;
+Game_BattlerBase.prototype.param = function(paramId) {
+    this._allowArtifactParamBase = true;
+    const value = VisuMZ.ItemsEquipsCore.Game_BattlerBase_param_artifact.call(this, paramId);
+    this._allowArtifactParamBase = undefined;
+    return value;
+};
+
+// v1.38 added by Olivia
+VisuMZ.ItemsEquipsCore.Game_Actor_artifact = Game_Actor.prototype.traitObjects;
+Game_Actor.prototype.traitObjects = function() {
+    this._allowArtifactTraitObjects = true;
+    const objects = VisuMZ.ItemsEquipsCore.Game_Actor_artifact.call(this);
+    this._allowArtifactTraitObjects = undefined;
+    return objects;
+};
+
+// v1.38 added by Olivia
+VisuMZ.ItemsEquipsCore.Game_Actor_equips_artifacts = Game_Actor.prototype.equips;
+Game_Actor.prototype.equips = function() {
+    const equips = VisuMZ.ItemsEquipsCore.Game_Actor_equips_artifacts.call(this);
+
+    if (this._allowArtifactTraitObjects || this._allowArtifactParamBase) {
+        const group = equips.concat($gameParty.partyArtifacts());
+        return group;
+    } else {
+        return equips;
+    }
+};
+
+// v1.38 added by Olivia
+VisuMZ.ItemsEquipsCore.Game_BattlerBase_paramPlus_artifact = Game_BattlerBase.prototype.paramPlus;
+Game_BattlerBase.prototype.paramPlus = function(paramId) {
+    let value = VisuMZ.ItemsEquipsCore.Game_BattlerBase_paramPlus_artifact.call(this, paramId);
+
+    if (this.constructor === Game_Enemy) {
+        for (const item of $gameParty.troopArtifacts()) {
+            if (item) value += item.params[paramId];
+        }
+    }
+
+    return value;
+};
+
+// v1.38 added by Olivia
+VisuMZ.ItemsEquipsCore.Game_Enemy_traitObjects_artifact = Game_Enemy.prototype.traitObjects;
+Game_Enemy.prototype.traitObjects = function() {
+    let objects = VisuMZ.ItemsEquipsCore.Game_Enemy_traitObjects_artifact.call(this);
+    return objects.concat($gameParty.troopArtifacts());
+};
+
+// v1.38 added by Olivia
+VisuMZ.ItemsEquipsCore.Game_Party_gainItem_artifact = Game_Party.prototype.gainItem;
+Game_Party.prototype.gainItem = function(item, amount, includeEquip) {
+    VisuMZ.ItemsEquipsCore.Game_Party_gainItem_artifact.call(this, item, amount, includeEquip);
+
+    // Refresh Caches
+    if (DataManager.isArtifact(item)) {
+        let members = $gameParty.allMembers();
+        if ($gameParty.inBattle()) members = members.concat($gameTroop.members());
+        for (const member of members) { // v1.43 fixed by Olivia 
+            if (!member) continue;
+            member._cache = {};
+        }
+    }
+};
+
+// v1.38 added by Olivia
+Game_Party.prototype.partyArtifacts = function() {
+    let results = [];
+
+    // v1.48 disabled by Irina
+    // for (const item of this.armors()) {
+    //     if (!item) continue;
+    //     if (!DataManager.isArtifact(item)) continue;
+    //     if (!DataManager.isPartyArtifact(item)) continue;
+    //     let times = 1;
+    //     if (DataManager.isStackableArtifact(item)) times = this.numItems(item);
+    //     while (times--) results.push(item);
+    // }
+
+    // v1.48 added by Irina
+    const artifactIDs = VisuMZ.ItemsEquipsCore.artifactIDs.partyArtifactIDs;
+    if (artifactIDs) {
+        for (const id of artifactIDs) {
+            const item = $dataArmors[id];
+            if (!item) continue;
+            if (!this.hasItem(item)) continue;
+            let times = 1;
+            if (DataManager.isStackableArtifact(item)) times = this.numItems(item);
+            while (times--) results.push(item);
+        }
+    }
+
+    return results;
+};
+
+// v1.38 added by Olivia
+Game_Party.prototype.troopArtifacts = function() {
+    let results = [];
+
+    // v1.48 disabled by Irina
+    // for (const item of this.armors()) {
+    //     if (!item) continue;
+    //     if (!DataManager.isArtifact(item)) continue;
+    //     if (!DataManager.isTroopArtifact(item)) continue;
+    //     let times = 1;
+    //     if (DataManager.isStackableArtifact(item)) times = this.numItems(item);
+    //     while (times--) results.push(item);
+    // }
+
+    // v1.48 added by Irina
+    const artifactIDs = VisuMZ.ItemsEquipsCore.artifactIDs.troopArtifactIDs;
+    if (artifactIDs) {
+        for (const id of artifactIDs) {
+            const item = $dataArmors[id];
+            if (!item) continue;
+            if (!this.hasItem(item)) continue;
+            let times = 1;
+            if (DataManager.isStackableArtifact(item)) times = this.numItems(item);
+            while (times--) results.push(item);
+        }
+    }
+
+    return results;
+};
+
+// v1.38 added by Olivia
+Game_Party.prototype.artifacts = function() {
+    return this.partyArtifacts().concat(this.troopArtifacts());
+};
+
+// v1.38 added by Olivia
+VisuMZ.ItemsEquipsCore.Game_Party_setupBattleTestItems_artifact = Game_Party.prototype.setupBattleTestItems;
+Game_Party.prototype.setupBattleTestItems = function() {
+    VisuMZ.ItemsEquipsCore.Game_Party_setupBattleTestItems_artifact.call(this);
+    this.removeBattleTestArtifacts();
+};
+
+// v1.38 added by Olivia
+Game_Party.prototype.removeBattleTestArtifacts = function() {
+    const artifacts = $gameParty.armors().filter(obj => DataManager.isArtifact(obj));
+    for (const obj of artifacts) {
+        const quantity = this.numItems(obj);
+        if (quantity) this.loseItem(obj, quantity);
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Class Requirements
+//-----------------------------------------------------------------------------
+
+// v1.44 added by Arisu
+DataManager.meetsClassRequirements = function(actor, obj) {
+    // Return Check
+    if (this.isItem(obj)) return false;
+    if (!actor) return false;
+    if ($gameTemp._checkEquipRequirements) return true;
+    if (BattleManager.isBattleTest()) return true;
+
+    // Get Requirements
+    const requiredClasses = this.getClassRequirements(obj);
+    if (requiredClasses.length <= 0) return true;
+
+    // Return Check
+    return requiredClasses.includes(actor.currentClass().id);
+};
+
+// v1.44 added by Arisu
+DataManager.getClassRequirements = function(obj) {
+    // Return Check
+    if (!obj) return [];
+
+    // Return Cache
+    this._getClassRequirements = this._getClassRequirements || {};
+    const key = '%1-%2'.format(this.isWeapon(obj) ? 'WEAPON' : 'ARMOR', obj.id);
+    if (this._getClassRequirements[key] !== undefined) {
+        return this._getClassRequirements[key];
+    }
+
+    // Declare Requirements
+    let requirements = [];
+
+    // Declare Constants
+    const note = obj.note || '';
+
+    // Check Notetags
+    if (note.match(/<EQUIP FOR CLASS(?:|ES) ONLY:[ ](.*)>/i)) {
+        const entries = String(RegExp.$1).split(',').map(i => i.trim());
+        for (const entry of entries) {
+            const isNumber = /^\d+$/.test(entry);
+            if (isNumber) {
+                requirements.push(Number(entry));
+            } else {
+                requirements.push(DataManager.getClassIdWithName(entry));
+            }
+        }
+    }
+
+    // Return Requirements
+    this._getClassRequirements[key] = requirements;
+    return this._getClassRequirements[key];
+};
+
+//-----------------------------------------------------------------------------
+// Equip Requirements
+//-----------------------------------------------------------------------------
+
+// v1.44 added by Arisu
+DataManager.meetsEquipRequirements = function(actor, obj) {
+    // Return Check
+    if (this.isItem(obj)) return false;
+    if (!actor) return false;
+    if ($gameTemp._checkEquipRequirements) return true;
+    if (BattleManager.isBattleTest()) return true;
+
+    // Get Requirements
+    const requirements = this.getEquipRequirements(obj);
+
+    // Check Requirements
+    for (const line of requirements) {
+        if (!this.meetsEquipRequirement(actor, line)) return false;
+    }
+
+    // Return True
+    return true;
+};
+
+// v1.44 added by Arisu
+DataManager.getEquipRequirements = function(obj) {
+    // Return Check
+    if (!obj) return [];
+
+    // Return Cache
+    this._getEquipRequirements = this._getEquipRequirements || {};
+    const key = '%1-%2'.format(this.isWeapon(obj) ? 'WEAPON' : 'ARMOR', obj.id);
+    if (this._getEquipRequirements[key] !== undefined) {
+        return this._getEquipRequirements[key];
+    }
+
+    // Declare Requirements
+    let requirements = [];
+
+    // Declare Constants
+    const note = obj.note || '';
+
+    // Check Notetags
+    if (note.match(/<EQUIP(?:|MENT)[ ]REQUIREMENT(?:|S)>\s*([\s\S]*)\s*<\/EQUIP(?:|MENT)[ ]REQUIREMENT(?:|S)>/i)) {
+        requirements = String(RegExp.$1).split(/[\r\n]+/);
+    }
+
+    // Return Requirements
+    this._getEquipRequirements[key] = requirements;
+    return this._getEquipRequirements[key];
+};
+
+// v1.44 added by Arisu
+DataManager.meetsEquipRequirement = function(actor, line) {
+    // Level >= x
+    if (line.match(/(?:LEVEL|LV|LVL)[ ](>|>=|===|<=|<)[ ](\d+)/i)) {
+        const compare = String(RegExp.$1).trim();
+        const number = Number(RegExp.$2);
+        
+        switch (compare) {
+            case '>':
+                return actor.level > number;
+            case '>=':
+                return actor.level >= number;
+            case '===':
+                return actor.level === number;
+            case '<=':
+                return actor.level <= number;
+            case '<':
+                return actor.level < number;
+        }
+        return false;
+    }
+
+    // MaxHP/MaxMP >= x
+    if (line.match(/(MAXHP|MAXMP|MHP|MMP)[ ](>|>=|===|<=|<)[ ](\d+)/i)) {
+        const param = String(RegExp.$1).toLowerCase().trim();
+        const compare = String(RegExp.$2).trim();
+        const number = Number(RegExp.$3);
+
+        let paramID = 0;
+        if (['maxmp','mmp'].includes(param)) paramID = 1;
+        const bonus = actor._paramPlus[paramID] || 0;
+        
+        switch (compare) {
+            case '>':
+                return (actor.paramBase(paramID) + bonus) > number;
+            case '>=':
+                return (actor.paramBase(paramID) + bonus) >= number;
+            case '===':
+                return (actor.paramBase(paramID) + bonus) === number;
+            case '<=':
+                return (actor.paramBase(paramID) + bonus) <= number;
+            case '<':
+                return (actor.paramBase(paramID) + bonus) < number;
+        }
+        return false;
+    }
+
+    // Stats >= x
+    if (line.match(/(ATK|DEF|MAT|MDF|AGI|LUK)[ ](>|>=|===|<=|<)[ ](\d+)/i)) {
+        const param = String(RegExp.$1).toLowerCase().trim();
+        const compare = String(RegExp.$2).trim();
+        const number = Number(RegExp.$3);
+
+        const params = ['atk','def','mat','mdf','agi','luk'];
+        let paramID = params.indexOf(param) + 2;
+        if (paramID < 2) return false;
+        const bonus = actor._paramPlus[paramID] || 0;
+        
+        switch (compare) {
+            case '>':
+                return (actor.paramBase(paramID) + bonus) > number;
+            case '>=':
+                return (actor.paramBase(paramID) + bonus) >= number;
+            case '===':
+                return (actor.paramBase(paramID) + bonus) === number;
+            case '<=':
+                return (actor.paramBase(paramID) + bonus) <= number;
+            case '<':
+                return (actor.paramBase(paramID) + bonus) < number;
+        }
+        return false;
+    }
+
+    // Learned Skill: x
+    if (line.match(/LEARNED SKILL:[ ](\d+)/i)) {
+        const skillID = Number(RegExp.$1);
+        return actor.isLearnedSkill(skillID);
+    } else if (line.match(/LEARNED SKILL:[ ](.*)/i)) {
+        const name = String(RegExp.$1);
+        const skillID = this.getSkillIdWithName(name);
+        return actor.isLearnedSkill(skillID);
+    }
+
+    // Switch: x
+    if (line.match(/SWITCH:[ ](\d+)/i)) {
+        const switchID = Number(RegExp.$1);
+        return $gameSwitches.value(switchID);
+    }
+
+    // Default Return
+    return true;
+};
+
+
+
+//-----------------------------------------------------------------------------
+// TextManager
+//
+// The static class that handles terms and messages.
+
+TextManager.ITEMS_EQUIPS_CORE = {
+    helpDesc: {
+        equip: VisuMZ.ItemsEquipsCore.Settings.EquipScene.equipCmdDesc ?? 'Pick and choose equipment to change.',
+        optimize: VisuMZ.ItemsEquipsCore.Settings.EquipScene.optimizeCmdDesc ?? 'Equip the strongest available equipment.',
+        clear: VisuMZ.ItemsEquipsCore.Settings.EquipScene.clearCmdDesc ?? 'Remove all available equipment.',
+    }
+};
+
+//-----------------------------------------------------------------------------
+// ColorManager
+//
+// The static class that handles the window colors.
+
+ColorManager.getItemColor = function(item) {
+    if (!item) {
+        return this.normalColor();
+    } else if (item.note.match(/<COLOR:[ ](\d+)>/i)) {
+        return this.textColor(Number(RegExp.$1).clamp(0, 31));
+    } else if (item.note.match(/<COLOR:[ ]#(.*)>/i)) {
+        return '#' + String(RegExp.$1);
+    } else {
+        return this.normalColor();
+    }
+};
+
+ColorManager.getColor = function(color) {
+    color = String(color);
+    if (color.match(/#(.*)/i)) {
+        return '#%1'.format(String(RegExp.$1));
+    } else {
+        return this.textColor(Number(color));
+    }
+};
+
+//-----------------------------------------------------------------------------
+// SceneManager
+//
+// The static class that manages scene transitions.
+
+SceneManager.isSceneShop = function() {
+    return this._scene && this._scene.constructor === Scene_Shop;
+};
+
+//-----------------------------------------------------------------------------
+// Game_Temp
+//
+// The game object class for temporary data that is not included in save data.
+
+Game_Temp.prototype.newLabelEnabled = function() {
+    if (this._bypassNewLabel) return false;
+    return VisuMZ.ItemsEquipsCore.Settings.New.Enable;
+};
+
+//-----------------------------------------------------------------------------
+// Game_BattlerBase
+//
+// The superclass of Game_Battler. It mainly contains parameters calculation.
+
+VisuMZ.ShopMenuStatusStandard = VisuMZ.ItemsEquipsCore.Settings.StatusWindow.MultiplierStandard;
+
+VisuMZ.ItemsEquipsCore.Game_BattlerBase_param = Game_BattlerBase.prototype.param;
+Game_BattlerBase.prototype.param = function(paramId) {
+    if (this._shopStatusMenuMode) {
+        return this._shopStatusMenuAlly ? VisuMZ.ShopMenuStatusStandard : 1;
+    } else {
+        return VisuMZ.ItemsEquipsCore.Game_BattlerBase_param.call(this, paramId);
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Game_BattlerBase_meetsItemConditions = Game_BattlerBase.prototype.meetsItemConditions;
+Game_BattlerBase.prototype.meetsItemConditions = function(item) {
+    if (!item) return false;
+    if (!VisuMZ.ItemsEquipsCore.Game_BattlerBase_meetsItemConditions.call(this, item)) return false;
+    if (!this.meetsItemConditionsNotetags(item)) return false;
+    if (!this.meetsItemConditionsJS(item)) return false;
+    return true;
+};
+
+Game_BattlerBase.prototype.meetsItemConditionsNotetags = function(item) {
+    if (!this.checkItemConditionsSwitchNotetags(item)) return false;
+    return true;
+};
+
+Game_BattlerBase.prototype.checkItemConditionsSwitchNotetags = function(item) {
+    const note = item.note;
+    if (note.match(/<ENABLE[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+        const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+        for (const switchId of switches) {
+            if (!$gameSwitches.value(switchId)) return false;
+        }
+        return true;
+    }
+    if (note.match(/<ENABLE ALL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+        const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+        for (const switchId of switches) {
+            if (!$gameSwitches.value(switchId)) return false;
+        }
+        return true;
+    }
+    if (note.match(/<ENABLE ANY[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+        const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+        for (const switchId of switches) {
+            if ($gameSwitches.value(switchId)) return true;
+        }
+        return false;
+    }
+    if (note.match(/<DISABLE[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+        const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+        for (const switchId of switches) {
+            if (!$gameSwitches.value(switchId)) return true;
+        }
+        return false;
+    }
+    if (note.match(/<DISABLE ALL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+        const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+        for (const switchId of switches) {
+            if (!$gameSwitches.value(switchId)) return true;
+        }
+        return false;
+    }
+    if (note.match(/<DISABLE ANY[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+        const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+        for (const switchId of switches) {
+            if ($gameSwitches.value(switchId)) return false;
+        }
+        return true;
+    }
+    return true;
+};
+
+Game_BattlerBase.prototype.meetsItemConditionsJS = function(item) {
+    const note = item.note;
+    const enableJS = VisuMZ.ItemsEquipsCore.itemEnableJS;
+    if (enableJS[item.id]) {
+        return enableJS[item.id].call(this, item);
+    } else {
+        return true;
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Game_Actor
+//
+// The game object class for an actor.
+
+Game_Actor.prototype.initEquips = function(equips) {
+    equips = this.convertInitEquipsToItems(equips);
+    const slots = this.equipSlots();
+    this._equips = [];
+    for (let i = 0; i < slots.length; i++) {
+        this._equips[i] = new Game_Item();
+    }
+    for (let i = 0; i < slots.length; i++) {
+        const etypeId = slots[i];
+        const equip = this.getMatchingInitEquip(equips, etypeId);
+        if (this.canEquip(equip)) this._equips[i].setObject(equip);
+    }
+    this.releaseUnequippableItems(true);
+    this.refresh();
+};
+
+Game_Actor.prototype.convertInitEquipsToItems = function(equips) {
+    const results = [];
+    for (let i = 0; i < equips.length; i++) {
+        const objId = equips[i];
+        if (objId <= 0) continue;
+        const etype = $dataSystem.equipTypes[i + 1];
+        // Original
+        if (etype === $dataSystem.equipTypes[1] || (i === 1 && this.isDualWield())) {
+            results.push($dataWeapons[objId]);
+        // v1.21 added by Olivia
+        } else if (BattleManager.isBattleTest()) {
+            const armor = $dataArmors[objId];
+            if (armor && armor.etypeId === (i + 1)) { // v1.34 added by Arisu
+                results.push(armor);
+            }
+        // Original
+        } else {
+            // v1.29 added by Arisu
+            const armor = $dataArmors[objId];
+            if (armor && armor.etypeId === (i + 1)) { // v1.34 added by Arisu
+                results.push(armor);
+            }
+            // v1.29 disabled by Arisu
+            //results.push($dataArmors[objId]);
+        }
+    }
+    return results;
+};
+
+Game_Actor.prototype.getMatchingInitEquip = function(equips, etypeId) {
+    for (const equip of equips) {
+        if (!equip) continue;
+        if (equip.etypeId === etypeId) {
+            equips.splice(equips.indexOf(equip), 1);
+            return equip;
+        }
+    }
+    return null;
+};
+
+Game_Actor.prototype.equipSlots = function() {
+    const slots = VisuMZ.ItemsEquipsCore.deepCopy(this._forcedSlots || this.currentClass().equipSlots);
+    if (slots.length >= 2 && this.isDualWield()) slots[1] = 1;
+    return slots;
+};
+
+Game_Actor.prototype.forceChangeEquipSlots = function(slots) {
+    slots.remove(0);
+    slots.remove(-1);
+    this._forcedSlots = slots;
+    this.refresh();
+    this.updateChangedSlots(); // v1.24 added by Arisu
+};
+
+Game_Actor.prototype.forceResetEquipSlots = function() {
+    this._forcedSlots = undefined;
+    this.refresh();
+    this.updateChangedSlots(); // v1.24 added by Arisu
+};
+
+// v1.24 added by Arisu
+Game_Actor.prototype.updateChangedSlots = function() {
+    let length = this.equipSlots().length;
+    // Excess
+    while (this._equips.length > length) {
+        const obj = this._equips[this._equips.length - 1];
+        if (obj && obj.object()) {
+            $gameParty.gainItem(obj.object(), 1);
+        }
+        this._equips.pop();
+    }
+    // Not Enough
+    while (length > this._equips.length) {
+        this._equips.push(new Game_Item);
+    }
+};
+
+Game_Actor.prototype.prepareNewEquipSlotsOnLoad = function() {
+    const slots = this.equipSlots();
+    for (let i = 0; i < slots.length; i++) {
+        if (!this._equips[i]) this._equips[i] = new Game_Item();
+    }
+    this.releaseUnequippableItems(false);
+    this.refresh();
+};
+
+VisuMZ.ItemsEquipsCore.Game_Actor_changeEquip = Game_Actor.prototype.changeEquip;
+Game_Actor.prototype.changeEquip = function(slotId, item) {
+    if (!this._tempActor) { // v1.16 changed by Yanfly
+        const tempActor = JsonEx.makeDeepCopy(this);
+        tempActor._tempActor = true;
+        VisuMZ.ItemsEquipsCore.Game_Actor_changeEquip.call(this, slotId, item);
+        this.equipAdjustHpMp(tempActor);
+    } else {
+        VisuMZ.ItemsEquipsCore.Game_Actor_changeEquip.call(this, slotId, item);
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Game_Actor_forceChangeEquip = Game_Actor.prototype.forceChangeEquip;
+Game_Actor.prototype.forceChangeEquip = function(slotId, item) {
+    if (!this._tempActor) { // v1.16 changed by Yanfly
+        const tempActor = JsonEx.makeDeepCopy(this);
+        tempActor._tempActor = true;
+        VisuMZ.ItemsEquipsCore.Game_Actor_forceChangeEquip.call(this, slotId, item);
+        this.equipAdjustHpMp(tempActor);
+    } else {
+        VisuMZ.ItemsEquipsCore.Game_Actor_forceChangeEquip.call(this, slotId, item);
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Game_Actor_discardEquip = Game_Actor.prototype.discardEquip;
+Game_Actor.prototype.discardEquip = function(item) {
+    if (!this._tempActor) {
+        const tempActor = JsonEx.makeDeepCopy(this);
+        tempActor._tempActor = true;
+        VisuMZ.ItemsEquipsCore.Game_Actor_discardEquip.call(this, item);
+        this.equipAdjustHpMp(tempActor);
+    } else {
+        VisuMZ.ItemsEquipsCore.Game_Actor_discardEquip.call(this, item);
+    }
+};
+
+Game_Actor.prototype.releaseUnequippableItems = function(forcing) {
+    // v1.32 added by Arisu
+    if (this._bypassReleaseUnequippableItemsItemsEquipsCore) return;
+
+    for (;;) {
+        const slots = this.equipSlots();
+        const equips = this.equips();
+        const length = equips.length; // v1.23 added by Yanfly
+        let changed = false;
+        for (let i = 0; i < length; i++) {
+            const item = equips[i];
+            if (item && (!this.canEquip(item) || item.etypeId !== slots[i])) {
+                if (!forcing) {
+                    this.tradeItemWithParty(null, item);
+                }
+                if (!this._tempActor) {
+                    const tempActor = JsonEx.makeDeepCopy(this);
+                    tempActor._tempActor = true;
+                    this._equips[i].setObject(null);
+                    this._bypassReleaseUnequippableItemsItemsEquipsCore = true; // v1.32 added by Arisu
+                    this.equipAdjustHpMp(tempActor);
+                    this._bypassReleaseUnequippableItemsItemsEquipsCore = undefined; // v1.32 added by Arisu
+                } else {
+                    this._equips[i].setObject(null);
+                }
+                changed = true;
+            }
+        }
+        if (!changed) {
+            break;
+        }
+    }
+};
+
+Game_Actor.prototype.equipAdjustHpMp = function(tempActor) {
+    if (this._tempActor) return;
+    if (!VisuMZ.ItemsEquipsCore.Settings.EquipScene.EquipAdjustHpMp) return;
+    const hp = Math.round(tempActor.hpRate() * this.mhp);
+    const mp = Math.round(tempActor.mpRate() * this.mmp);
+    if (this.hp > 0) this.setHp(hp);
+    if (this.mp > 0) this.setMp(mp);
+};
+
+Game_Actor.prototype.clearEquipments = function() {
+    const maxSlots = this.equipSlots().length;
+    for (let i = 0; i < maxSlots; i++) {
+        if (this.isClearEquipOk(i)) this.changeEquip(i, null);
+    }
+};
+
+Game_Actor.prototype.isClearEquipOk = function(slotId) {
+    if (this.nonRemovableEtypes().includes(this.equipSlots()[slotId])) {
+        return false;
+    } else {
+        return this.isEquipChangeOk(slotId);
+    }
+};
+
+Game_Actor.prototype.nonRemovableEtypes = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.NonRemoveETypes;
+};
+
+Game_Actor.prototype.optimizeEquipments = function() {
+    const maxSlots = this.equipSlots().length;
+    for (let i = 0; i < maxSlots; i++) {
+        if (this.isOptimizeEquipOk(i)) this.changeEquip(i, null);
+    }
+    for (let i = 0; i < maxSlots; i++) {
+        if (this.isOptimizeEquipOk(i)) this.changeEquip(i, this.bestEquipItem(i));
+    }
+};
+
+Game_Actor.prototype.isOptimizeEquipOk = function(slotId) {
+    if (this.nonOptimizeEtypes().includes(this.equipSlots()[slotId])) {
+        return false;
+    } else {
+        return this.isEquipChangeOk(slotId);
+    }
+};
+
+Game_Actor.prototype.nonOptimizeEtypes = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.NonOptimizeETypes;
+};
+
+VisuMZ.ItemsEquipsCore.Game_Actor_tradeItemWithParty = Game_Actor.prototype.tradeItemWithParty;
+Game_Actor.prototype.tradeItemWithParty = function(newItem, oldItem) {
+    if (this._tempActor) return false; // v1.16 changed by Yanfly
+    $gameTemp._bypassNewLabel = true;
+    const value = VisuMZ.ItemsEquipsCore.Game_Actor_tradeItemWithParty.call(this, newItem, oldItem);
+    $gameTemp._bypassNewLabel = false;
+    return value;
+};
+
+Game_Actor.prototype.changeEquipById = function(etypeId, itemId) {
+    const slotId = this.getNextAvailableEtypeId(etypeId);
+    if (slotId < 0) return;
+    const obj = etypeId === 1 ? $dataWeapons[itemId] : $dataArmors[itemId];
+    this.changeEquip(slotId, obj);
+};
+
+Game_Actor.prototype.getNextAvailableEtypeId = function(etypeId) {
+    let slotId = 0;
+    const slots = this.equipSlots();
+    const equips = this.equips();
+    for (let i = 0; i < slots.length; i++) {
+        if (slots[i] === etypeId) {
+            slotId = i;
+            if (!equips[i]) return slotId;
+        }
+    }
+    return slotId;
+};
+
+VisuMZ.ItemsEquipsCore.Game_Actor_paramPlus = Game_Actor.prototype.paramPlus;
+Game_Actor.prototype.paramPlus = function(paramId) {
+    let value = VisuMZ.ItemsEquipsCore.Game_Actor_paramPlus.call(this, paramId);
+    for (const item of this.equips()) {
+        if (item) value += this.paramPlusItemsEquipsCoreCustomJS(item, paramId);
+    }
+    return value;
+};
+
+/* // Old
+Game_Actor.prototype.paramPlusItemsEquipsCoreCustomJS = function(item, paramId) {
+    if (this._calculatingJSParameters) return 0;
+    let MaxHP = 0; let MaxMP = 0; let ATK = 0; let DEF = 0;
+    let MAT = 0; let MDF = 0; let AGI = 0; let LUK = 0;
+    if (item.note.match(/<JS PARAMETERS>\s*([\s\S]*)\s*<\/JS PARAMETERS>/i)) {
+        const code = String(RegExp.$1);
+        const user = this;
+        const target = this;
+        const a = this;
+        const b = this;
+        this._calculatingJSParameters = true;
+        try {
+            eval(code);
+        } catch (e) {
+            if ($gameTemp.isPlaytest()) console.log(e);
+        }
+        this._calculatingJSParameters = false;
+    }
+    return [MaxHP, MaxMP, ATK, DEF, MAT, MDF, AGI, LUK][paramId];
+};
+*/
+
+Game_Actor.prototype.paramPlusItemsEquipsCoreCustomJS = function(item, paramId) {
+    if (this._calculatingJSParameters) return 0;
+    const key = (DataManager.isWeapon(item) ? 'W%1' : 'A%1').format(item.id);
+    const paramKey = '%1-%2'.format(key, paramId);
+    if (VisuMZ.ItemsEquipsCore.paramJS[paramKey]) {
+        this._calculatingJSParameters = true;
+        const value = VisuMZ.ItemsEquipsCore.paramJS[paramKey].call(this, item, paramId);
+        this._calculatingJSParameters = false;
+        return value;
+    } else {
+        return 0;
+    }
+};
+
+Game_Actor.prototype.setShopStatusWindowMode = function(ally) {
+    this._shopStatusMenuMode = true;
+    this._shopStatusMenuAlly = ally;
+};
+
+//-----------------------------------------------------------------------------
+// Game_Party
+//
+// The game object class for the party. Information such as gold and items is
+// included.
+
+//-----------------------------------------------------------------------------
+// Base
+//-----------------------------------------------------------------------------
+
+VisuMZ.ItemsEquipsCore.Game_Party_initialize = Game_Party.prototype.initialize;
+Game_Party.prototype.initialize = function() {
+    VisuMZ.ItemsEquipsCore.Game_Party_initialize.call(this);
+    this.initNewItemsList();
+    this.initShopTrackingData();
+};
+
+//-----------------------------------------------------------------------------
+// NEW! Label
+//-----------------------------------------------------------------------------
+
+Game_Party.prototype.initNewItemsList = function() {
+    this._newItemsList = [];
+};
+
+Game_Party.prototype.isNewItem = function(item) {
+    if (!$gameTemp.newLabelEnabled()) return false;
+    if (this._newItemsList === undefined) this.initNewItemsList();
+    let key = '';
+    if (DataManager.isItem(item)) {
+        key = 'item-%1'.format(item.id);
+    } else if (DataManager.isWeapon(item)) {
+        key = 'weapon-%1'.format(item.id);
+    } else if (DataManager.isArmor(item)) {
+        key = 'armor-%1'.format(item.id);
+    } else {
+        return;
+    }
+    return this._newItemsList.includes(key);
+};
+
+Game_Party.prototype.setNewItem = function(item) {
+    if (!$gameTemp.newLabelEnabled()) return;
+    if (this._newItemsList === undefined) this.initNewItemsList();
+    let key = '';
+    if (DataManager.isItem(item)) {
+        key = 'item-%1'.format(item.id);
+    } else if (DataManager.isWeapon(item)) {
+        key = 'weapon-%1'.format(item.id);
+    } else if (DataManager.isArmor(item)) {
+        key = 'armor-%1'.format(item.id);
+    } else {
+        return;
+    }
+    if (!this._newItemsList.includes(key)) this._newItemsList.push(key);
+};
+
+Game_Party.prototype.clearNewItem = function(item) {
+    if (!$gameTemp.newLabelEnabled()) return;
+    if (this._newItemsList === undefined) this.initNewItemsList();
+    let key = '';
+    if (DataManager.isItem(item)) {
+        key = 'item-%1'.format(item.id);
+    } else if (DataManager.isWeapon(item)) {
+        key = 'weapon-%1'.format(item.id);
+    } else if (DataManager.isArmor(item)) {
+        key = 'armor-%1'.format(item.id);
+    } else {
+        return;
+    }
+    if (this._newItemsList.includes(key)) {
+        this._newItemsList.splice(this._newItemsList.indexOf(key), 1);
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Proxy Items
+//-----------------------------------------------------------------------------
+
+// v1.37 added by Arisu
+VisuMZ.ItemsEquipsCore.Game_Party_numItems = Game_Party.prototype.numItems;
+Game_Party.prototype.numItems = function(item) {
+    if (DataManager.isProxyItem(item)) item = DataManager.getProxyItem(item);
+    return VisuMZ.ItemsEquipsCore.Game_Party_numItems.call(this, item);
+};
+
+VisuMZ.ItemsEquipsCore.Game_Party_gainItem = Game_Party.prototype.gainItem;
+Game_Party.prototype.gainItem = function(item, amount, includeEquip) {
+    if (DataManager.isProxyItem(item)) item = null; // v1.37 added by Arisu
+
+    const quantity = this.numItems(item);
+    VisuMZ.ItemsEquipsCore.Game_Party_gainItem.call(this, item, amount, includeEquip);
+    if (this.numItems(item) > quantity) this.setNewItem(item);
+};
+
+Game_Party.prototype.maxItems = function(item) {
+    if (DataManager.isProxyItem(item)) item = DataManager.getProxyItem(item); // v1.37 added by Arisu
+
+    return DataManager.maxItemAmount(item);
+};
+
+//-----------------------------------------------------------------------------
+// Consume
+//-----------------------------------------------------------------------------
+
+// v1.47 added by Arisu
+VisuMZ.ItemsEquipsCore.Game_Party_consumeItem = Game_Party.prototype.consumeItem;
+Game_Party.prototype.consumeItem = function(item) {
+    if (item) {
+        const note = item.note || '';
+        if (note.match(/<(?:CONSERVE|PRESERVE):[ ](\d+)([%％])>/i)) {
+            const rate = Number(RegExp.$1) * 0.01;
+            if (Math.random() < rate) return;
+        }
+    }
+
+    VisuMZ.ItemsEquipsCore.Game_Party_consumeItem.call(this, item);
+};
+
+//-----------------------------------------------------------------------------
+// Shop Tracking
+//-----------------------------------------------------------------------------
+
+// v1.47 added by Arisu
+Game_Party.prototype.initShopTrackingData = function() {
+    this._shopTrackingData = {
+        buy: {
+            gold: 0,
+            items: {},
+        },
+        sell: {
+            gold: 0,
+            items: {},
+        },
+    };
+};
+
+// v1.47 added by Arisu
+Game_Party.prototype.getShopTrackingData = function() {
+    if (this._shopTrackingData === undefined) {
+        this.initShopTrackingData();
+    }
+    return this._shopTrackingData;
+};
+
+//----- Get -----
+
+// v1.47 added by Arisu
+Game_Party.prototype.getShopTrackingItem = function(type, item) {
+    if (!item) return 0;
+
+    // Init
+    if (this._shopTrackingData === undefined) {
+        this.initShopTrackingData();
+    }
+
+    // Get Data
+    const data = this.getShopTrackingData();
+    if (!data[type]) return 0;
+
+    // Create Key
+    if (item === 'gold') {
+        data[type].gold = data[type].gold || 0;
+        return data[type].gold;
+
+    } else if (DataManager.isItem(item)) {
+        key = 'item-%1'.format(item.id);
+    } else if (DataManager.isWeapon(item)) {
+        key = 'weapon-%1'.format(item.id);
+    } else if (DataManager.isArmor(item)) {
+        key = 'armor-%1'.format(item.id);
+    } else {
+        return 0;
+    }
+
+    // Return Data
+    data[type].items[key] = data[type].items[key] || 0;
+    return data[type].items[key];
+};
+
+// v1.47 added by Arisu
+Game_Party.prototype.getShopTrackingItemBuy = function(item) {
+    return this.getShopTrackingItem('buy', item);
+};
+
+// v1.47 added by Arisu
+Game_Party.prototype.getShopTrackingItemSell = function(item) {
+    return this.getShopTrackingItem('sell', item);
+};
+
+// v1.47 added by Arisu
+Game_Party.prototype.getShopTrackingGoldBuy = function() {
+    return this.getShopTrackingItem('buy', 'gold');
+};
+
+// v1.47 added by Arisu
+Game_Party.prototype.getShopTrackingGoldSell = function() {
+    return this.getShopTrackingItem('sell', 'gold');
+};
+
+//----- Add -----
+
+// v1.47 added by Arisu
+Game_Party.prototype.addShopTrackingItem = function(type, item, times) {
+    // Return Check
+    if (!item) return;
+    if (times <= 0) return;
+
+    // Init
+    if (this._shopTrackingData === undefined) {
+        this.initShopTrackingData();
+    }
+
+    // Get Data
+    const data = this.getShopTrackingData();
+    if (!data[type]) return;
+
+    // Create Key
+    if (item === 'gold') {
+        data[type].gold = data[type].gold || 0;
+        data[type].gold += times;
+        return;
+
+    } else if (DataManager.isItem(item)) {
+        key = 'item-%1'.format(item.id);
+    } else if (DataManager.isWeapon(item)) {
+        key = 'weapon-%1'.format(item.id);
+    } else if (DataManager.isArmor(item)) {
+        key = 'armor-%1'.format(item.id);
+    } else {
+        return;
+    }
+
+    // Update Data
+    data[type].items[key] = data[type].items[key] || 0;
+    data[type].items[key] += times;
+};
+
+// v1.47 added by Arisu
+Game_Party.prototype.addShopTrackingItemBuy = function(item, times) {
+    this.addShopTrackingItem('buy', item, times);
+};
+
+// v1.47 added by Arisu
+Game_Party.prototype.addShopTrackingItemSell = function(item, times) {
+    this.addShopTrackingItem('sell', item, times);
+};
+
+// v1.47 added by Arisu
+Game_Party.prototype.addShopTrackingGoldBuy = function(times) {
+    this.addShopTrackingItem('buy', 'gold', times);
+};
+
+// v1.47 added by Arisu
+Game_Party.prototype.addShopTrackingGoldSell = function(times) {
+    this.addShopTrackingItem('sell', 'gold', times);
+};
+
+//-----------------------------------------------------------------------------
+// Scene_ItemBase
+//
+// The superclass of Scene_Item and Scene_Skill.
+
+VisuMZ.ItemsEquipsCore.Scene_ItemBase_activateItemWindow = Scene_ItemBase.prototype.activateItemWindow;
+Scene_ItemBase.prototype.activateItemWindow = function() {
+    VisuMZ.ItemsEquipsCore.Scene_ItemBase_activateItemWindow.call(this);
+    this._itemWindow.callUpdateHelp();
+};
+
+//-----------------------------------------------------------------------------
+// Scene_Item
+//
+// The scene class of the item screen.
+
+Scene_Item.prototype.isBottomHelpMode = function() {
+    if (ConfigManager.uiMenuStyle && ConfigManager.uiHelpPosition !== undefined) {
+        return ConfigManager.uiHelpPosition;
+    } else if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.updatedLayoutStyle().match(/LOWER/i);
+    } else {
+        return Scene_ItemBase.prototype.isBottomHelpMode.call(this); // v1.48 fixed return
+    }
+};
+
+Scene_Item.prototype.isRightInputMode = function() {
+    if (ConfigManager.uiMenuStyle && ConfigManager.uiInputPosition !== undefined) {
+        return ConfigManager.uiInputPosition;
+    } else if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.updatedLayoutStyle().match(/RIGHT/i);
+    } else {
+        return Scene_ItemBase.prototype.isRightInputMode.call(this); // v1.46 added return
+    }
+};
+
+Scene_Item.prototype.updatedLayoutStyle = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.ItemScene.LayoutStyle;
+};
+
+Scene_Item.prototype.isUseModernControls = function() {
+    return this._categoryWindow && this._categoryWindow.isUseModernControls();
+};
+
+Scene_Item.prototype.isUseItemsEquipsCoreUpdatedLayout = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.ItemScene.EnableLayout;
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Item_create = Scene_Item.prototype.create;
+Scene_Item.prototype.create = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Item_create.call(this);
+    if (this.isUseModernControls()) {
+        this.onCategoryOk();
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Item_helpWindowRect = Scene_Item.prototype.helpWindowRect;
+Scene_Item.prototype.helpWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.helpWindowRectItemsEquipsCore();
+    } else {
+        // v1.35 updated by Irina
+        return VisuMZ.ItemsEquipsCore.Scene_Item_helpWindowRect.call(this);
+    }
+};
+
+Scene_Item.prototype.helpWindowRectItemsEquipsCore = function() {
+    const wx = 0;
+    const wy = this.helpAreaTop();
+    const ww = Graphics.boxWidth;
+    const wh = this.helpAreaHeight();
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Item_createCategoryWindow = Scene_Item.prototype.createCategoryWindow;
+Scene_Item.prototype.createCategoryWindow = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Item_createCategoryWindow.call(this);
+    if (this.isUseModernControls()) {
+        this.postCreateCategoryWindowItemsEquipsCore();
+    }
+};
+
+Scene_Item.prototype.postCreateCategoryWindowItemsEquipsCore = function() {
+    delete this._categoryWindow._handlers['ok'];
+    delete this._categoryWindow._handlers['cancel'];
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Item_categoryWindowRect = Scene_Item.prototype.categoryWindowRect;
+Scene_Item.prototype.categoryWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.categoryWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Item_categoryWindowRect.call(this);
+    }
+};
+
+Scene_Item.prototype.categoryWindowRectItemsEquipsCore = function() {
+    const wx = 0;
+    const wy = this.mainAreaTop();
+    const ww = Graphics.boxWidth;
+    const wh = this.calcWindowHeight(1, true);
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Item_createItemWindow = Scene_Item.prototype.createItemWindow;
+Scene_Item.prototype.createItemWindow = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Item_createItemWindow.call(this);
+    if (this.isUseModernControls()) {
+        this.postCreateItemWindowModernControls();
+    }
+    if (this.allowCreateStatusWindow()) {
+        this.createStatusWindow();
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Item_itemWindowRect = Scene_Item.prototype.itemWindowRect;
+Scene_Item.prototype.itemWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.itemWindowRectItemsEquipsCore();
+    } else {
+        const rect = VisuMZ.ItemsEquipsCore.Scene_Item_itemWindowRect.call(this);
+        if (this.allowCreateStatusWindow() && this.adjustItemWidthByStatus()) {
+            rect.width -= this.statusWidth();
+        }
+        return rect;
+    }
+};
+
+Scene_Item.prototype.itemWindowRectItemsEquipsCore = function() {
+    const wx = this.isRightInputMode() ? this.statusWidth() : 0;
+    const wy = this._categoryWindow.y + this._categoryWindow.height;
+    const ww = Graphics.boxWidth - this.statusWidth();
+    const wh = this.mainAreaBottom() - wy;
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+Scene_Item.prototype.postCreateItemWindowModernControls = function() {
+    this._itemWindow.setHandler("cancel", this.popScene.bind(this));
+};
+
+Scene_Item.prototype.allowCreateStatusWindow = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return true;
+    } else {
+        return VisuMZ.ItemsEquipsCore.Settings.ItemScene.ShowShopStatus;
+    }
+};
+
+Scene_Item.prototype.adjustItemWidthByStatus = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.ItemScene.ItemSceneAdjustItemList;
+};
+
+Scene_Item.prototype.createStatusWindow = function() {
+    const rect = this.statusWindowRect();
+    this._statusWindow = new Window_ShopStatus(rect);
+    this.addWindow(this._statusWindow);
+    this._itemWindow.setStatusWindow(this._statusWindow);
+
+    // v1.18 added by Yanfly
+    const bgType = VisuMZ.ItemsEquipsCore.Settings.ItemScene.ItemMenuStatusBgType;
+    this._statusWindow.setBackgroundType(bgType || 0);
+};
+
+Scene_Item.prototype.statusWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.statusWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Settings.ItemScene.ItemMenuStatusRect.call(this);
+    }
+};
+
+Scene_Item.prototype.statusWindowRectItemsEquipsCore = function() {
+    const ww = this.statusWidth();
+    const wh = this._itemWindow.height;
+    const wx = this.isRightInputMode() ? 0 : Graphics.boxWidth - this.statusWidth();
+    const wy = this._itemWindow.y;
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+Scene_Item.prototype.statusWidth = function() {
+    return Scene_Shop.prototype.statusWidth();
+};
+
+Scene_Item.prototype.buttonAssistItemListRequirement = function() {
+    if (!this.updatedLayoutStyle()) return false;
+    if (!this.isUseModernControls()) return false;
+    if (!this._itemWindow) return false;
+    if (!this._itemWindow.active) return false;
+    return this.updatedLayoutStyle() && this.isUseModernControls();
+};
+
+Scene_Item.prototype.buttonAssistKey1 = function() {
+    if (this.buttonAssistItemListRequirement()) {
+        if (this._itemWindow.maxCols() === 1) {
+            return TextManager.getInputMultiButtonStrings('left', 'right');
+        } else {
+            return TextManager.getInputMultiButtonStrings('pageup', 'pagedown');
+        }
+    }
+    return Scene_ItemBase.prototype.buttonAssistKey1.call(this);
+};
+
+Scene_Item.prototype.buttonAssistText1 = function() {
+    if (this.buttonAssistItemListRequirement()) {
+        return VisuMZ.ItemsEquipsCore.Settings.ItemScene.buttonAssistCategory;
+    }
+    return Scene_ItemBase.prototype.buttonAssistText1.call(this);
+};
+
+//-----------------------------------------------------------------------------
+// Scene_Equip
+//
+// The scene class of the equipment screen.
+
+Scene_Equip.prototype.isBottomHelpMode = function() {
+    if (ConfigManager.uiMenuStyle && ConfigManager.uiHelpPosition !== undefined) {
+        return ConfigManager.uiHelpPosition;
+    } else if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.updatedLayoutStyle().match(/LOWER/i);
+    } else {
+        Scene_MenuBase.prototype.isRightInputMode.call(this);
+    }
+};
+
+Scene_Equip.prototype.isRightInputMode = function() {
+    if (ConfigManager.uiMenuStyle && ConfigManager.uiInputPosition !== undefined) {
+        return ConfigManager.uiInputPosition;
+    } else if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.updatedLayoutStyle().match(/RIGHT/i);
+    } else {
+        Scene_MenuBase.prototype.isRightInputMode.call(this);
+    }
+};
+
+Scene_Equip.prototype.updatedLayoutStyle = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.LayoutStyle;
+};
+
+Scene_Equip.prototype.isUseModernControls = function() {
+    return this._commandWindow && this._commandWindow.isUseModernControls();
+};
+
+Scene_Equip.prototype.isUseItemsEquipsCoreUpdatedLayout = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.EnableLayout;
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_create = Scene_Equip.prototype.create;
+Scene_Equip.prototype.create = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Equip_create.call(this);
+    if (this.isUseModernControls()) {
+        this.commandEquip();
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_helpWindowRect = Scene_Equip.prototype.helpWindowRect;
+Scene_Equip.prototype.helpWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.helpWindowRectItemsEquipsCore();
+    } else {
+        // v1.35 updated by Irina
+        return VisuMZ.ItemsEquipsCore.Scene_Equip_helpWindowRect.call(this);
+    }
+};
+
+Scene_Equip.prototype.helpWindowRectItemsEquipsCore = function() {
+    const wx = 0;
+    const wy = this.helpAreaTop();
+    const ww = Graphics.boxWidth;
+    const wh = this.helpAreaHeight();
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_statusWindowRect = Scene_Equip.prototype.statusWindowRect;
+Scene_Equip.prototype.statusWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.statusWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Equip_statusWindowRect.call(this);
+    }
+};
+
+Scene_Equip.prototype.statusWindowRectItemsEquipsCore = function() {
+    const wx = this.isRightInputMode() ? 0 : Graphics.boxWidth - this.statusWidth();
+    const wy = this.mainAreaTop();
+    const ww = this.statusWidth();
+    const wh = this.mainAreaHeight();
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+// v1.41 added by Arisu
+VisuMZ.ItemsEquipsCore.Scene_Equip_createCommandWindow = Scene_Equip.prototype.createCommandWindow;
+Scene_Equip.prototype.createCommandWindow = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Equip_createCommandWindow.call(this);
+
+    if (this._helpWindow) this._commandWindow.setHelpWindow(this._helpWindow);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_commandWindowRect = Scene_Equip.prototype.commandWindowRect;
+Scene_Equip.prototype.commandWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.commandWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Equip_commandWindowRect.call(this);
+    }
+};
+
+Scene_Equip.prototype.shouldCommandWindowExist = function() {
+    const settings = VisuMZ.ItemsEquipsCore.Settings.EquipScene;
+    return settings.CommandAddOptimize || settings.CommandAddClear;
+};
+
+Scene_Equip.prototype.commandWindowRectItemsEquipsCore = function() {
+    const exist = this.shouldCommandWindowExist();
+    const wx = this.isRightInputMode() ? this.statusWidth() : 0;
+    const wy = this.mainAreaTop();
+    const ww = Graphics.boxWidth - this.statusWidth();
+    const wh = exist ? this.calcWindowHeight(1, true) : 0;
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_createSlotWindow = Scene_Equip.prototype.createSlotWindow;
+Scene_Equip.prototype.createSlotWindow = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Equip_createSlotWindow.call(this);
+    if (this.isUseModernControls()) {
+        this.postCreateSlotWindowItemsEquipsCore();
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_slotWindowRect = Scene_Equip.prototype.slotWindowRect;
+Scene_Equip.prototype.slotWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.slotWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Equip_slotWindowRect.call(this);
+    }
+};
+
+Scene_Equip.prototype.slotWindowRectItemsEquipsCore = function() {
+    const commandWindowRect = this.commandWindowRect();
+    const wx = this.isRightInputMode() ? this.statusWidth() : 0;
+    const wy = commandWindowRect.y + commandWindowRect.height;
+    const ww = Graphics.boxWidth - this.statusWidth();
+    const wh = this.mainAreaHeight() - commandWindowRect.height;
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_itemWindowRect = Scene_Equip.prototype.itemWindowRect;
+Scene_Equip.prototype.itemWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.slotWindowRect();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Equip_itemWindowRect.call(this);
+    }
+};
+
+Scene_Equip.prototype.statusWidth = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.geUpdatedLayoutStatusWidth();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Settings.EquipScene.StatusWindowWidth;
+    }
+};
+
+Scene_Equip.prototype.geUpdatedLayoutStatusWidth = function() {
+    return Math.floor(Graphics.boxWidth / 2);
+};
+
+Scene_Equip.prototype.postCreateSlotWindowItemsEquipsCore = function() {
+    this._slotWindow.setHandler('cancel', this.popScene.bind(this));
+    this._slotWindow.setHandler("pagedown", this.nextActor.bind(this));
+    this._slotWindow.setHandler("pageup", this.previousActor.bind(this));
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_commandEquip = Scene_Equip.prototype.commandEquip;
+Scene_Equip.prototype.commandEquip = function() {
+    if (this.isUseModernControls()) {
+        this._commandWindow.deselect();
+        this._commandWindow.deactivate();
+    }
+    VisuMZ.ItemsEquipsCore.Scene_Equip_commandEquip.call(this);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_onSlotOk = Scene_Equip.prototype.onSlotOk;
+Scene_Equip.prototype.onSlotOk = function() {
+    if (this._slotWindow.index() >= 0) {
+        VisuMZ.ItemsEquipsCore.Scene_Equip_onSlotOk.call(this);
+        this.onSlotOkAutoSelect();
+    } else {
+        this._slotWindow.smoothSelect(0);
+        this._slotWindow.activate();
+    }
+};
+
+Scene_Equip.prototype.onSlotOkAutoSelect = function() {
+    this._itemWindow.refresh();
+    const item = this._slotWindow.item();
+    const index = this._itemWindow._data.indexOf(item);
+    const half = Math.floor(this._itemWindow.maxVisibleItems() / 2) - 1;
+    this._itemWindow.smoothSelect(index >= 0 ? index : 0);
+    // v1.40 added by Irina
+    if (this._itemWindow._scrollDuration > 1) {
+    	this._itemWindow._scrollDuration = 1;
+    	this._itemWindow.updateSmoothScroll();
+    }
+    // Original
+    this._itemWindow.setTopRow(this._itemWindow.index() - half);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_onSlotCancel = Scene_Equip.prototype.onSlotCancel;
+Scene_Equip.prototype.onSlotCancel = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Equip_onSlotCancel.call(this);
+    if (this.isUseModernControls()) {
+        this._commandWindow.smoothSelect(0);
+        this._slotWindow.deactivate();
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Equip_onActorChange = Scene_Equip.prototype.onActorChange;
+Scene_Equip.prototype.onActorChange = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Equip_onActorChange.call(this);
+    if (this.isUseModernControls()) {
+        this._commandWindow.deactivate();
+        this._commandWindow.deselect();
+        this._slotWindow.smoothSelect(0);
+        this._slotWindow.activate();
+    }
+};
+
+Scene_Equip.prototype.buttonAssistSlotWindowShift = function() {
+    if (!this._slotWindow) return false;
+    if (!this._slotWindow.active) return false;
+    return this._slotWindow.isShiftRemoveShortcutEnabled();
+};
+
+Scene_Equip.prototype.buttonAssistKey3 = function() {
+    if (this.buttonAssistSlotWindowShift()) {
+        return TextManager.getInputButtonString('shift');
+    }
+    return Scene_MenuBase.prototype.buttonAssistKey3.call(this);
+};
+
+Scene_Equip.prototype.buttonAssistText3 = function() {
+    if (this.buttonAssistSlotWindowShift()) {
+        return VisuMZ.ItemsEquipsCore.Settings.EquipScene.buttonAssistRemove;
+    }
+    return Scene_MenuBase.prototype.buttonAssistText3.call(this);
+};
+
+Scene_Equip.prototype.buttonAssistOffset3 = function() {
+    if (this.buttonAssistSlotWindowShift()) {
+        return this._buttonAssistWindow.width / 5 / -3;
+    }
+    return Scene_MenuBase.prototype.buttonAssistOffset3.call(this);
+};
+
+Scene_Equip.prototype.popScene = function() {
+    SceneManager.pop();
+};
+
+//-----------------------------------------------------------------------------
+// Scene_Load
+//
+// The scene class of the load screen.
+
+VisuMZ.ItemsEquipsCore.Scene_Load_reloadMapIfUpdated = Scene_Load.prototype.reloadMapIfUpdated;
+Scene_Load.prototype.reloadMapIfUpdated = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Load_reloadMapIfUpdated.call(this);
+    this.refreshActorEquipSlotsIfUpdated();
+};
+
+Scene_Load.prototype.refreshActorEquipSlotsIfUpdated = function() {
+    if ($gameSystem.versionId() !== $dataSystem.versionId) {
+        for (const actor of $gameActors._data) {
+            if (actor) actor.prepareNewEquipSlotsOnLoad();
+        }
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Scene_Shop
+//
+// The scene class of the shop screen.
+
+Scene_Shop.prototype.isBottomHelpMode = function() {
+    if (ConfigManager.uiMenuStyle && ConfigManager.uiHelpPosition !== undefined) {
+        return ConfigManager.uiHelpPosition;
+    } else if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.updatedLayoutStyle().match(/LOWER/i);
+    } else {
+        Scene_MenuBase.prototype.isRightInputMode.call(this);
+    }
+};
+
+Scene_Shop.prototype.isRightInputMode = function() {
+    if (ConfigManager.uiMenuStyle && ConfigManager.uiInputPosition !== undefined) {
+        return ConfigManager.uiInputPosition;
+    } else if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.updatedLayoutStyle().match(/RIGHT/i);
+    } else {
+        Scene_MenuBase.prototype.isRightInputMode.call(this);
+    }
+};
+
+Scene_Shop.prototype.updatedLayoutStyle = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.ShopScene.LayoutStyle;
+};
+
+Scene_Shop.prototype.isUseModernControls = function() {
+    return this._categoryWindow && this._categoryWindow.isUseModernControls();
+};
+
+Scene_Shop.prototype.isUseItemsEquipsCoreUpdatedLayout = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.ShopScene.EnableLayout;
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_prepare = Scene_Shop.prototype.prepare;
+Scene_Shop.prototype.prepare = function(goods, purchaseOnly) {
+    goods = VisuMZ.ItemsEquipsCore.deepCopy(goods);
+    VisuMZ.ItemsEquipsCore.Scene_Shop_prepare.call(this, goods, purchaseOnly);
+    this.adjustHiddenShownGoods();
+};
+
+Scene_Shop.prototype.adjustHiddenShownGoods = function() {
+    this._goodsCount = 0;
+    const removal = []; // v1.37 added by Arisu
+
+    for (const good of this._goods) {
+        if (this.isGoodShown(good)) {
+            this._goodsCount++;
+        } else {
+            //good[0] = -1;
+            removal.push(good); // v1.37 added by Arisu
+        }
+    }
+
+    // v1.37 added by Arisu
+    for (const good of removal) {
+        this._goods.remove(good);
+    }
+};
+
+Scene_Shop.prototype.isGoodShown = function(good) {
+    if (good[0] > 2 || good[0] < 0) return false;
+    const item = [$dataItems, $dataWeapons, $dataArmors][good[0]][good[1]];
+    if (!item) return false;
+
+    // v1.47 disabled by Arisu
+    // const note = item.note || '';
+
+    // if (note.match(/<SHOW SHOP[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+    //     const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+    //     for (const switchId of switches) {
+    //         if (!$gameSwitches.value(switchId)) return false;
+    //     }
+    //     return true;
+    // }
+    // if (note.match(/<SHOW SHOP ALL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+    //     const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+    //     for (const switchId of switches) {
+    //         if (!$gameSwitches.value(switchId)) return false;
+    //     }
+    //     return true;
+    // }
+    // if (note.match(/<SHOW SHOP ANY[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+    //     const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+    //     for (const switchId of switches) {
+    //         if ($gameSwitches.value(switchId)) return true;
+    //     }
+    //     return false;
+    // }
+    // if (note.match(/<HIDE SHOP[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+    //     const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+    //     for (const switchId of switches) {
+    //         if (!$gameSwitches.value(switchId)) return true;
+    //     }
+    //     return false;
+    // }
+    // if (note.match(/<HIDE SHOP ALL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+    //     const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+    //     for (const switchId of switches) {
+    //         if (!$gameSwitches.value(switchId)) return true;
+    //     }
+    //     return false;
+    // }
+    // if (note.match(/<HIDE SHOP ANY[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+    //     const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+    //     for (const switchId of switches) {
+    //         if ($gameSwitches.value(switchId)) return false;
+    //     }
+    //     return true;
+    // }
+
+    return true;
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_create = Scene_Shop.prototype.create;
+Scene_Shop.prototype.create = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_create.call(this);
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        this.postCreateItemsEquipsCore();
+    }
+    this.resetShopSwitches(); // v1.20 added by Irina
+};
+
+Scene_Shop.prototype.postCreateItemsEquipsCore = function() {
+    this._dummyWindow.hide();
+    this._buyWindow.show();
+    this._buyWindow.deselect();
+    this._statusWindow.show();
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_helpWindowRect = Scene_Shop.prototype.helpWindowRect;
+Scene_Shop.prototype.helpWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.helpWindowRectItemsEquipsCore();
+    } else {
+        // v1.35 updated by Irina
+        return VisuMZ.ItemsEquipsCore.Scene_Shop_helpWindowRect.call(this);
+    }
+};
+
+Scene_Shop.prototype.helpWindowRectItemsEquipsCore = function() {
+    const wx = 0;
+    const wy = this.helpAreaTop();
+    const ww = Graphics.boxWidth;
+    const wh = this.helpAreaHeight();
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_goldWindowRect = Scene_Shop.prototype.goldWindowRect;
+Scene_Shop.prototype.goldWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.goldWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Shop_goldWindowRect.call(this);
+    }
+};
+
+Scene_Shop.prototype.goldWindowRectItemsEquipsCore = function() {
+    const ww = this.mainCommandWidth();
+    const wh = this.calcWindowHeight(1, true);
+    const wx = this.isRightInputMode() ? 0 : Graphics.boxWidth - ww;
+    const wy = this.mainAreaTop();
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_commandWindowRect = Scene_Shop.prototype.commandWindowRect;
+Scene_Shop.prototype.commandWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.commandWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Shop_commandWindowRect.call(this);
+    }
+};
+
+Scene_Shop.prototype.commandWindowRectItemsEquipsCore = function() {
+    const wx = this.isRightInputMode() ? this.mainCommandWidth() : 0;
+    const wy = this.mainAreaTop();
+    const ww = Graphics.boxWidth - this.mainCommandWidth();
+    const wh = this.calcWindowHeight(1, true);
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_numberWindowRect = Scene_Shop.prototype.numberWindowRect;
+Scene_Shop.prototype.numberWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.numberWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Shop_numberWindowRect.call(this);
+    }
+};
+
+Scene_Shop.prototype.numberWindowRectItemsEquipsCore = function() {
+    const wy = this._commandWindow.y + this._commandWindow.height;
+    const ww = Graphics.boxWidth - this.statusWidth();
+    const wx = this.isRightInputMode() ? Graphics.boxWidth - ww : 0;
+    const wh = this.mainAreaHeight() - this._commandWindow.height;
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_statusWindowRect = Scene_Shop.prototype.statusWindowRect;
+Scene_Shop.prototype.statusWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.statusWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Shop_statusWindowRect.call(this);
+    }
+};
+
+Scene_Shop.prototype.statusWindowRectItemsEquipsCore = function() {
+    const ww = this.statusWidth();
+    const wh = this.mainAreaHeight() - this._commandWindow.height;
+    const wx = this.isRightInputMode() ? 0 : Graphics.boxWidth - ww;
+    const wy = this._commandWindow.y + this._commandWindow.height;
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_buyWindowRect = Scene_Shop.prototype.buyWindowRect;
+Scene_Shop.prototype.buyWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.buyWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Shop_buyWindowRect.call(this);
+    }
+};
+
+Scene_Shop.prototype.buyWindowRectItemsEquipsCore = function() {
+    const wy = this._commandWindow.y + this._commandWindow.height;
+    const ww = Graphics.boxWidth - this.statusWidth();
+    const wh = this.mainAreaHeight() - this._commandWindow.height;
+    const wx = this.isRightInputMode() ? Graphics.boxWidth - ww : 0;
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_createCategoryWindow = Scene_Shop.prototype.createCategoryWindow
+Scene_Shop.prototype.createCategoryWindow = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_createCategoryWindow.call(this);
+    if (this.isUseModernControls()) {
+        this.postCreateCategoryWindowItemsEquipsCore();
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_categoryWindowRect = Scene_Shop.prototype.categoryWindowRect;
+Scene_Shop.prototype.categoryWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.categoryWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Shop_categoryWindowRect.call(this);
+    }
+};
+
+Scene_Shop.prototype.categoryWindowRectItemsEquipsCore = function() {
+    const wy = this._commandWindow.y;
+    const ww = this._commandWindow.width;
+    const wh = this.calcWindowHeight(1, true);
+    const wx = this.isRightInputMode() ? Graphics.boxWidth - ww : 0;
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+Scene_Shop.prototype.postCreateCategoryWindowItemsEquipsCore = function() {
+    delete this._categoryWindow._handlers['ok'];
+    delete this._categoryWindow._handlers['cancel'];
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_createSellWindow = Scene_Shop.prototype.createSellWindow;
+Scene_Shop.prototype.createSellWindow = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_createSellWindow.call(this);
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        this.postCreateSellWindowItemsEquipsCore();
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_sellWindowRect = Scene_Shop.prototype.sellWindowRect;
+Scene_Shop.prototype.sellWindowRect = function() {
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        return this.sellWindowRectItemsEquipsCore();
+    } else {
+        return VisuMZ.ItemsEquipsCore.Scene_Shop_sellWindowRect.call(this);
+    }
+};
+
+Scene_Shop.prototype.sellWindowRectItemsEquipsCore = function() {
+    const wy = this._categoryWindow.y + this._categoryWindow.height;
+    const ww = Graphics.boxWidth - this.statusWidth();
+    const wh =
+        this.mainAreaHeight() -
+        this._categoryWindow.height;
+    const wx = this.isRightInputMode() ? Graphics.boxWidth - ww : 0;
+    return new Rectangle(wx, wy, ww, wh);
+};
+
+Scene_Shop.prototype.postCreateSellWindowItemsEquipsCore = function() {
+    this._sellWindow.setStatusWindow(this._statusWindow);
+};
+
+Scene_Shop.prototype.statusWidth = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.Width;
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_activateSellWindow = Scene_Shop.prototype.activateSellWindow;
+Scene_Shop.prototype.activateSellWindow = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_activateSellWindow.call(this);
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        this._statusWindow.show();
+    }
+    this._sellWindow.updateHelp(); // v1.24 added by Arisu
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_commandBuy = Scene_Shop.prototype.commandBuy;
+Scene_Shop.prototype.commandBuy = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_commandBuy.call(this);
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        this.commandBuyItemsEquipsCore();
+    }
+};
+
+Scene_Shop.prototype.commandBuyItemsEquipsCore = function() {
+    this._buyWindowLastIndex = this._buyWindowLastIndex || 0;
+    this._buyWindow.smoothSelect(this._buyWindowLastIndex);
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_commandSell = Scene_Shop.prototype.commandSell;
+Scene_Shop.prototype.commandSell = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_commandSell.call(this);
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        this.commandSellItemsEquipsCore();
+    }
+    if (this.isUseModernControls()) {
+        this._categoryWindow.smoothSelect(0);
+        this.onCategoryOk();
+    }
+};
+
+Scene_Shop.prototype.commandSellItemsEquipsCore = function() {
+    this._buyWindow.hide();
+    this._commandWindow.hide();
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_onBuyCancel = Scene_Shop.prototype.onBuyCancel;
+Scene_Shop.prototype.onBuyCancel = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_onBuyCancel.call(this);
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        this.onBuyCancelItemsEquipsCore();
+    }
+};
+
+Scene_Shop.prototype.onBuyCancelItemsEquipsCore = function() {
+    this._buyWindowLastIndex = this._buyWindow.index();
+    this._buyWindow.show();
+    this._buyWindow.deselect();
+    this._buyWindow.smoothScrollTo(0,0);
+    this._statusWindow.show();
+    this._dummyWindow.hide();
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_onCategoryCancel = Scene_Shop.prototype.onCategoryCancel;
+Scene_Shop.prototype.onCategoryCancel = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_onCategoryCancel.call(this);
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        this.onCategoryCancelItemsEquipsCore();
+    }
+};
+
+Scene_Shop.prototype.onCategoryCancelItemsEquipsCore = function() {
+    this._buyWindow.show();
+    this._commandWindow.show();
+};
+
+// v1.37 added by Arisu
+VisuMZ.ItemsEquipsCore.Scene_Shop_onBuyOk = Scene_Shop.prototype.onBuyOk;
+Scene_Shop.prototype.onBuyOk = function() {
+    $gameTemp._bypassProxy = true;
+    VisuMZ.ItemsEquipsCore.Scene_Shop_onBuyOk.call(this);
+    $gameTemp._bypassProxy = false;
+    this._item = this._buyWindow.item();
+};
+
+// v1.37 added by Arisu
+VisuMZ.ItemsEquipsCore.Scene_Shop_buyingPrice = Scene_Shop.prototype.buyingPrice;
+Scene_Shop.prototype.buyingPrice = function() {
+    $gameTemp._bypassProxy = true;
+    this._item = this._buyWindow.item();
+    
+    const price = VisuMZ.ItemsEquipsCore.Scene_Shop_buyingPrice.call(this);
+
+    $gameTemp._bypassProxy = false;
+    this._item = this._buyWindow.item();
+
+    return price;
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_onSellOk = Scene_Shop.prototype.onSellOk;
+Scene_Shop.prototype.onSellOk = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_onSellOk.call(this);
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        this.onSellOkItemsEquipsCore();
+    }
+};
+
+Scene_Shop.prototype.onSellOkItemsEquipsCore = function() {
+    this._categoryWindow.show();
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_onSellCancel = Scene_Shop.prototype.onSellCancel;
+Scene_Shop.prototype.onSellCancel = function() {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_onSellCancel.call(this);
+    if (this.isUseModernControls()) {
+        this.onCategoryCancel();
+    }
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        this._dummyWindow.hide();
+    }
+};
+
+// v1.37 added by Arisu
+Scene_Shop.prototype.sellPriceOfItem = function(item) {
+    const originalItem = this._item;
+    this._item = item;
+    const price = this.sellingPrice();
+    this._item = originalItem;
+    return price;
+};
+
+VisuMZ.ItemsEquipsCore.Scene_Shop_sellingPrice = Scene_Shop.prototype.sellingPrice;
+Scene_Shop.prototype.sellingPrice = function() {
+    let price = this.determineBaseSellingPrice();
+    const item = this._item;
+    // Run JS: Sell Price Plugin Parameter
+    price = VisuMZ.ItemsEquipsCore.Settings.ShopScene.SellPriceJS.call(this, item, price);
+    return price;
+};
+
+Scene_Shop.prototype.determineBaseSellingPrice = function() {
+    let basePrice = this._item.price;
+    if (!this._item) {
+        return 0;
+    } else if (this._item.note.match(/<JS SELL PRICE>\s*([\s\S]*)\s*<\/JS SELL PRICE>/i)) {
+        const code = String(RegExp.$1);
+        let item = this._item;
+        let price = basePrice * this.sellPriceRate();
+        try {
+            eval(code);
+        } catch (e) {
+            if ($gameTemp.isPlaytest()) console.log(e);
+        }
+        if (isNaN(price)) price = 0;
+        return Math.floor(price);
+    } else if (this._item.note.match(/<SELL PRICE:[ ](\d+)>/i)) {
+        return parseInt(RegExp.$1);
+    } else {
+        return Math.floor(this.baseSellingPrice()); // v1.31 added by Arisu
+    }
+};
+
+// v1.31 added by Arisu
+Scene_Shop.prototype.baseSellingPrice = function() {
+    return this._item.price * this.sellPriceRate();
+};
+
+Scene_Shop.prototype.sellPriceRate = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.ShopScene.SellPriceRate;
+};
+
+Scene_Shop.prototype.buttonAssistItemListRequirement = function() {
+    if (!this.updatedLayoutStyle()) return false;
+    if (!this.isUseModernControls()) return false;
+    if (!this._sellWindow) return false;
+    if (!this._sellWindow.active) return false;
+    return this.updatedLayoutStyle() && this.isUseModernControls();
+};
+
+Scene_Shop.prototype.buttonAssistKey1 = function() {
+    if (this.buttonAssistItemListRequirement()) {
+        if (this._sellWindow.maxCols() === 1) {
+            return TextManager.getInputMultiButtonStrings('left', 'right');
+        } else {
+            return TextManager.getInputMultiButtonStrings('pageup', 'pagedown');
+        }
+    } else if (this._numberWindow && this._numberWindow.active) {
+        return TextManager.getInputMultiButtonStrings('left', 'right');
+    }
+    return Scene_MenuBase.prototype.buttonAssistKey1.call(this);
+};
+
+Scene_Shop.prototype.buttonAssistKey2 = function() {
+    if (this._numberWindow && this._numberWindow.active) {
+        return TextManager.getInputMultiButtonStrings('up', 'down');
+    }
+    return Scene_MenuBase.prototype.buttonAssistKey2.call(this);
+};
+
+Scene_Shop.prototype.buttonAssistText1 = function() {
+    if (this.buttonAssistItemListRequirement()) {
+        return VisuMZ.ItemsEquipsCore.Settings.ItemScene.buttonAssistCategory;
+    } else if (this._numberWindow && this._numberWindow.active) {
+        return VisuMZ.ItemsEquipsCore.Settings.ShopScene.buttonAssistSmallIncrement;
+    }
+    return Scene_MenuBase.prototype.buttonAssistText1.call(this);
+};
+
+Scene_Shop.prototype.buttonAssistText2 = function() {
+    if (this._numberWindow && this._numberWindow.active) {
+        return VisuMZ.ItemsEquipsCore.Settings.ShopScene.buttonAssistLargeIncrement;
+    }
+    return Scene_MenuBase.prototype.buttonAssistText2.call(this);
+};
+
+//-----------------------------------------------------------------------------
+// Scene Switches
+//-----------------------------------------------------------------------------
+
+// v1.20 added by Irina
+Scene_Shop.prototype.resetShopSwitches = function() {
+    if (!SceneManager.isSceneShop()) return;
+
+    const settings = VisuMZ.ItemsEquipsCore.Settings.ShopScene;
+    if (settings.SwitchBuy) {
+        $gameSwitches.setValue(settings.SwitchBuy, false);
+    }
+    if (settings.SwitchSell) {
+        $gameSwitches.setValue(settings.SwitchSell, false);
+    }
+};
+
+// v1.20 added by Irina
+VisuMZ.ItemsEquipsCore.Scene_Shop_doBuy = Scene_Shop.prototype.doBuy;
+Scene_Shop.prototype.doBuy = function(number) {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_doBuy.call(this, number);
+    this.onBuyItem(this._item, number); // v1.47 added by Arisu
+    if (number <= 0) return;
+
+    const settings = VisuMZ.ItemsEquipsCore.Settings.ShopScene;
+    if (settings.SwitchBuy) {
+        $gameSwitches.setValue(settings.SwitchBuy, true);
+    }
+
+    // Refresh Windows
+    this._buyWindow.refresh();
+    this._sellWindow.refresh();
+};
+
+// v1.47 added by Arisu
+// Compatibility Target
+Scene_Shop.prototype.onBuyItem = function(item, number) {
+    this.processShopCondListingOnBuyItem(item, number);
+    $gameParty.addShopTrackingItemBuy(item, number);
+    $gameParty.addShopTrackingGoldBuy(number * this.buyingPrice());
+};
+
+// v1.47 added by Arisu
+Scene_Shop.prototype.processShopCondListingOnBuyItem = function(item, number) {
+    // Return Check
+    if (!item) return;
+    if (!number) return;
+
+    // Declare Constants
+    const regexp = VisuMZ.ItemsEquipsCore.ShopListingRegExp;
+    const note = item.note || '';
+
+    // Check Notetags
+    // <Buy Turn ON Switches: x, x, x>
+    if (note.match(regexp.BuyTurnSwitchOn)) {
+        const switchIDs = String(RegExp.$1).split(',').map(i => Number(i));
+        for (const switchID of switchIDs) {
+            $gameSwitches.setValue(switchID, true);
+        }
+    }
+    // <Buy Turn OFF Switches: x, x, x>
+    if (note.match(regexp.BuyTurnSwitchOff)) {
+        const switchIDs = String(RegExp.$1).split(',').map(i => Number(i));
+        for (const switchID of switchIDs) {
+            $gameSwitches.setValue(switchID, false);
+        }
+    }
+};
+
+// 1.20 added by Irina
+VisuMZ.ItemsEquipsCore.Scene_Shop_doSell = Scene_Shop.prototype.doSell;
+Scene_Shop.prototype.doSell = function(number) {
+    VisuMZ.ItemsEquipsCore.Scene_Shop_doSell.call(this, number);
+    this.onSellItem(this._item, number); // v1.47 added by Arisu
+    if (number <= 0) return;
+
+    const settings = VisuMZ.ItemsEquipsCore.Settings.ShopScene;
+    if (settings.SwitchBuy) {
+        $gameSwitches.setValue(settings.SwitchSell, true);
+    }
+
+    // Refresh Windows
+    this._buyWindow.refresh();
+    this._sellWindow.refresh();
+};
+
+// v1.47 added by Arisu
+// Compatibility Target
+Scene_Shop.prototype.onSellItem = function(item, number) {
+    this.processShopCondListingOnSellItem(item, number);
+    $gameParty.addShopTrackingItemSell(item, number);
+    $gameParty.addShopTrackingGoldSell(number * this.sellingPrice());
+};
+
+// v1.47 added by Arisu
+Scene_Shop.prototype.processShopCondListingOnSellItem = function(item, number) {
+    // Return Check
+    if (!item) return;
+    if (!number) return;
+
+    // Declare Constants
+    const regexp = VisuMZ.ItemsEquipsCore.ShopListingRegExp;
+    const note = item.note || '';
+
+    // Check Notetags
+    // <Sell Turn ON Switches: x, x, x>
+    if (note.match(regexp.SellTurnSwitchOn)) {
+        const switchIDs = String(RegExp.$1).split(',').map(i => Number(i));
+        for (const switchID of switchIDs) {
+            $gameSwitches.setValue(switchID, true);
+        }
+    }
+    // <Sell Turn OFF Switches: x, x, x>
+    if (note.match(regexp.SellTurnSwitchOff)) {
+        const switchIDs = String(RegExp.$1).split(',').map(i => Number(i));
+        for (const switchID of switchIDs) {
+            $gameSwitches.setValue(switchID, false);
+        }
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Sprite_NewLabel
+//
+// The sprite for displaying a new item label.
+
+function Sprite_NewLabel() {
+    this.initialize(...arguments);
+}
+
+Sprite_NewLabel.prototype = Object.create(Sprite.prototype);
+Sprite_NewLabel.prototype.constructor = Sprite_NewLabel;
+
+Sprite_NewLabel.prototype.initialize = function() {
+    Sprite.prototype.initialize.call(this);
+    this.createBitmap();
+};
+
+Sprite_NewLabel.prototype.createBitmap = function() {
+    const width = ImageManager.iconWidth;
+    const height = ImageManager.iconHeight;
+    this.bitmap = new Bitmap(width, height);
+    this.drawNewLabelIcon();
+    this.drawNewLabelText();
+};
+
+Sprite_NewLabel.prototype.drawNewLabelIcon = function() {
+    const iconIndex = VisuMZ.ItemsEquipsCore.Settings.New.Icon;
+    if (iconIndex <= 0) return;
+    const bitmap = ImageManager.loadSystem("IconSet");
+    const pw = ImageManager.iconWidth;
+    const ph = ImageManager.iconHeight;
+    const sx = (iconIndex % 16) * pw;
+    const sy = Math.floor(iconIndex / 16) * ph;
+    this.bitmap.blt(bitmap, sx, sy, pw, ph, 0, 0);
+};
+
+Sprite_NewLabel.prototype.drawNewLabelText = function() {
+    const settings = VisuMZ.ItemsEquipsCore.Settings.New;
+    const text = settings.Text;
+    if (text === '') return;
+    const width = ImageManager.iconWidth;
+    const height = ImageManager.iconHeight;
+    this.bitmap.fontFace = settings.FontFace || $gameSystem.mainFontFace();
+    this.bitmap.textColor = this.getTextColor();
+    this.bitmap.fontSize = settings.FontSize;
+    this.bitmap.drawText(text, 0, height/2, width, height/2, 'center');
+};
+
+Sprite_NewLabel.prototype.getTextColor = function() {
+    const color = VisuMZ.ItemsEquipsCore.Settings.New.FontColor;
+    return color.match(/#(.*)/i) ? '#' + String(RegExp.$1) : ColorManager.textColor(color);
+};
+
+//-----------------------------------------------------------------------------
+// Window_Base
+//
+// The superclass of all windows within the game.
+
+Window_Base.prototype.drawItemName = function(item, x, y, width) {
+    if (item) {
+        const iconY = y + (this.lineHeight() - ImageManager.iconHeight) / 2;
+        const textMargin = ImageManager.iconWidth + 4;
+        const itemWidth = Math.max(0, width - textMargin);
+        this.changeTextColor(ColorManager.getItemColor(item));
+        this.drawIcon(item.iconIndex, x, iconY);
+        this.drawText(item.name, x + textMargin, y, itemWidth);
+        this.resetTextColor();
+    }
+};
+
+Window_Base.prototype.drawItemNumber = function(item, x, y, width) {
+    if (this.isDrawItemNumber(item)) {
+        this.resetFontSettings();
+        const settings = VisuMZ.ItemsEquipsCore.Settings.ItemScene;
+        const fmt = settings.ItemQuantityFmt;
+        const text = fmt.format($gameParty.numItems(item));
+        this.contents.fontSize = settings.ItemQuantityFontSize;
+        this.drawText(text, x, y, width, "right");
+        this.resetFontSettings();
+    }
+};
+
+Window_Base.prototype.isDrawItemNumber = function(item) {
+    if (DataManager.isKeyItem(item)) return $dataSystem.optKeyItemsNumber;
+    return true;
+};
+
+Window_Base.prototype.drawItemDarkRect = function(x, y, width, height, times) {
+    times = Math.max(times || 1, 1);
+    while (times--) {
+        height = height || this.lineHeight();
+        this.contentsBack.paintOpacity = 160;
+        const backColor = ColorManager.gaugeBackColor();
+        this.contentsBack.fillRect(x+1, y+1, width-2, height-2, backColor);
+        this.contentsBack.paintOpacity = 255;
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Window_Selectable
+//
+// The window class with cursor movement functions.
+
+VisuMZ.ItemsEquipsCore.Window_Selectable_initialize = Window_Selectable.prototype.initialize;
+Window_Selectable.prototype.initialize = function(rect) {
+    this.initNewLabelSprites();
+    VisuMZ.ItemsEquipsCore.Window_Selectable_initialize.call(this, rect);
+};
+
+Window_Selectable.prototype.initNewLabelSprites = function() {
+    this._newLabelSprites = {};
+    this._newLabelOpacity = 255;
+    this._newLabelOpacityChange = VisuMZ.ItemsEquipsCore.Settings.New.FadeSpeed;
+    this._newLabelOpacityUpperLimit = VisuMZ.ItemsEquipsCore.Settings.New.FadeLimit;
+};
+
+Window_Selectable.prototype.isShowNew = function() {
+    return false;
+};
+
+VisuMZ.ItemsEquipsCore.Window_Selectable_setHelpWindowItem = Window_Selectable.prototype.setHelpWindowItem;
+Window_Selectable.prototype.setHelpWindowItem = function(item) {
+    VisuMZ.ItemsEquipsCore.Window_Selectable_setHelpWindowItem.call(this, item)
+    if (this.isShowNew()) this.clearNewLabelFromItem(item);
+};
+
+Window_Selectable.prototype.clearNewLabelFromItem = function(item) {
+    if (!item) return;
+    $gameParty.clearNewItem(item);
+    let key = '';
+    if (DataManager.isItem(item)) {
+        key = 'item-%1'.format(item.id);
+    } else if (DataManager.isWeapon(item)) {
+        key = 'weapon-%1'.format(item.id);
+    } else if (DataManager.isArmor(item)) {
+        key = 'armor-%1'.format(item.id);
+    } else {
+        return;
+    }
+    const sprite = this._newLabelSprites[key];
+    if (sprite) sprite.hide();
+};
+
+VisuMZ.ItemsEquipsCore.Window_Selectable_refresh = Window_Selectable.prototype.refresh;
+Window_Selectable.prototype.refresh = function() {
+    this.hideNewLabelSprites();
+    VisuMZ.ItemsEquipsCore.Window_Selectable_refresh.call(this);
+};
+
+Window_Selectable.prototype.hideNewLabelSprites = function() {
+    for (const sprite of Object.values(this._newLabelSprites)) {
+        sprite.hide();
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Window_Selectable_update = Window_Selectable.prototype.update;
+Window_Selectable.prototype.update = function() {
+    this.updateNewLabelOpacity();
+    VisuMZ.ItemsEquipsCore.Window_Selectable_update.call(this);
+};
+
+Window_Selectable.prototype.updateNewLabelOpacity = function() {
+    if (!this.isShowNew()) return;
+    const limit = this._newLabelOpacityUpperLimit;
+    this._newLabelOpacity += this._newLabelOpacityChange;
+    if (this._newLabelOpacity >= limit || this._newLabelOpacity <= 0) {
+        this._newLabelOpacityChange *= -1;
+    }
+    this._newLabelOpacity = this._newLabelOpacity.clamp(0, limit);
+    for (const sprite of Object.values(this._newLabelSprites)) {
+        sprite.opacity = this._newLabelOpacity;
+    }
+};
+
+Window_Selectable.prototype.createNewLabelSprite = function(key) {
+    const container = this._newLabelSprites;
+    if (container[key]) {
+        return container[key];
+    } else {
+        const sprite = new Sprite_NewLabel();
+        container[key] = sprite;
+        this.addInnerChild(sprite);
+        return sprite;
+    }
+};
+
+Window_Selectable.prototype.placeNewLabel = function(item, x, y) {
+    let key = '';
+    if (DataManager.isItem(item)) {
+        key = 'item-%1'.format(item.id);
+    } else if (DataManager.isWeapon(item)) {
+        key = 'weapon-%1'.format(item.id);
+    } else if (DataManager.isArmor(item)) {
+        key = 'armor-%1'.format(item.id);
+    } else {
+        return;
+    }
+    const sprite = this.createNewLabelSprite(key);
+    sprite.move(x, y);
+    sprite.show();
+    sprite.opacity = this._newLabelOpacity;
+};
+
+//-----------------------------------------------------------------------------
+// Window_ItemCategory
+//
+// The window for selecting a category of items on the item and shop screens.
+
+Window_ItemCategory.categoryList = VisuMZ.ItemsEquipsCore.Settings.Categories.List;
+Window_ItemCategory.categoryItemTypes = [
+    'HiddenItemA','HiddenItemB',
+    'Nonconsumable','Consumable',
+    'AlwaysUsable','BattleUsable','FieldUsable','NeverUsable'
+];
+
+VisuMZ.ItemsEquipsCore.Window_ItemCategory_initialize = Window_ItemCategory.prototype.initialize;
+Window_ItemCategory.prototype.initialize = function(rect) {
+    VisuMZ.ItemsEquipsCore.Window_ItemCategory_initialize.call(this, rect);
+    this.createCategoryNameWindow(rect);
+};
+
+Window_ItemCategory.prototype.createCategoryNameWindow = function(rect) {
+    const subRect = new Rectangle(0, 0, rect.width, rect.height);
+    this._categoryNameWindow = new Window_Base(subRect);
+    this._categoryNameWindow.opacity = 0;
+    this.addChild(this._categoryNameWindow);
+    this.updateCategoryNameWindow();
+};
+
+Window_ItemCategory.prototype.isUseModernControls = function() {
+    return Imported.VisuMZ_0_CoreEngine && Window_HorzCommand.prototype.isUseModernControls.call(this);
+};
+
+Window_ItemCategory.prototype.processCursorHomeEndTrigger = function() {
+};
+
+Window_ItemCategory.prototype.playOkSound = function() {
+    if (!this.isUseModernControls()) Window_HorzCommand.prototype.playOkSound.call(this);
+};
+
+Window_ItemCategory.prototype.maxCols = function() {
+    return this._list ? this.maxItems() : 4;
+};
+
+Window_ItemCategory.prototype.update = function() {
+    Window_HorzCommand.prototype.update.call(this);
+    if (this._itemWindow) {
+        this._itemWindow.setCategory(this.currentExt());
+    }
+};
+
+Window_ItemCategory.prototype.processCursorMoveModernControls = function() {
+    if (this.isCursorMovable()) {
+        const lastIndex = this.index();
+        if (this._itemWindow && this._itemWindow.maxCols() <= 1) {
+            if (Input.isRepeated("right")) {
+                this.cursorRight(Input.isTriggered("right"));
+            }
+            if (Input.isRepeated("left")) {
+                this.cursorLeft(Input.isTriggered("left"));
+            }
+        } else if (this._itemWindow && this._itemWindow.maxCols() > 1) {
+            if (Input.isRepeated("pagedown") && !Input.isPressed("shift")) {
+                this.cursorRight(Input.isTriggered("pagedown"));
+            }
+            if (Input.isRepeated("pageup") && !Input.isPressed("shift")) {
+                this.cursorLeft(Input.isTriggered("pageup"));
+            }
+        }
+        if (this.index() !== lastIndex) {
+            this.playCursorSound();
+        }
+    }
+};
+
+Window_ItemCategory.prototype.processHandling = function() {
+    if (this.isUseModernControls()) return;
+    Window_HorzCommand.prototype.processHandling.call(this);
+};
+
+Window_ItemCategory.prototype.isHoverEnabled = function() {
+    if (this.isUseModernControls()) {
+        return false;
+    } else {
+        return Window_HorzCommand.prototype.isHoverEnabled.call(this);
+    }
+};
+
+Window_ItemCategory.prototype.processTouchModernControls = function() {
+    if (this.isOpenAndActive()) {
+        if (TouchInput.isTriggered()) {
+            this.onTouchSelect(true);
+        }
+        if (TouchInput.isClicked()) {
+            this.onTouchOk();
+        } else if (TouchInput.isCancelled()) {
+            this.onTouchCancel();
+        }
+    }
+};
+
+Window_ItemCategory.prototype.onTouchSelect = function(trigger) {
+    if (this.isUseModernControls()) {
+        this.onTouchSelectModern(true);
+    } else {
+        Window_HorzCommand.prototype.onTouchSelect.call(this, trigger);
+    }
+};
+
+Window_ItemCategory.prototype.onTouchSelectModern = function(trigger) {
+    this._doubleTouch = false;
+    if (this.isCursorMovable()) {
+        const lastIndex = this.index();
+        const hitIndex = this.hitIndex();
+        if (hitIndex >= 0 && hitIndex !== this.index()) {
+            this.select(hitIndex);
+        }
+        if (trigger && this.index() !== lastIndex) {
+            this.playCursorSound();
+        }
+    }
+};
+
+Window_ItemCategory.prototype.makeCommandList = function() {
+    this.addItemCategories();
+    this.select(this.index());
+};
+
+Window_ItemCategory.prototype.addItemCategories = function() {
+    for (const category of Window_ItemCategory.categoryList) {
+        this.addItemCategory(category);
+    }
+};
+
+Window_ItemCategory.prototype.addItemCategory = function(category) {
+    // Declare Constants
+    const type = category.Type;
+    const icon = category.Icon;
+    // v1.10 added by Arisu
+    const switchID = category.SwitchID || 0;
+    if (switchID > 0 && !$gameSwitches.value(switchID)) return;
+
+    // Declare Variables
+    let name = '';
+    let symbol = 'category';
+    let ext = type;
+
+    // Check Category
+    if (type.match(/Category:(.*)/i)) {
+        name = String(RegExp.$1).trim();
+    } else if (Window_ItemCategory.categoryItemTypes.includes(type)) {
+        name = VisuMZ.ItemsEquipsCore.Settings.Categories[type];
+    } else if (['AllItems','RegularItems'].includes(type)) {
+        name = TextManager.item;
+    } else if (type === 'KeyItems') {
+        name = TextManager.keyItem;
+    } else if (type === 'AllWeapons') {
+        name = TextManager.weapon;
+    } else if (type === 'AllArmors') {
+        name = TextManager.armor;
+    } else if (type.match(/WTYPE:(\d+)/i)) {
+        name = $dataSystem.weaponTypes[Number(RegExp.$1)] || '';
+    } else if (type.match(/ATYPE:(\d+)/i)) {
+        name = $dataSystem.armorTypes[Number(RegExp.$1)] || '';
+    } else if (type.match(/ETYPE:(\d+)/i)) {
+        name = $dataSystem.equipTypes[Number(RegExp.$1)] || '';
+    }
+
+    // Adjust Name
+    if (icon > 0 && this.categoryStyle() !== 'text') {
+        name = '\\I[%1]%2'.format(icon, name);
+    }
+
+    // Add Command
+    this.addCommand(name, symbol, true, ext);
+};
+
+Window_ItemCategory.prototype.itemTextAlign = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.Categories.TextAlign;
+};
+
+Window_ItemCategory.prototype.drawItem = function(index) {
+    const style = this.categoryStyleCheck(index);
+    if (style === 'iconText') {
+        this.drawItemStyleIconText(index);
+    } else if (style === 'icon') {
+        this.drawItemStyleIcon(index);
+    } else {
+        Window_HorzCommand.prototype.drawItem.call(this, index);
+    }
+};
+
+Window_ItemCategory.prototype.categoryStyle = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.Categories.Style;
+};
+
+Window_ItemCategory.prototype.categoryStyleCheck = function(index) {
+    if (index < 0) return 'text';
+    const style = this.categoryStyle();
+    if (style !== 'auto') {
+        return style;
+    } else {
+        const name = this.commandName(index);
+        if (name.match(/\\I\[(\d+)\]/i)) {
+            const rect = this.itemLineRect(index);
+            const width = this.textSizeEx(name).width;
+            if (width <= rect.width) {
+                return 'iconText';
+            } else {
+                return 'icon';
+            }
+        } else {
+            return 'text';
+        }
+    }
+};
+
+Window_ItemCategory.prototype.drawItemStyleIconText = function(index) {
+    const rect = this.itemLineRect(index);
+    const name = this.commandName(index);
+    const width = this.textSizeEx(name).width;
+    this.changePaintOpacity(this.isCommandEnabled(index));
+    const align = this.itemTextAlign();
+    if (align === 'right') {
+        this.drawTextEx(name, rect.x + rect.width - width, rect.y, width);
+    } else if (align === 'center') {
+        const centerX = rect.x + Math.floor((rect.width - width) / 2);
+        this.drawTextEx(name, centerX, rect.y, width);
+    } else {
+        this.drawTextEx(name, rect.x, rect.y, width);
+    }
+};
+
+Window_ItemCategory.prototype.drawItemStyleIcon = function(index) {
+    const text = this.commandName(index);
+    if (text.match(/\\I\[(\d+)\]/i)) {
+        const icon = Number(RegExp.$1) || 0;
+        const rect = this.itemLineRect(index);
+        const iconX = rect.x + Math.floor((rect.width - ImageManager.iconWidth) / 2);
+        const iconY = rect.y + (rect.height - ImageManager.iconHeight) / 2;
+        this.drawIcon(icon, iconX, iconY);
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Window_ItemCategory_setItemWindow = Window_ItemCategory.prototype.setItemWindow;
+Window_ItemCategory.prototype.setItemWindow = function(itemWindow) {
+    VisuMZ.ItemsEquipsCore.Window_ItemCategory_setItemWindow.call(this, itemWindow);
+    itemWindow._categoryWindow = this;
+};
+
+Window_ItemCategory.prototype.callUpdateHelp = function() {
+    Window_HorzCommand.prototype.callUpdateHelp.call(this);
+    if (this._categoryNameWindow) this.updateCategoryNameWindow();
+};
+
+Window_ItemCategory.prototype.updateCategoryNameWindow = function() {
+    const targetWindow = this._categoryNameWindow;
+    targetWindow.contents.clear();
+    const style = this.categoryStyleCheck(this.index());
+    if (style === 'icon') {
+        const rect = this.itemLineRect(this.index());
+        let text = this.commandName(this.index());
+        text = text.replace(/\\I\[(\d+)\]/gi, '');
+        targetWindow.resetFontSettings();
+        this.categoryNameWindowDrawBackground(text, rect);
+        this.categoryNameWindowDrawText(text, rect);
+        this.categoryNameWindowCenter(text, rect);
+    }
+};
+
+Window_ItemCategory.prototype.categoryNameWindowDrawBackground = function(text, rect) {
+};
+
+Window_ItemCategory.prototype.categoryNameWindowDrawText = function(text, rect) {
+    const targetWindow = this._categoryNameWindow;
+    targetWindow.drawText(text, 0, rect.y, targetWindow.innerWidth, 'center');
+};
+
+Window_ItemCategory.prototype.categoryNameWindowCenter = function(text, rect) {
+    const targetWindow = this._categoryNameWindow;
+    const padding = $gameSystem.windowPadding();
+    const centerX = rect.x + Math.floor(rect.width / 2) + padding;
+    targetWindow.x = targetWindow.width / -2 + centerX;
+    targetWindow.y = Math.floor(rect.height / 2);
+};
+
+//-----------------------------------------------------------------------------
+// Window_ItemList
+//
+// The window for selecting an item on the item screen.
+
+Window_ItemList.prototype.processCursorMoveModernControls = function() {
+    if (this.isCursorMovable()) {
+        const lastIndex = this.index();
+        if (this.maxCols() <= 1) {
+            if (!this.isHandled("pagedown") && Input.isTriggered("pagedown")) {
+                this.cursorPagedown();
+            }
+            if (!this.isHandled("pageup") && Input.isTriggered("pageup")) {
+                this.cursorPageup();
+            }
+        } else if (this.maxCols() > 1) {
+            if (Input.isRepeated("right")) {
+                this.cursorRight(Input.isTriggered("right"));
+            }
+            if (Input.isRepeated("left")) {
+                this.cursorLeft(Input.isTriggered("left"));
+            }
+            if (this.limitedPageUpDownSceneCheck()) {
+                if (Input.isTriggered("pagedown") && Input.isPressed("shift")) {
+                    this.cursorPagedown();
+                }
+                if (Input.isTriggered("pageup") && Input.isPressed("shift")) {
+                    this.cursorPageup();
+                }
+            } else {
+                if (Input.isTriggered("pagedown")) {
+                    this.cursorPagedown();
+                }
+                if (Input.isTriggered("pageup")) {
+                    this.cursorPageup();
+                }
+            }
+        }
+        if (Input.isRepeated("down")) {
+            if (Input.isPressed("shift") && this.allowShiftScrolling()) {
+                this.cursorPagedown();
+            } else {
+                this.cursorDown(Input.isTriggered("down"));
+            }
+        }
+        if (Input.isRepeated("up")) {
+            if (Input.isPressed("shift") && this.allowShiftScrolling()) {
+                this.cursorPageup();
+            } else {
+                this.cursorUp(Input.isTriggered("up"));
+            }
+        }
+        if (Imported.VisuMZ_0_CoreEngine) {
+            this.processCursorHomeEndTrigger();
+        }
+        if (this.index() !== lastIndex) {
+            this.playCursorSound();
+        }
+    }
+};
+
+Window_ItemList.prototype.limitedPageUpDownSceneCheck = function() {
+    const scene = SceneManager._scene;
+    const checkedScenes = [
+        Scene_Item,
+        Scene_Shop
+    ];
+    return checkedScenes.includes(scene.constructor);
+};
+
+Window_ItemList.prototype.activate = function() {
+    Window_Selectable.prototype.activate.call(this);
+    if (this._categoryWindow && this._categoryWindow.isUseModernControls()) {
+        this._categoryWindow.activate();
+    }
+};
+
+Window_ItemList.prototype.deactivate = function() {
+    Window_Selectable.prototype.deactivate.call(this);
+    if (this._categoryWindow && this._categoryWindow.isUseModernControls()) {
+        this._categoryWindow.deactivate();
+    }
+};
+
+Window_ItemList.prototype.setCategory = function(category) {
+    if (this._category !== category) {
+        this._category = category;
+        this.refresh();
+        if (this._categoryWindow && this._categoryWindow.isUseModernControls()) {
+            this.smoothSelect(0);
+        } else {
+            this.scrollTo(0, 0);
+        }
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Window_ItemList_maxCols = Window_ItemList.prototype.maxCols;
+Window_ItemList.prototype.maxCols = function() {
+    if (SceneManager._scene.constructor === Scene_Battle) {
+        return VisuMZ.ItemsEquipsCore.Window_ItemList_maxCols.call(this);
+    } else if (SceneManager._scene.constructor === Scene_Map) {
+        return VisuMZ.ItemsEquipsCore.Window_ItemList_maxCols.call(this);
+    } else {
+        return VisuMZ.ItemsEquipsCore.Settings.ItemScene.ListWindowCols;
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Window_ItemList_colSpacing = Window_ItemList.prototype.colSpacing;
+Window_ItemList.prototype.colSpacing = function() {
+    if (this.maxCols() <= 1) {
+        return Window_Selectable.prototype.colSpacing.call(this);
+    } else {
+        return VisuMZ.ItemsEquipsCore.Window_ItemList_colSpacing.call(this);
+    }
+};
+
+Window_ItemList.prototype.includes = function(item) {
+    switch (this._category) {
+        case 'AllItems':
+            return DataManager.isItem(item);
+
+        case 'RegularItems':
+            return DataManager.isItem(item) && item.itypeId === 1;
+        case 'KeyItems':
+            return DataManager.isItem(item) && item.itypeId === 2;
+        case 'HiddenItemA':
+            return DataManager.isItem(item) && item.itypeId === 3;
+        case 'HiddenItemB':
+            return DataManager.isItem(item) && item.itypeId === 4;
+
+        case 'Consumable':
+            return DataManager.isItem(item) && item.consumable;
+        case 'Nonconsumable':
+            return DataManager.isItem(item) && !item.consumable;
+
+        case 'AlwaysUsable':
+            return DataManager.isItem(item) && [0].includes(item.occasion);
+        case 'BattleUsable':
+            return DataManager.isItem(item) && [0, 1].includes(item.occasion);
+        case 'FieldUsable':
+            return DataManager.isItem(item) && [0, 2].includes(item.occasion);
+        case 'NeverUsable':
+            return DataManager.isItem(item) && [3].includes(item.occasion);
+
+        case 'AllWeapons':
+            return DataManager.isWeapon(item);
+        case 'AllArmors':
+            return DataManager.isArmor(item);
+        
+        default:
+            if (this._category.match(/WTYPE:(\d+)/i)) {
+                return DataManager.isWeapon(item) && item.wtypeId === Number(RegExp.$1);
+            } else if (this._category.match(/WTYPE:(.*)/i)) {
+                const wtypeId = $dataSystem.weaponTypes.indexOf(String(RegExp.$1).trim());
+                return DataManager.isWeapon(item) && item.wtypeId === wtypeId;
+            } else if (this._category.match(/ATYPE:(\d+)/i)) {
+                return DataManager.isArmor(item) && item.atypeId === Number(RegExp.$1);
+            } else if (this._category.match(/ATYPE:(.*)/i)) {
+                const atypeId = $dataSystem.armorTypes.indexOf(String(RegExp.$1).trim());
+                return DataManager.isArmor(item) && item.atypeId === atypeId;
+            } else if (this._category.match(/ETYPE:(\d+)/i)) {
+                return !!item && item.etypeId === Number(RegExp.$1);
+            } else if (this._category.match(/ETYPE:(.*)/i)) {
+                const etypeId = $dataSystem.equipTypes.indexOf(String(RegExp.$1).trim());
+                return DataManager.isArmor(item) && item.etypeId === etypeId;
+            } else if (this._category.match(/Category:(.*)/i)) {
+                return !!item && item.categories.includes(String(RegExp.$1).toUpperCase().trim());
+            }
+    }
+    return false;
+};
+
+Window_ItemList.prototype.isShowNew = function() {
+    return true;
+};
+
+VisuMZ.ItemsEquipsCore.Window_ItemList_drawItem = Window_ItemList.prototype.drawItem;
+Window_ItemList.prototype.drawItem = function(index) {
+    VisuMZ.ItemsEquipsCore.Window_ItemList_drawItem.call(this, index);
+    this.placeItemNewLabel(index);
+};
+
+Window_ItemList.prototype.drawItemNumber = function(item, x, y, width) {
+    Window_Selectable.prototype.drawItemNumber.call(this, item, x, y, width);
+};
+
+Window_ItemList.prototype.placeItemNewLabel = function(index) {
+    const item = this.itemAt(index);
+    if (!item || !this.isShowNew()) return;
+    if (!$gameParty.isNewItem(item)) return;
+    const rect = this.itemLineRect(index);
+    const iconX = rect.x;
+    const iconY = rect.y + (this.lineHeight() - ImageManager.iconHeight) / 2;
+    const offsetX = VisuMZ.ItemsEquipsCore.Settings.New.OffsetX;
+    const offsetY = VisuMZ.ItemsEquipsCore.Settings.New.OffsetY;
+    this.placeNewLabel(item, iconX + offsetX, iconY + offsetY);
+};
+
+Window_ItemList.prototype.setStatusWindow = function(statusWindow) {
+    this._statusWindow = statusWindow;
+    this.callUpdateHelp();
+};
+
+VisuMZ.ItemsEquipsCore.Window_ItemList_updateHelp = Window_ItemList.prototype.updateHelp;
+Window_ItemList.prototype.updateHelp = function() {
+    VisuMZ.ItemsEquipsCore.Window_ItemList_updateHelp.call(this);
+    if (this._statusWindow && this._statusWindow.constructor === Window_ShopStatus) {
+        this._statusWindow.setItem(this.item());
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Window_BattleItem
+//
+// The window for selecting an item to use on the battle screen.
+
+Window_BattleItem.prototype.isEnabled = function(item) {
+    if (BattleManager.actor()) {
+        return BattleManager.actor().canUse(item);
+    } else {
+        return Window_ItemList.prototype.isEnabled.call(this, item);
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Window_EventItem
+//
+// The window used for the event command [Select Item].
+
+Window_EventItem.prototype.isShowNew = function() {
+    return false;
+};
+
+//-----------------------------------------------------------------------------
+// Window_EquipStatus
+//
+// The window for displaying parameter changes on the equipment screen.
+
+Window_EquipStatus.prototype.isUseItemsEquipsCoreUpdatedLayout = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.EnableLayout;
+};
+
+VisuMZ.ItemsEquipsCore.Window_EquipStatus_refresh = Window_EquipStatus.prototype.refresh;
+Window_EquipStatus.prototype.refresh = function() {
+    this.hideAdditionalSprites();
+    this.resetFontSettings();
+    if (this._actor) this._actor.refresh();
+    if (this.isUseItemsEquipsCoreUpdatedLayout()) {
+        this.prepareRefreshItemsEquipsCoreLayout();
+    } else {
+        VisuMZ.ItemsEquipsCore.Window_EquipStatus_refresh.call(this);
+    }
+};
+
+Window_EquipStatus.prototype.prepareRefreshItemsEquipsCoreLayout = function() {
+    this.contents.clear();
+    if (!this._actor) return;
+    if (this.isMainMenuCoreMenuImageOptionAvailable()) {
+        const bitmap = ImageManager.loadPicture(this._actor.getMenuImage());
+        bitmap.addLoadListener(this.onMenuImageLoad.bind(this));
+    } else {
+        this.refreshItemsEquipsCoreNoMenuImage();
+    }
+};
+
+Window_EquipStatus.prototype.isMainMenuCoreMenuImageOptionAvailable = function() {
+    return Imported.VisuMZ_1_MainMenuCore && 
+        this._actor.getMenuImage() !== '' &&
+        VisuMZ.ItemsEquipsCore.Settings.EquipScene.MenuPortraits;
+};
+
+Window_EquipStatus.prototype.onMenuImageLoad = function() {
+    VisuMZ.ItemsEquipsCore.Settings.EquipScene.DrawPortraitJS.call(this);
+    /*
+    // Declare Variables
+    const lineHeight = this.lineHeight();
+    const padding = this.itemPadding();
+    const x1 = padding;
+    const x2 = this.innerWidth - 128 - padding;
+
+    // Draw Menu Image
+    this.drawItemActorMenuImage(this._actor, 0, 0, this.innerWidth, this.innerHeight);
+
+    // Draw Data
+    this.drawActorName(this._actor, x1, lineHeight * 0);
+    this.drawActorClass(this._actor, x1, lineHeight * 1);
+    this.drawActorIcons(this._actor, x1, lineHeight * 2);
+    this.drawActorLevel(this._actor, x2, lineHeight * 0);
+    this.placeBasicGauges(this._actor, x2, lineHeight * 1);
+    */
+
+    // Draw Parameter Data
+    this.drawParamsItemsEquipsCore();
+};
+
+Window_EquipStatus.prototype.refreshItemsEquipsCoreNoMenuImage = function() {
+    VisuMZ.ItemsEquipsCore.Settings.EquipScene.DrawFaceJS.call(this);
+    /*
+    // Declare Variables
+    const lineHeight = this.lineHeight();
+    const gaugeLineHeight = this.gaugeLineHeight();
+    const x = Math.floor(this.innerWidth / 2);
+    const limitHeight = this.innerHeight - (this.actorParams().length * lineHeight);
+    const actorX = Math.floor((x - ImageManager.faceWidth) / 2);
+    const actorY = Math.floor((limitHeight - ImageManager.faceHeight) / 2);
+    let dataHeight = lineHeight * 3;
+    dataHeight += gaugeLineHeight * ($dataSystem.optDisplayTp ? 3 : 2);
+    const dataY = Math.floor((limitHeight - dataHeight) / 2);
+
+    // Draw Data
+    this.drawActorFace(this._actor, actorX, actorY, ImageManager.faceWidth, ImageManager.faceHeight);
+    this.drawActorIcons(this._actor, actorX + 16, actorY + ImageManager.faceHeight - lineHeight);
+    this.drawActorName(this._actor, x, dataY + lineHeight * 0);
+    this.drawActorLevel(this._actor, x, dataY + lineHeight * 1);
+    this.drawActorClass(this._actor, x, dataY + lineHeight * 2);
+    this.placeBasicGauges(this._actor, x, dataY + lineHeight * 3);
+    */
+
+    // Draw Parameter Data
+    this.drawParamsItemsEquipsCore();
+};
+
+Window_EquipStatus.prototype.drawParamsItemsEquipsCore = function() {
+    this.resetFontSettings();
+    VisuMZ.ItemsEquipsCore.Settings.EquipScene.DrawParamJS.call(this);
+    /*
+    // Declare variables
+    const params = this.actorParams();
+    const lineHeight = this.lineHeight();
+    const padding = this.itemPadding();
+    const baseX = 0;
+    const baseY = this.innerHeight - params.length * lineHeight;
+    const baseWidth = this.innerWidth;
+    const valueFontSize = this.paramValueFontSize();
+
+    // Calculate Widths
+    let paramNameWidth = Math.max(...params.map(param => this.textWidth(TextManager.param(param))));
+    paramNameWidth += padding * 2;
+    if (this.isUseParamNamesWithIcons()) {
+        paramNameWidth += ImageManager.iconWidth + 4;
+    }
+    let arrowWidth = this.rightArrowWidth();
+    const totalDivides = this.innerWidth >= 500 ? 3 : 2;
+    let paramValueWidth = Math.floor((baseWidth - paramNameWidth - arrowWidth) / totalDivides);
+    paramNameWidth = baseWidth - (paramValueWidth * totalDivides) - arrowWidth;
+
+    // Draw Parameters
+    let x = baseX;
+    let y = baseY;
+    let value = 0;
+    let diffValue = 0;
+    let alter = 2;
+    for (const paramId of params) {
+        // Draw Param Name
+        this.drawItemDarkRect(x, y, paramNameWidth, lineHeight, alter);
+        this.drawUpdatedParamName(paramId, x, y, paramNameWidth);
+        this.resetFontSettings();
+        x += paramNameWidth;
+
+        // Draw Param Before
+        this.contents.fontSize = valueFontSize;
+        this.drawItemDarkRect(x, y, paramValueWidth, lineHeight, alter);
+        this.drawUpdatedBeforeParamValue(paramId, x, y, paramValueWidth);
+        this.resetFontSettings();
+        x += paramValueWidth;
+
+        // Draw Arrow
+        this.drawItemDarkRect(x, y, arrowWidth, lineHeight, alter);
+        this.drawRightArrow(x, y);
+        x += arrowWidth;
+
+        // Draw Param After
+        this.contents.fontSize = valueFontSize;
+        this.drawItemDarkRect(x, y, paramValueWidth, lineHeight, alter);
+        this.drawUpdatedAfterParamValue(paramId, x, y, paramValueWidth);
+        x += paramValueWidth;
+
+        // Draw Param Change
+        if (totalDivides > 2) {
+            this.drawItemDarkRect(x, y, paramValueWidth, lineHeight, alter);
+            this.drawUpdatedParamValueDiff(paramId, x, y, paramValueWidth);
+        }
+
+        // Prepare Next Parameter
+        x = baseX;
+        y += lineHeight;
+        alter = alter === 2 ? 1 : 2;
+    }
+    */
+};
+
+Window_EquipStatus.prototype.drawItemActorMenuImage = function(actor, x, y, width, height) {
+    const bitmap = ImageManager.loadPicture(actor.getMenuImage());
+    const difference = this.innerWidth - bitmap.width;
+    x += difference / 2;
+    if (difference < 0) width -= difference;
+
+    Window_StatusBase.prototype.drawItemActorMenuImage.call(this, actor, x, y, width, height);
+};
+
+Window_EquipStatus.prototype.actorParams = function() {
+    if (Imported.VisuMZ_0_CoreEngine) {
+        return VisuMZ.CoreEngine.Settings.Param.ExtDisplayedParams;
+    } else {
+        return [0, 1, 2, 3, 4, 5, 6, 7];
+    }
+};
+
+Window_EquipStatus.prototype.paramValueFontSize = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.ParamValueFontSize;
+};
+
+Window_EquipStatus.prototype.isUseParamNamesWithIcons = function() {
+    return Imported.VisuMZ_0_CoreEngine && VisuMZ.CoreEngine.Settings.Param.DrawIcons;
+};
+
+Window_EquipStatus.prototype.drawUpdatedParamName = function(paramId, x, y, width) {
+    const padding = this.itemPadding();
+    if (Imported.VisuMZ_0_CoreEngine) {
+        this.drawParamText(x + padding, y, width, paramId, false);
+    } else {
+        this.drawText(TextManager.param(paramId), x + padding, y, width);
+    }
+};
+
+Window_EquipStatus.prototype.drawUpdatedBeforeParamValue = function(paramId, x, y, width) {
+    const padding = this.itemPadding();
+    let value = 0;
+    if (Imported.VisuMZ_0_CoreEngine) {
+        
+        value = this._actor.paramValueByName(paramId, true);
+    } else {
+        value = this._actor.param(paramId);
+    }
+    const beforeValue = value;
+    this.drawText(value, x, y, width - padding, 'right');
+};
+
+Window_EquipStatus.prototype.drawUpdatedAfterParamValue = function(paramId, x, y, width) {
+    const padding = this.itemPadding();
+    let value1 = 0;
+    let value2 = 0;
+    let valueText = '';
+    if (this._tempActor) {
+        if (Imported.VisuMZ_0_CoreEngine) {
+            value1 = this._actor.paramValueByName(paramId, false);
+            value2 = this._tempActor.paramValueByName(paramId, false);
+            valueText = this._tempActor.paramValueByName(paramId, true);
+        } else {
+            value1 = this._actor.param(paramId);
+            value2 = this._tempActor.param(paramId);
+            valueText = this._tempActor.param(paramId);
+        }
+        const beforeValue = value1;
+        const afterValue = value2;
+        diffValue = afterValue - beforeValue;
+        this.changeTextColor(ColorManager.paramchangeTextColor(diffValue));
+        this.drawText(valueText, x, y, width - padding, 'right');
+    }
+};
+
+Window_EquipStatus.prototype.drawUpdatedParamValueDiff = function(paramId, x, y, width) {
+    const padding = this.itemPadding();
+    let value1 = 0;
+    let value2 = 0;
+    // v1.07 fix made by Yanfly
+    let float = false;
+    if (this._tempActor) {
+        if (Imported.VisuMZ_0_CoreEngine) {
+            value1 = this._actor.paramValueByName(paramId, false);
+            value2 = this._tempActor.paramValueByName(paramId, false);
+            // v1.07 fix made by Yanfly
+            float = String(this._actor.paramValueByName(paramId, true)).match(/([%％])/i);
+        } else {
+            value1 = this._actor.param(paramId);
+            value2 = this._tempActor.param(paramId);
+            // v1.07 fix made by Yanfly
+            float = (value1 % 1 !== 0) || (value2 % 1 !== 0);
+        }
+        const beforeValue = value1;
+        const afterValue = value2;
+        const diffValue = afterValue - beforeValue;
+        let diffText = diffValue
+
+        // v1.07 fix made by Yanfly
+        if (float) diffText = Math.round(diffValue * 100) + '%';
+
+        if (diffValue !== 0) {
+            this.changeTextColor(ColorManager.paramchangeTextColor(diffValue));
+            diffText = (diffValue > 0 ? '(+%1)' : '(%1)').format(diffText);
+            this.drawText(diffText, x + padding, y, width, 'left');
+        }
+    }
+};
+
+Window_EquipStatus.prototype.drawItemDarkRect = function(x, y, width, height, times) {
+    if (VisuMZ.ItemsEquipsCore.Settings.EquipScene.DrawBackRect === false) return;
+    times = Math.max(times || 1, 1);
+    while (times--) {
+        height = height || this.lineHeight();
+        this.contents.paintOpacity = 160;
+        const backColor = ColorManager.getItemsEquipsCoreBackColor2();
+        this.contents.fillRect(x+1, y+1, width-2, height-2, backColor);
+        this.contents.paintOpacity = 255;
+    }
+};
+
+ColorManager.getItemsEquipsCoreBackColor2 = function() {
+    const settings = VisuMZ.ItemsEquipsCore.Settings.EquipScene;
+    let data = settings.BackRectColor !== undefined ? settings.BackRectColor : 19;
+    return ColorManager.getColor(data);
+};
+
+//-----------------------------------------------------------------------------
+// Window_EquipCommand
+//
+// The window for selecting a command on the equipment screen.
+
+VisuMZ.ItemsEquipsCore.Window_EquipCommand_initialize = Window_EquipCommand.prototype.initialize;
+Window_EquipCommand.prototype.initialize = function(rect) {
+    VisuMZ.ItemsEquipsCore.Window_EquipCommand_initialize.call(this, rect);
+    this.createCommandNameWindow(rect);
+};
+
+Window_EquipCommand.prototype.createCommandNameWindow = function(rect) {
+    const subRect = new Rectangle(0, 0, rect.width, rect.height);
+    this._commandNameWindow = new Window_Base(subRect);
+    this._commandNameWindow.opacity = 0;
+    this.addChild(this._commandNameWindow);
+    this.updateCommandNameWindow();
+};
+
+Window_EquipCommand.prototype.callUpdateHelp = function() {
+    Window_HorzCommand.prototype.callUpdateHelp.call(this);
+    if (this._commandNameWindow) this.updateCommandNameWindow();
+};
+
+Window_EquipCommand.prototype.updateCommandNameWindow = function() {
+    const targetWindow = this._commandNameWindow;
+    targetWindow.contents.clear();
+    const style = this.commandStyleCheck(this.index());
+    if (style === 'icon') {
+        const rect = this.itemLineRect(this.index());
+        let text = this.commandName(this.index());
+        text = text.replace(/\\I\[(\d+)\]/gi, '');
+        targetWindow.resetFontSettings();
+        this.commandNameWindowDrawBackground(text, rect);
+        this.commandNameWindowDrawText(text, rect);
+        this.commandNameWindowCenter(text, rect);
+    }
+};
+
+Window_EquipCommand.prototype.commandNameWindowDrawBackground = function(text, rect) {
+};
+
+Window_EquipCommand.prototype.commandNameWindowDrawText = function(text, rect) {
+    const targetWindow = this._commandNameWindow;
+    targetWindow.drawText(text, 0, rect.y, targetWindow.innerWidth, 'center');
+};
+
+Window_EquipCommand.prototype.commandNameWindowCenter = function(text, rect) {
+    const targetWindow = this._commandNameWindow;
+    const padding = $gameSystem.windowPadding();
+    const centerX = rect.x + Math.floor(rect.width / 2) + padding;
+    targetWindow.x = targetWindow.width / -2 + centerX;
+    targetWindow.y = Math.floor(rect.height / 2);
+};
+
+Window_EquipCommand.prototype.isUseModernControls = function() {
+    return Imported.VisuMZ_0_CoreEngine && Window_HorzCommand.prototype.isUseModernControls.call(this);
+};
+
+Window_EquipCommand.prototype.playOkSound = function() {
+    if (this.currentSymbol() === 'equip') Window_HorzCommand.prototype.playOkSound.call(this);
+};
+
+Window_EquipCommand.prototype.processCursorMoveModernControls = function() {
+    if (!this.processCursorSpecialCheckModernControls()) {
+        Window_HorzCommand.prototype.processCursorMoveModernControls.call(this);
+    }
+};
+
+Window_EquipCommand.prototype.processCursorSpecialCheckModernControls = function() {
+    if (!this.isCursorMovable()) return false;
+    if (SceneManager._scene.constructor !== Scene_Equip) return false;
+    if (Input.isTriggered('down')) {
+        this.playCursorSound();
+        SceneManager._scene.commandEquip();
+        SceneManager._scene._slotWindow.smoothSelect(-1);
+    }
+    return false;
+};
+
+Window_EquipCommand.prototype.maxCols = function() {
+    return this._list ? this._list.length : 3;
+};
+
+Window_EquipCommand.prototype.processTouchModernControls = function() {
+    if (this.isOpen() && this.visible && SceneManager._scene.constructor === Scene_Equip) {
+        if (this.isHoverEnabled() && TouchInput.isHovered()) {
+            this.onTouchSelectModernControls(false);
+        } else if (TouchInput.isTriggered()) {
+            this.onTouchSelectModernControls(true);
+        }
+        if (TouchInput.isClicked()) {
+            this.onTouchOk();
+        }/* else if (TouchInput.isCancelled()) { // 1.27 fixed by Yanfly
+            this.onTouchCancel();
+        }*/
+    }
+};
+
+Window_EquipCommand.prototype.onTouchSelectModernControls = function(trigger) {
+    this._doubleTouch = false;
+    const lastIndex = this.index();
+    const hitIndex = this.hitIndex();
+    const sw = SceneManager._scene._slotWindow;
+    if (sw.isOpen() && sw.visible) {
+        if (hitIndex >= 0) {
+            if (hitIndex === this.index()) {
+                this._doubleTouch = true;
+            }
+            this.activate();
+            this.select(hitIndex);
+        } else if (sw.hitIndex() >= 0) {
+            this.deactivate();
+            this.deselect();
+        }
+    }
+    if (trigger && this.index() !== lastIndex) {
+        this.playCursorSound();
+    }
+};
+
+Window_EquipCommand.prototype.makeCommandList = function() {
+    this.addEquipCommand();
+    this.addOptimizeCommand();
+    this.addClearCommand();
+};
+
+Window_EquipCommand.prototype.refresh = function() {
+    Window_HorzCommand.prototype.refresh.call(this);
+    this.refreshCursor();
+};
+
+Window_EquipCommand.prototype.addEquipCommand = function() {
+    if (!this.isEquipCommandAdded()) return;
+    const style = this.commandStyle();
+    const icon = VisuMZ.ItemsEquipsCore.Settings.EquipScene.CmdIconEquip;
+    const text = style === 'text' ? TextManager.equip2 : '\\I[%1]%2'.format(icon, TextManager.equip2);
+    const enabled = this.isEquipCommandEnabled();
+    this.addCommand(text, 'equip', enabled);
+};
+
+Window_EquipCommand.prototype.isEquipCommandAdded = function() {
+    return !this.isUseModernControls();
+};
+
+Window_EquipCommand.prototype.isEquipCommandEnabled = function() {
+    return true;
+};
+
+Window_EquipCommand.prototype.addOptimizeCommand = function() {
+    if (!this.isOptimizeCommandAdded()) return;
+    const style = this.commandStyle();
+    const icon = VisuMZ.ItemsEquipsCore.Settings.EquipScene.CmdIconOptimize;
+    const text = style === 'text' ? TextManager.optimize : '\\I[%1]%2'.format(icon, TextManager.optimize);
+    const enabled = this.isOptimizeCommandEnabled();
+    this.addCommand(text, 'optimize', enabled);
+};
+
+Window_EquipCommand.prototype.isOptimizeCommandAdded = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.CommandAddOptimize;
+};
+
+Window_EquipCommand.prototype.isOptimizeCommandEnabled = function() {
+    return true;
+};
+
+Window_EquipCommand.prototype.addClearCommand = function() {
+    if (!this.isClearCommandAdded()) return;
+    const style = this.commandStyle();
+    const icon = VisuMZ.ItemsEquipsCore.Settings.EquipScene.CmdIconClear;
+    const text = style === 'text' ? TextManager.clear : '\\I[%1]%2'.format(icon, TextManager.clear);
+    const enabled = this.isClearCommandEnabled();
+    this.addCommand(text, 'clear', enabled);
+};
+
+Window_EquipCommand.prototype.isClearCommandAdded = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.CommandAddClear;
+};
+
+Window_EquipCommand.prototype.isClearCommandEnabled = function() {
+    return true;
+};
+
+Window_EquipCommand.prototype.itemTextAlign = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.CmdTextAlign;
+};
+
+Window_EquipCommand.prototype.drawItem = function(index) {
+    const style = this.commandStyleCheck(index);
+    if (style === 'iconText') {
+        this.drawItemStyleIconText(index);
+    } else if (style === 'icon') {
+        this.drawItemStyleIcon(index);
+    } else {
+        Window_HorzCommand.prototype.drawItem.call(this, index);
+    }
+};
+
+Window_EquipCommand.prototype.commandStyle = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.CmdStyle;
+};
+
+Window_EquipCommand.prototype.commandStyleCheck = function(index) {
+    if (index < 0) return 'text';
+    const style = this.commandStyle();
+    if (style !== 'auto') {
+        return style;
+    } else if (this.maxItems() > 0) {
+        const name = this.commandName(index);
+        if (name.match(/\\I\[(\d+)\]/i)) {
+            const rect = this.itemLineRect(index);
+            const width = this.textSizeEx(name).width;
+            if (width <= rect.width) {
+                return 'iconText';
+            } else {
+                return 'icon';
+            }
+        }
+    }
+    return 'text';
+};
+
+Window_EquipCommand.prototype.drawItemStyleIconText = function(index) {
+    const rect = this.itemLineRect(index);
+    const name = this.commandName(index);
+    const width = this.textSizeEx(name).width;
+    this.changePaintOpacity(this.isCommandEnabled(index));
+    const align = this.itemTextAlign();
+    if (align === 'right') {
+        this.drawTextEx(name, rect.x + rect.width - width, rect.y, width);
+    } else if (align === 'center') {
+        const centerX = rect.x + Math.floor((rect.width - width) / 2);
+        this.drawTextEx(name, centerX, rect.y, width);
+    } else {
+        this.drawTextEx(name, rect.x, rect.y, width);
+    }
+};
+
+Window_EquipCommand.prototype.drawItemStyleIcon = function(index) {
+    this.commandName(index).match(/\\I\[(\d+)\]/i)
+    const icon = Number(RegExp.$1) || 0;
+    const rect = this.itemLineRect(index);
+    const iconX = rect.x + Math.floor((rect.width - ImageManager.iconWidth) / 2);
+    const iconY = rect.y + (rect.height - ImageManager.iconHeight) / 2;
+    this.drawIcon(icon, iconX, iconY);
+};
+
+// v1.41 added by Arisu
+Window_EquipCommand.prototype.actor = function() {
+    const scene = SceneManager._scene;
+    if (scene && scene.user) {
+        return scene.user();
+    }
+    return null;
+};
+
+// v1.41 added by Arisu
+Window_EquipCommand.prototype.updateHelp = function() {
+    Window_Command.prototype.updateHelp.call(this);
+    this._helpWindow.setText(this.helpDescriptionText());
+};
+
+// v1.41 added by Arisu
+Window_EquipCommand.prototype.helpDescriptionText = function() {
+    const symbol = this.currentSymbol();
+    switch (symbol) {
+        case 'equip':
+            return TextManager.ITEMS_EQUIPS_CORE.helpDesc.equip;
+        case 'optimize':
+            return TextManager.ITEMS_EQUIPS_CORE.helpDesc.optimize;
+        case 'clear':
+            return TextManager.ITEMS_EQUIPS_CORE.helpDesc.clear;
+        default:
+            return '';
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Window_EquipSlot
+//
+// The window for selecting an equipment slot on the equipment screen.
+
+Window_EquipSlot.prototype.isUseModernControls = function() {
+    return Imported.VisuMZ_0_CoreEngine && Window_HorzCommand.prototype.isUseModernControls.call(this);
+};
+
+Window_EquipSlot.prototype.activate = function() {
+    Window_StatusBase.prototype.activate.call(this);
+    this.callUpdateHelp();
+};
+
+Window_EquipSlot.prototype.processCursorMove = function() {
+    Window_StatusBase.prototype.processCursorMove.call(this);
+    this.checkShiftRemoveShortcut();
+};
+
+Window_EquipSlot.prototype.checkShiftRemoveShortcut = function() {
+    if (!this.isShiftRemoveShortcutEnabled()) return;
+    if (Input.isTriggered('shift') && this.item()) {
+        const actor = SceneManager._scene._actor;
+        if (actor) {
+            if (this.canShiftRemoveEquipment(this.index())) {
+                this.processShiftRemoveShortcut();
+                this.updateHelp();
+            } else {
+                this.playBuzzerSound();
+            }
+        }
+    }
+};
+
+Window_EquipSlot.prototype.canShiftRemoveEquipment = function(index) {
+    // v1.04 bug fixed made by Arisu
+    // Actor wasn't defined
+    const actor = SceneManager._scene._actor;
+    if (!actor) return;
+
+    // Equip Change Ok
+    if (!actor.isEquipChangeOk(this.index())) {
+        return false;
+    }
+
+    // Non Removable Types
+    const etypeId = actor.equipSlots()[this.index()];
+    if (actor.nonRemovableEtypes().includes(etypeId)) {
+        return false;
+    }
+
+    // Return True
+    return true;;
+};
+
+Window_EquipSlot.prototype.processShiftRemoveShortcut = function() {
+    SoundManager.playEquip();
+    const actor = SceneManager._scene._actor;
+    actor.changeEquip(this.index(), null);
+    this.refresh();
+    this._itemWindow.refresh();
+    
+    // v1.18 added by Olivia
+    this.callUpdateHelp();
+    const statusWindow = SceneManager._scene._statusWindow;
+    if (statusWindow) statusWindow.refresh();
+};
+
+Window_EquipSlot.prototype.isShiftRemoveShortcutEnabled = function() {
+    if (!this.active) return false;
+    if (!VisuMZ.ItemsEquipsCore.Settings.EquipScene.ShiftShortcutKey) return false;
+    return true;
+};
+
+Window_EquipSlot.prototype.processCursorMoveModernControls = function() {
+    if (!this.processCursorSpecialCheckModernControls()) {
+        Window_StatusBase.prototype.processCursorMoveModernControls.call(this);
+    }
+};
+
+Window_EquipSlot.prototype.processCursorSpecialCheckModernControls = function() {
+    if (!this.isCursorMovable()) return false;
+    if (SceneManager._scene.constructor !== Scene_Equip) return false;
+    if (this.allowCommandWindowCursorUp()) {
+        this.playCursorSound();
+        Input.clear();
+        SceneManager._scene.onSlotCancel();
+        return false;
+    } else if (Input.isRepeated('down')) {
+        const lastIndex = this.index();
+        if (Input.isPressed("shift")) {
+            this.cursorPagedown();
+        } else {
+            this.cursorDown(Input.isTriggered('down'));
+        }
+        if (this.index() !== lastIndex) {
+            this.playCursorSound();
+        }
+        return true;
+    } else if (this.isShiftShortcutKeyForRemove() && Input.isTriggered('shift')) {
+        return true;
+    }
+    return false;
+};
+
+Window_EquipSlot.prototype.allowCommandWindowCursorUp = function() {
+    if (this.index() !== 0) return false;
+    const settings = VisuMZ.ItemsEquipsCore.Settings.EquipScene;
+    if (!settings.CommandAddOptimize && !settings.CommandAddClear) return false;
+    return Input.isTriggered('up');
+};
+
+Window_EquipSlot.prototype.isShiftShortcutKeyForRemove = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.ShiftShortcutKey;
+};
+
+Window_EquipSlot.prototype.processTouchModernControls = function() {
+    if (this.isOpen() && this.visible && SceneManager._scene.constructor === Scene_Equip) {
+        if (this.isHoverEnabled() && TouchInput.isHovered()) {
+            this.onTouchSelectModernControls(false);
+        } else if (TouchInput.isTriggered()) {
+            this.onTouchSelectModernControls(true);
+        }
+        if (TouchInput.isClicked()) {
+            this.onTouchOk();
+        } else if (TouchInput.isCancelled()) {
+            this.onTouchCancel();
+        }
+    }
+};
+
+Window_EquipSlot.prototype.onTouchSelectModernControls = function(trigger) {
+    this._doubleTouch = false;
+    const lastIndex = this.index();
+    const hitIndex = this.hitIndex();
+    const cw = SceneManager._scene._commandWindow;
+    if (cw.isOpen() && cw.visible) {
+        if (hitIndex >= 0) {
+            if (hitIndex === this.index()) {
+                this._doubleTouch = true;
+            }
+            this.activate();
+            this.select(hitIndex);
+        } else if (cw.hitIndex() >= 0) {
+            this.deactivate();
+            this.deselect();
+        }
+    }
+    if (trigger && this.index() !== lastIndex) {
+        this.playCursorSound();
+    }
+};
+
+// v1.19 added by Irina
+Window_EquipSlot.prototype.equipSlotIndex = function() {
+    return this.index();
+};
+
+//-----------------------------------------------------------------------------
+// Window_EquipItem
+//
+// The window for selecting an equipment item on the equipment screen.
+
+VisuMZ.ItemsEquipsCore.Window_EquipItem_includes = Window_EquipItem.prototype.includes;
+Window_EquipItem.prototype.includes = function(item) {
+    if (item === null && this.nonRemovableEtypes().includes(this.etypeId())) {
+        //return this._data.length > 0 ? false : true; // v1.24 updated by Olivia
+        return false;
+    } else {
+        $gameTemp._checkEquipRequirements = true; // v1.44 added by Arisu
+        let value = VisuMZ.ItemsEquipsCore.Window_EquipItem_includes.call(this, item);
+        $gameTemp._checkEquipRequirements = undefined; // v1.44 added by Arisu
+        return value;
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Window_EquipItem_isEnabled = Window_EquipItem.prototype.isEnabled;
+Window_EquipItem.prototype.isEnabled = function(item) {
+    // Original
+    if (item && this._actor) {
+        //if (this.nonRemovableEtypes().includes(this.etypeId())) return false;
+        // v1.19 added by Irina
+        if (this.itemHasEquipLimit(item)) return false;
+        if (this.isSoleWeaponType(item)) return false;
+        if (this.isSoleArmorType(item)) return false;
+        if (!this._actor.canEquip(item)) return false; // v1.44 added by Arisu
+    }
+    // v1.24 added by Olivia
+    if (!item) {
+        return !this.nonRemovableEtypes().includes(this.etypeId());
+    }
+    // Default
+    return VisuMZ.ItemsEquipsCore.Window_EquipItem_isEnabled.call(this, item);
+};
+
+// v1.19 added by Irina
+Window_EquipItem.prototype.itemHasEquipLimit = function(item) {
+    const note = item.note;
+
+    if (note.match(/<EQUIP COPY LIMIT:[ ](\d+)>/i)) {
+        const limit = Number(RegExp.$1) || 1;
+        let count = 0;
+
+        const equips = this._actor.equips();
+        const index = SceneManager._scene._slotWindow.equipSlotIndex();
+        equips[index] = null;
+
+        for (const equip of equips) {
+            if (!equip) continue;
+            if (DataManager.isWeapon(item) === DataManager.isWeapon(equip)) {
+                if (item.id === equip.id) count += 1;
+            }
+        }
+        return count >= limit;
+    } else {
+        return false;
+    }
+};
+
+// v1.19 added by Irina
+Window_EquipItem.prototype.isSoleWeaponType = function(item) {
+    if (!DataManager.isWeapon(item)) return false;
+
+    const notetag = /<EQUIP WEAPON TYPE LIMIT:[ ](\d+)>/i;
+    let count = 0;
+
+    const equips = this._actor.equips();
+    const index = SceneManager._scene._slotWindow.equipSlotIndex();
+    equips[index] = null;
+
+    for (const equip of equips) {
+        if (!equip) continue;
+        if (!DataManager.isWeapon(equip)) continue;
+        if (item.wtypeId === equip.wtypeId) {
+            count += 1;
+            if (item.note.match(notetag)) {
+                const limit = Number(RegExp.$1) || 1;
+                if (count >= limit) return true;
+            }
+            if (equip.note.match(notetag)) {
+                const limit = Number(RegExp.$1) || 1;
+                if (count >= limit) return true;
+            }
+        }
+    }
+
+    return false;
+};
+
+// v1.19 added by Irina
+Window_EquipItem.prototype.isSoleArmorType = function(item) {
+    if (!DataManager.isArmor(item)) return false;
+
+    const notetag = /<EQUIP ARMOR TYPE LIMIT:[ ](\d+)>/i;
+    let count = 0;
+
+    const equips = this._actor.equips();
+    const index = SceneManager._scene._slotWindow.equipSlotIndex();
+    equips[index] = null;
+
+    for (const equip of equips) {
+        if (!equip) continue;
+        if (!DataManager.isArmor(equip)) continue;
+        if (item.atypeId === equip.atypeId) {
+            count += 1;
+            if (item.note.match(notetag)) {
+                const limit = Number(RegExp.$1) || 1;
+                if (count >= limit) return true;
+            }
+            if (equip.note.match(notetag)) {
+                const limit = Number(RegExp.$1) || 1;
+                if (count >= limit) return true;
+            }
+        }
+    }
+
+    return false;
+};
+
+Window_EquipItem.prototype.nonRemovableEtypes = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.EquipScene.NonRemoveETypes;
+};
+
+Window_EquipItem.prototype.drawItem = function(index) {
+    const item = this.itemAt(index);
+    if (item) {
+        Window_ItemList.prototype.drawItem.call(this, index);
+    } else {
+        this.drawRemoveItem(index);
+    }
+};
+
+Window_EquipItem.prototype.drawRemoveItem = function(index) {
+    this.changePaintOpacity(this.isEnabled(null));
+    const settings = VisuMZ.ItemsEquipsCore.Settings.EquipScene;
+    const rect = this.itemLineRect(index);
+    const iconY = rect.y + (this.lineHeight() - ImageManager.iconHeight) / 2;
+    const textMargin = ImageManager.iconWidth + 4;
+    const itemWidth = Math.max(0, rect.width - textMargin);
+    this.resetTextColor();
+    this.drawIcon(settings.RemoveEquipIcon, rect.x, iconY);
+    this.drawText(settings.RemoveEquipText, rect.x + textMargin, rect.y, itemWidth);
+    this.changePaintOpacity(true);
+};
+
+Window_EquipItem.prototype.updateHelp = function() {
+    Window_ItemList.prototype.updateHelp.call(this);
+    if (this._actor && this._statusWindow && this._slotId >= 0) {
+        const actor = JsonEx.makeDeepCopy(this._actor);
+        actor._tempActor = true;
+        actor.forceChangeEquip(this._slotId, this.item());
+        this._statusWindow.setTempActor(actor);
+    }
+};
+
+//-----------------------------------------------------------------------------
+// Window_ShopCommand
+//
+// The window for selecting buy/sell on the shop screen.
+
+VisuMZ.ItemsEquipsCore.Window_ShopCommand_initialize = Window_ShopCommand.prototype.initialize;
+Window_ShopCommand.prototype.initialize = function(rect) {
+    VisuMZ.ItemsEquipsCore.Window_ShopCommand_initialize.call(this, rect);
+    this.createCommandNameWindow(rect);
+};
+
+Window_ShopCommand.prototype.createCommandNameWindow = function(rect) {
+    const subRect = new Rectangle(0, 0, rect.width, rect.height);
+    this._commandNameWindow = new Window_Base(subRect);
+    this._commandNameWindow.opacity = 0;
+    this.addChild(this._commandNameWindow);
+    this.updateCommandNameWindow();
+};
+
+Window_ShopCommand.prototype.callUpdateHelp = function() {
+    Window_HorzCommand.prototype.callUpdateHelp.call(this);
+    if (this._commandNameWindow) this.updateCommandNameWindow();
+};
+
+Window_ShopCommand.prototype.updateCommandNameWindow = function() {
+    const targetWindow = this._commandNameWindow;
+    targetWindow.contents.clear();
+    const style = this.commandStyleCheck(this.index());
+    if (style === 'icon') {
+        const rect = this.itemLineRect(this.index());
+        let text = this.commandName(this.index());
+        text = text.replace(/\\I\[(\d+)\]/gi, '');
+        targetWindow.resetFontSettings();
+        this.commandNameWindowDrawBackground(text, rect);
+        this.commandNameWindowDrawText(text, rect);
+        this.commandNameWindowCenter(text, rect);
+    }
+};
+
+Window_ShopCommand.prototype.commandNameWindowDrawBackground = function(text, rect) {
+};
+
+Window_ShopCommand.prototype.commandNameWindowDrawText = function(text, rect) {
+    const targetWindow = this._commandNameWindow;
+    targetWindow.drawText(text, 0, rect.y, targetWindow.innerWidth, 'center');
+};
+
+Window_ShopCommand.prototype.commandNameWindowCenter = function(text, rect) {
+    const targetWindow = this._commandNameWindow;
+    const padding = $gameSystem.windowPadding();
+    const centerX = rect.x + Math.floor(rect.width / 2) + padding;
+    targetWindow.x = targetWindow.width / -2 + centerX;
+    targetWindow.y = Math.floor(rect.height / 2);
+};
+
+Window_ShopCommand.prototype.maxCols = function() {
+    return this._list ? this._list.length : 3;
+};
+
+Window_ShopCommand.prototype.hideDisabledCommands = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.ShopScene.CmdHideDisabled;
+};
+
+Window_ShopCommand.prototype.makeCommandList = function() {
+    this.addBuyCommand();
+    this.addSellCommand();
+    this.addCancelCommand();
+};
+
+Window_ShopCommand.prototype.refresh = function() {
+    Window_HorzCommand.prototype.refresh.call(this);
+    this.refreshCursor();
+};
+
+Window_ShopCommand.prototype.addBuyCommand = function() {
+    const style = this.commandStyle();
+    const icon = VisuMZ.ItemsEquipsCore.Settings.ShopScene.CmdIconBuy;
+    const text = style === 'text' ? TextManager.buy : '\\I[%1]%2'.format(icon, TextManager.buy);
+    const enabled = this.isBuyCommandEnabled();
+    if (this.hideDisabledCommands() && !enabled) return;
+    this.addCommand(text, 'buy', enabled);
+};
+
+Window_ShopCommand.prototype.isBuyCommandEnabled = function() {
+    if (SceneManager._scene.constructor === Scene_Shop) {
+        return SceneManager._scene._goodsCount > 0;
+    } else {
+        return true;
+    }
+};
+
+Window_ShopCommand.prototype.addSellCommand = function() {
+    const style = this.commandStyle();
+    const icon = VisuMZ.ItemsEquipsCore.Settings.ShopScene.CmdIconSell;
+    const text = style === 'text' ? TextManager.sell : '\\I[%1]%2'.format(icon, TextManager.sell);
+    const enabled = this.isSellCommandEnabled();
+    if (this.hideDisabledCommands() && !enabled) return;
+    this.addCommand(text, 'sell', enabled);
+};
+
+Window_ShopCommand.prototype.isSellCommandEnabled = function() {
+    return !this._purchaseOnly;
+};
+
+Window_ShopCommand.prototype.addCancelCommand = function() {
+    const style = this.commandStyle();
+    const icon = VisuMZ.ItemsEquipsCore.Settings.ShopScene.CmdIconCancel;
+    const name = VisuMZ.ItemsEquipsCore.Settings.ShopScene.CmdCancelRename;
+    const text = style === 'text' ? name : '\\I[%1]%2'.format(icon, name);
+    this.addCommand(text, 'cancel');
+};
+
+Window_ShopCommand.prototype.itemTextAlign = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.ShopScene.CmdTextAlign;
+};
+
+Window_ShopCommand.prototype.drawItem = function(index) {
+    const style = this.commandStyleCheck(index);
+    if (style === 'iconText') {
+        this.drawItemStyleIconText(index);
+    } else if (style === 'icon') {
+        this.drawItemStyleIcon(index);
+    } else {
+        Window_HorzCommand.prototype.drawItem.call(this, index);
+    }
+};
+
+Window_ShopCommand.prototype.commandStyle = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.ShopScene.CmdStyle;
+};
+
+Window_ShopCommand.prototype.commandStyleCheck = function(index) {
+    if (index < 0) return 'text';
+    const style = this.commandStyle();
+    if (style !== 'auto') {
+        return style;
+    } else if (this.maxItems() > 0) {
+        const name = this.commandName(index);
+        if (name.match(/\\I\[(\d+)\]/i)) {
+            const rect = this.itemLineRect(index);
+            const width = this.textSizeEx(name).width;
+            if (width <= rect.width) {
+                return 'iconText';
+            } else {
+                return 'icon';
+            }
+        }
+    }
+    return 'text';
+};
+
+Window_ShopCommand.prototype.drawItemStyleIconText = function(index) {
+    const rect = this.itemLineRect(index);
+    const name = this.commandName(index);
+    const width = this.textSizeEx(name).width;
+    this.changePaintOpacity(this.isCommandEnabled(index));
+    const align = this.itemTextAlign();
+    if (align === 'right') {
+        this.drawTextEx(name, rect.x + rect.width - width, rect.y, width);
+    } else if (align === 'center') {
+        const centerX = rect.x + Math.floor((rect.width - width) / 2);
+        this.drawTextEx(name, centerX, rect.y, width);
+    } else {
+        this.drawTextEx(name, rect.x, rect.y, width);
+    }
+};
+
+Window_ShopCommand.prototype.drawItemStyleIcon = function(index) {
+    this.commandName(index).match(/\\I\[(\d+)\]/i)
+    const icon = Number(RegExp.$1) || 0;
+    const rect = this.itemLineRect(index);
+    const iconX = rect.x + Math.floor((rect.width - ImageManager.iconWidth) / 2);
+    const iconY = rect.y + (rect.height - ImageManager.iconHeight) / 2;
+    this.drawIcon(icon, iconX, iconY);
+};
+
+//-----------------------------------------------------------------------------
+// Window_ShopBuy
+//
+// The window for selecting an item to buy on the shop screen.
+
+//-----------------------------------------------------------------------------
+// Price
+//-----------------------------------------------------------------------------
+
+VisuMZ.ItemsEquipsCore.Window_ShopBuy_refresh = Window_ShopBuy.prototype.refresh;
+Window_ShopBuy.prototype.refresh = function() {
+    this.updateMoneyAmount();
+    VisuMZ.ItemsEquipsCore.Window_ShopBuy_refresh.call(this);
+};
+
+Window_ShopBuy.prototype.updateMoneyAmount = function() {
+    if (SceneManager._scene.constructor === Scene_Shop) {
+        this._money = SceneManager._scene.money();
+    }
+};
+
+VisuMZ.ItemsEquipsCore.Window_ShopBuy_price = Window_ShopBuy.prototype.price;
+Window_ShopBuy.prototype.price = function(item) {
+    if (!item) return 0;
+    let price = VisuMZ.ItemsEquipsCore.Window_ShopBuy_price.call(this, item);
+    return Math.max(0, this.modifiedBuyPriceItemsEquipsCore(item, price));
+};
+
+Window_ShopBuy.prototype.modifiedBuyPriceItemsEquipsCore = function(item, price) {
+    const note = item.note;
+    // <JS Buy Price>
+    if (note.match(/<JS BUY PRICE>\s*([\s\S]*)\s*<\/JS BUY PRICE>/i)) {
+        const code = String(RegExp.$1);
+        try {
+            eval(code);
+        } catch (e) {
+            if ($gameTemp.isPlaytest()) console.log(e);
+        }
+    }
+    // Run JS: Buy Price Plugin Parameter
+    price = VisuMZ.ItemsEquipsCore.Settings.ShopScene.BuyPriceJS.call(this, item, price);
+    // Finalize
+    if (isNaN(price)) price = 0;
+    return Math.floor(price);
+};
+
+//-----------------------------------------------------------------------------
+// Listing
+//-----------------------------------------------------------------------------
+
+// v1.47 added by Arisu
+VisuMZ.ItemsEquipsCore.Window_ShopBuy_goodsToItem = Window_ShopBuy.prototype.goodsToItem;
+Window_ShopBuy.prototype.goodsToItem = function(goods) {
+    const obj = VisuMZ.ItemsEquipsCore.Window_ShopBuy_goodsToItem.call(this, goods);
+    if (obj && !this.meetsShopListingConditions(obj)) {
+        return null;
+    } else {
+        return obj;
+    }
+};
+
+// v1.47 added by Arisu
+VisuMZ.ItemsEquipsCore.ShopListingRegExp = {
+    ShowAllSwitches: /<SHOW SHOP (?:ALL |)SWITCH(?:|ES):[ ](.*)>/i, // v1.47 updated by Arisu
+    ShowAnySwitches: /<SHOW SHOP ANY SWITCH(?:|ES):[ ](.*)>/i,
+    HideAllSwitches: /<HIDE SHOP (?:ALL |)SWITCH(?:|ES):[ ](.*)>/i, // v1.47 updated by Arisu
+    HideAnySwitches: /<HIDE SHOP ANY SWITCH(?:|ES):[ ](.*)>/i,
+
+    BuyTurnSwitchOn: /<BUY TURN ON SWITCH(?:|ES):[ ](.*)>/i,
+    BuyTurnSwitchOff: /<BUY TURN OFF SWITCH(?:|ES):[ ](.*)>/i,
+    SellTurnSwitchOn: /<SELL TURN ON SWITCH(?:|ES):[ ](.*)>/i,
+    SellTurnSwitchOff: /<SELL TURN OFF SWITCH(?:|ES):[ ](.*)>/i,
+};
+
+// v1.47 added by Arisu
+Window_ShopBuy.prototype.meetsShopListingConditions = function(obj) {
+    // Return Check
+    if (!obj) return false;
+
+    // Declare Constants
+    const regexp = VisuMZ.ItemsEquipsCore.ShopListingRegExp;
+    const note = obj ? (obj.note || '') : '';
+
+    // Check Notetags
+    // <Show All Switches: x, x, x>
+    if (note.match(regexp.ShowAllSwitches)) {
+        const switchIDs = String(RegExp.$1).split(',').map(i => Number(i));
+        if (switchIDs.some(id => !$gameSwitches.value(id))) return false;
+    }
+    // <Show Any Switches: x, x, x>
+    if (note.match(regexp.ShowAnySwitches)) {
+        const switchIDs = String(RegExp.$1).split(',').map(i => Number(i));
+        if (switchIDs.every(id => !$gameSwitches.value(id))) return false;
+    }
+    // <Hide All Switches: x, x, x>
+    if (note.match(regexp.HideAllSwitches)) {
+        const switchIDs = String(RegExp.$1).split(',').map(i => Number(i));
+        if (switchIDs.every(id => $gameSwitches.value(id))) return false;
+    }
+    // <Hide Any Switches: x, x, x>
+    if (note.match(regexp.HideAnySwitches)) {
+        const switchIDs = String(RegExp.$1).split(',').map(i => Number(i));
+        if (switchIDs.some(id => $gameSwitches.value(id))) return false;
+    }
+
+    return true;
+};
+
+//-----------------------------------------------------------------------------
+// Draw
+//-----------------------------------------------------------------------------
+
+Window_ShopBuy.prototype.drawItem = function(index) {
+    this.resetFontSettings();
+    const item = this.itemAt(index);
+    const rect = this.itemLineRect(index);
+    const nameWidth = rect.width;
+    this.changePaintOpacity(this.isEnabled(item));
+    this.drawItemName(item, rect.x, rect.y, nameWidth);
+    // v1.11 added by Arisu
+    this.drawItemCost(item, rect);
+    // Disabled
+    //this.drawText(price, priceX, rect.y, priceWidth, "right");
+    //this.changeTextColor(ColorManager.systemColor());
+    //this.drawText(unit, rect.x, rect.y, rect.width, "right");
+    this.changePaintOpacity(true);
+};
+
+Window_ShopBuy.prototype.drawItemCost = function(item, rect) {
+    const price = this.price(item);
+    this.drawCurrencyValue(price, TextManager.currencyUnit, rect.x, rect.y, rect.width);
+};
+
+//-----------------------------------------------------------------------------
+// Window_ShopSell
+//
+// The window for selecting an item to sell on the shop screen.
+
+Window_ShopSell.prototype.maxCols = function() {
+    return SceneManager._scene.isUseItemsEquipsCoreUpdatedLayout() ? 1 : 2;
+};
+
+VisuMZ.ItemsEquipsCore.Window_ShopSell_isEnabled = Window_ShopSell.prototype.isEnabled;
+Window_ShopSell.prototype.isEnabled = function(item) {
+    if (!item) return false;
+
+    // Check Notetags
+    const note = item.note;
+    if (note.match(/<CANNOT SELL>/i)) return false;
+    if (note.match(/<CAN SELL>/i)) return true;
+
+    if (note.match(/<CANNOT SELL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+        const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+        for (const switchId of switches) {
+            if (!$gameSwitches.value(switchId)) return false;
+        }
+    }
+    if (note.match(/<CANNOT SELL ALL[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+        const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+        for (const switchId of switches) {
+            if (!$gameSwitches.value(switchId)) return false;
+        }
+    }
+    if (note.match(/<CANNOT SELL ANY[ ](?:SW|SWITCH|SWITCHES):[ ]*(\d+(?:\s*,\s*\d+)*)>/i)) {
+        const switches = JSON.parse('[' + RegExp.$1.match(/\d+/g) + ']');
+        for (const switchId of switches) {
+            if ($gameSwitches.value(switchId)) return false;
+        }
+    }
+
+    // Return Default
+    return VisuMZ.ItemsEquipsCore.Window_ShopSell_isEnabled.call(this, item);
+
+    /*
+    if (!item) {
+        return false;
+    } else if (item.note.match(/<CANNOT SELL>/i)) {
+        return false;
+    } else if (item.note.match(/<CAN SELL>/i)) {
+        return true;
+    } else {
+        return VisuMZ.ItemsEquipsCore.Window_ShopSell_isEnabled.call(this, item);
+    }
+    */
+};
+
+//-----------------------------------------------------------------------------
+// Window_ShopStatus
+//
+// The window for displaying number of items in possession and the actor's
+// equipment on the shop screen.
+
+// 1.47 added by Arisu
+Window_ShopStatus.EQUIP_DELAY_MS = VisuMZ.ItemsEquipsCore.Settings.StatusWindow.EquipDelayMS ?? 240;
+
+// v1.37 added by Arisu
+VisuMZ.ItemsEquipsCore.Window_ShopStatus_setItem = Window_ShopStatus.prototype.setItem;
+Window_ShopStatus.prototype.setItem = function(item) {
+    item = DataManager.getProxyItem(item);
+    // v1.47 added by Arisu
+    if (DataManager.isWeapon(item) || DataManager.isArmor(item)) {
+        this.setItemDelay(item);
+    // Original
+    } else {
+        VisuMZ.ItemsEquipsCore.Window_ShopStatus_setItem.call(this, item);
+    }
+};
+
+// v1.47 added by Arisu
+Window_ShopStatus.prototype.setItemDelay = function(item) {
+    this._item = item;
+    const delay = Window_ShopStatus.EQUIP_DELAY_MS;
+    // this.contents.clear();
+    // this.contentsBack.clear();
+    setTimeout(this.refreshDelay.bind(this, item), delay);
+};
+
+// v1.47 added by Arisu
+Window_ShopStatus.prototype.refreshDelay = function(item) {
+    if (this._item === item) {
+        this.refresh();
+    }
+};
+
+// v1.07 added by Yanfly
+Window_ShopStatus.prototype.isPageChangeRequested = function() {
+    return false;
+};
+
+Window_ShopStatus.prototype.loadFaceImages = function() {
+    Window_StatusBase.prototype.loadFaceImages.call(this);
+    for (const actor of $gameParty.members()) {
+        ImageManager.loadCharacter(actor.characterName());
+    }
+};
+
+Window_ShopStatus.prototype.translucentOpacity = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.Translucent;
+};
+
+Window_ShopStatus.prototype.refresh = function() {
+    this.contents.clear();
+    this.contentsBack.clear();
+    if (this._item) {
+        this.resetFontSettings();
+        this.changePaintOpacity(true);
+        this.prepareItemCustomData();
+        if (this.isEquipItem()) {
+            this.drawEquipData();
+        } else {
+            this.drawItemData();
+        }
+        this.drawCustomShopGraphic(); // v1.26 added by Irina
+    }
+};
+
+Window_ShopStatus.prototype.drawPossession = function(x, y) {
+    if (!this.isEquipItem() && !DataManager.isItem(this._item)) return;
+    const width = this.innerWidth - this.itemPadding() - x;
+    const possessionWidth = this.textWidth("0000");
+    this.changeTextColor(ColorManager.systemColor());
+    this.drawText(TextManager.possession, x + this.itemPadding(), y, width - possessionWidth);
+    this.resetTextColor();
+    this.drawItemNumber(this._item, x, y, width);
+};
+
+Window_ShopStatus.prototype.drawItemDarkRect = function(x, y, width, height, times) {
+    if (VisuMZ.ItemsEquipsCore.Settings.StatusWindow.DrawBackRect === false) return;
+    times = Math.max(times || 1, 1);
+    while (times--) {
+        height = height || this.lineHeight();
+        this.contentsBack.paintOpacity = 160;
+        const backColor = ColorManager.getItemsEquipsCoreBackColor1();
+        this.contentsBack.fillRect(x+1, y+1, width-2, height-2, backColor);
+        this.contentsBack.paintOpacity = 255;
+    }
+};
+
+ColorManager.getItemsEquipsCoreBackColor1 = function() {
+    const settings = VisuMZ.ItemsEquipsCore.Settings.StatusWindow;
+    let data = settings.BackRectColor !== undefined ? settings.BackRectColor : 19;
+    return ColorManager.getColor(data);
+};
+
+//-----------------------------------------------------------------------------
+// Draw Equip Data
+//-----------------------------------------------------------------------------
+Window_ShopStatus.prototype.drawEquipData = function() {
+    this._tempActor = null;
+
+    if (VisuMZ.ItemsEquipsCore.Settings.StatusWindow.DrawEquipData) {
+        VisuMZ.ItemsEquipsCore.Settings.StatusWindow.DrawEquipData.call(this);
+        return;
+    }
+
+    // Set Variables
+    const lineHeight = this.lineHeight();
+    const paramheight = this.gaugeLineHeight() + 8;
+    let x = 0;
+    let y = 0;
+    let width = this.innerWidth;
+    let height = this.innerHeight;
+    let hw = Math.floor(width / 2);
+    let hx = x + width - hw;
+
+    // Draw Item Name, Type, and Quantity
+    this.drawItemName(this._item, x + this.itemPadding(), y, width - this.itemPadding() * 2);
+    this.drawItemDarkRect(x, y, width);
+    y += lineHeight;
+    if (this.drawItemEquipType(x, y, hw)) y += 0;
+    if (this.drawItemQuantity(hx, y, hw)) y += lineHeight;
+
+    // Draw Parameter Names
+    const params = this.actorParams();
+    const backY = y;
+    y = height - (params.length * paramheight) - 4;
+    let paramX = x;
+    let paramWidth = 0;
+    let tableY = y;
+    for (const paramId of params) {
+        paramWidth = Math.max(this.drawParamName(paramId, x + 4, y + 4, width), paramWidth);
+        y += paramheight;
+    }
+
+    // Draw Actor Data
+    const actorMax = $gameParty.maxBattleMembers();
+    const actorWidth = Math.floor((width - paramWidth) / actorMax);
+    paramWidth = width - (actorWidth * actorMax);
+
+    // Loop Through Actors
+    for (const actor of $gameParty.battleMembers()) {
+        const index = $gameParty.battleMembers().indexOf(actor);
+        const actorX = paramX + paramWidth + (index * actorWidth);
+
+        this.changePaintOpacity(actor.canEquip(this._item));
+        this.drawActorCharacter(actor, actorX + (actorWidth / 2), tableY);
+
+        let actorY = tableY;
+
+        // Draw Parameter Changes
+        for (const paramId of params) {
+            const diffY = actorY - ((lineHeight - paramheight) / 2);
+            this.drawActorParamDifference(actor, paramId, actorX, diffY, actorWidth);
+            actorY += paramheight;
+        }
+    }
+
+    // Draw Back Rectangles
+    this.drawItemDarkRect(paramX, backY, paramWidth, tableY - backY);
+    for (let i = 0; i < actorMax; i++) {
+        const actorX = paramX + paramWidth + (i * actorWidth);
+        this.drawItemDarkRect(actorX, backY, actorWidth, tableY - backY);
+    }
+    for (const paramId of params) {
+        this.drawItemDarkRect(paramX, tableY, paramWidth, paramheight);
+        for (let i = 0; i < actorMax; i++) {
+            const actorX = paramX + paramWidth + (i * actorWidth);
+            this.drawItemDarkRect(actorX, tableY, actorWidth, paramheight);
+        }
+        tableY += paramheight;
+    }
+};
+
+Window_ShopStatus.prototype.drawItemEquipType = function(x, y, width) {
+    // Return checks
+    if (!this.isEquipItem()) return false;
+
+    // Label
+    const label = $dataSystem.equipTypes[this._item.etypeId];
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemQuantityText = function() {
+    const fmt = VisuMZ.ItemsEquipsCore.Settings.ItemScene.ItemQuantityFmt;
+    return fmt.format($gameParty.numItems(this._item));
+};
+
+// v1.35 updated by Olivia
+Window_ShopStatus.prototype.actorParams = function() {
+    let params = [0, 1, 2, 3, 4, 5, 6, 7];
+    if (Imported.VisuMZ_0_CoreEngine) {
+        params = VisuMZ.CoreEngine.Settings.Param.ExtDisplayedParams;
+    }
+    // v1.36 added by Olivia
+    params = params.map(paramId => (typeof paramId === 'number') ? paramId : paramId.toUpperCase().trim());
+    return params;
+};
+
+Window_ShopStatus.prototype.smallParamFontSize = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.ParamChangeFontSize;
+};
+
+Window_ShopStatus.prototype.drawParamName = function(paramId, x, y, width) {
+    this.resetFontSettings();
+    this.contents.fontSize = this.smallParamFontSize();
+    let textWidth = this.textWidth(TextManager.param(paramId)) + 4 + x;
+    if (Imported.VisuMZ_0_CoreEngine) {
+        this.drawParamText(x, y, width, paramId, true);
+        if (VisuMZ.CoreEngine.Settings.Param.DrawIcons) {
+            textWidth += ImageManager.iconWidth + 4;
+        }
+    } else {
+        this.changeTextColor(ColorManager.systemColor());
+        this.drawText(TextManager.param(paramId), x, y, width);
+    }
+    this.resetFontSettings();
+    return textWidth;
+};
+
+Window_ShopStatus.prototype.drawActorParamDifference = function(actor, paramId, x, y, width) {
+    x += this.itemPadding();
+    width -= this.itemPadding() * 2;
+    const settings = VisuMZ.ItemsEquipsCore.Settings.StatusWindow;
+    this.contents.fontSize = settings.ParamChangeFontSize;
+    this.changePaintOpacity(actor.canEquip(this._item));
+
+    // Already Equipped
+    if (actor.isEquipped(this._item) && !actor.anyEmptyEquipSlotsOfSameEtype(this._item)) { // v1.40 updated by Arisu
+        const equipped = settings.AlreadyEquipMarker;
+        this.drawText(equipped, x, y, width, 'center');
+
+    // Equip Change
+    } else if (actor.canEquip(this._item)) {
+        //const targetItem = this.currentEquippedItem(actor, this._item.etypeId);
+        // const tempActor = JsonEx.makeDeepCopy(actor);
+        // tempActor._tempActor = true;
+
+        // v1.40 updated by Arisu
+        // const slotId = tempActor.equipSlots().indexOf(this._item.etypeId);
+        // const slotId = tempActor.getEmptyEquipSlotOfSameEtype(this._item);
+        // if (slotId >= 0) {
+        //     tempActor.forceChangeEquip(slotId, this._item);
+        // }
+
+        // v1.48 added by Irina
+        const tempActor = this.createTempActorEquips(actor);
+
+        let newValue = 0;
+        let diffValue = 0;
+        let change = 0;
+
+        if (Imported.VisuMZ_0_CoreEngine) {
+            newValue = tempActor.paramValueByName(paramId);
+            diffValue = newValue - actor.paramValueByName(paramId);
+            this.changeTextColor(ColorManager.paramchangeTextColor(diffValue));
+            // v1.13 updated by Arisu
+            change = (diffValue >= 0 ? '+' : '') + VisuMZ.ConvertNumberToString(diffValue, 0, paramId);
+
+        } else {
+            newValue = tempActor.param(paramId);
+            diffValue = newValue - actor.param(paramId);
+            this.changeTextColor(ColorManager.paramchangeTextColor(diffValue));
+            change = (diffValue >= 0 ? '+' : '') + diffValue;
+        }
+
+        if (change === '+0') {
+            change = settings.NoChangeMarker;
+        }
+        this.drawText(change, x, y, width, 'center');
+
+    // Cannot Equip
+    } else {
+        const cannotEquip = settings.CannotEquipMarker;
+        this.drawText(cannotEquip, x, y, width, 'center');
+    }
+    this.resetFontSettings();
+    this.changePaintOpacity(true);
+};
+
+// v1.48 added by Irina
+Window_ShopStatus.prototype.createTempActorEquips = function(actor) {
+    if (this.needsNewTempActor(actor)) {
+        const tempActor = JsonEx.makeDeepCopy(actor);
+        tempActor._tempActor = true;
+
+        const slotId = tempActor.getEmptyEquipSlotOfSameEtype(this._item);
+        if (slotId >= 0) {
+            tempActor.forceChangeEquip(slotId, this._item);
+        }
+
+        this._tempActor = tempActor;
+    }
+    return this._tempActor;
+};
+
+Window_ShopStatus.prototype.needsNewTempActor = function(actor) {
+    if (!this._tempActor) return true;
+    return this._tempActor.actorId() !== actor.actorId();
+};
+
+// v1.40 updated by Arisu
+Game_Actor.prototype.anyEmptyEquipSlotsOfSameEtype = function(item) {
+    if (!item) return false;
+
+    const etypeID = item.etypeId;
+    const slots = this.equipSlots();
+    for (let i = 0; i < slots.length; i++) {
+        const slotTypeID = slots[i];
+        if (slotTypeID !== etypeID) continue;
+        if (!this.equips()[i]) return true;
+    }
+
+    return false;
+};
+
+// v1.40 updated by Arisu
+Game_Actor.prototype.getEmptyEquipSlotOfSameEtype = function(item) {
+    if (!item) return -1;
+
+    const etypeID = item.etypeId;
+    const slots = this.equipSlots();
+    let firstSlotMatch = -1;
+
+    for (let i = 0; i < slots.length; i++) {
+        const slotTypeID = slots[i];
+        if (slotTypeID !== etypeID) continue;
+        if (!this.equips()[i]) return i;
+        if (firstSlotMatch < 0) firstSlotMatch = i;
+    }
+
+    return firstSlotMatch;
+};
+
+//-----------------------------------------------------------------------------
+// Draw Item Data
+//-----------------------------------------------------------------------------
+Window_ShopStatus.prototype.drawItemData = function() {
+    VisuMZ.ItemsEquipsCore.Settings.StatusWindow.DrawItemData.call(this);
+    /*
+    // Set Variables
+    const lineHeight = this.lineHeight();
+    let x = 0;
+    let y = 0;
+    let width = this.innerWidth;
+    let height = this.innerHeight;
+    let hw = Math.floor(width / 2);
+    let hx = x + width - hw;
+
+    // Draw Item Name and Quantity
+    this.drawItemName(this._item, x + this.itemPadding(), y, width - this.itemPadding() * 2);
+    this.drawItemDarkRect(x, y, width);
+    y += lineHeight;
+
+    // Draw Main Item Properties
+    if (this.drawItemConsumable(x, y, hw)) y += 0;
+    if (this.drawItemQuantity(hx, y, hw)) y += lineHeight;
+    if (this._item.occasion < 3) {
+        y = this.drawItemDamage(x, y, width);
+        y = this.drawItemEffects(x, y, width);
+    }
+    y = this.drawItemCustomEntries(x, y, width);
+
+    // Draw Remaining Item Properties
+    if (this._item.occasion < 3) {
+        if (this.drawItemOccasion(x, y, hw)) y += 0;
+        if (this.drawItemScope(hx, y, hw)) y += lineHeight;
+        if (this.drawItemHitType(x, y, hw)) y += 0;
+        if (this.drawItemSuccessRate(hx, y, hw)) y += lineHeight;
+        if (this.drawItemSpeed(x, y, hw)) y += 0;
+        if (this.drawItemRepeats(hx, y, hw)) y += lineHeight;
+    }
+
+    // Fill Rest of the Window
+    this.drawItemDarkRect(x, y, width, height - y);
+    */
+};
+
+// v1.41 added by Arisu
+Window_ShopStatus.prototype.drawItemName = function(item, x, y, width) {
+    const isSkill = DataManager.isSkill(item, x, y, width) && Imported.VisuMZ_1_SkillsStatesCore;
+    const name = item ? item.name : '';
+    if (isSkill) Window_SkillList.prototype.alterSkillName.call(this, item);
+    Window_Base.prototype.drawItemName.call(this, item, x, y, width);
+    if (isSkill) item.name = name;
+};
+
+Window_ShopStatus.prototype.prepareItemCustomData = function() {
+    this._customItemInfo = {};
+    if (!this._item) return;
+    const note = this._item.note;
+    if (note.match(/<STATUS INFO>\s*([\s\S]*)\s*<\/STATUS INFO>/i)) {
+        const batch = String(RegExp.$1).split(/[\r\n]+/);
+        for (const line of batch) {
+            if (line.match(/(.*):[ ](.*)/i)) {
+                const key = String(RegExp.$1).toUpperCase().trim();
+                const data = String(RegExp.$2).trim();
+                this._customItemInfo[key] = data;
+            }
+        }
+    }
+};
+
+Window_ShopStatus.prototype.itemDataFontSize = function() {
+    return Math.max(1, $gameSystem.mainFontSize() - 4);
+};
+
+Window_ShopStatus.prototype.resetFontSettings = function() {
+    Window_StatusBase.prototype.resetFontSettings.call(this);
+    this.contents.fontSize = this._resetFontSize || this.contents.fontSize;
+    this.contents.textColor = this._resetFontColor || this.contents.textColor;
+};
+
+Window_ShopStatus.prototype.fontSizeRatio = function() {
+    return this.contents.fontSize / $gameSystem.mainFontSize();
+};
+
+Window_ShopStatus.prototype.drawIcon = function(iconIndex, x, y) {
+    const bitmap = ImageManager.loadSystem("IconSet");
+    const pw = ImageManager.iconWidth;
+    const ph = ImageManager.iconHeight;
+    const sx = (iconIndex % 16) * pw;
+    const sy = Math.floor(iconIndex / 16) * ph;
+    const dw = Math.ceil(pw * this.fontSizeRatio());
+    const dh = Math.ceil(ph * this.fontSizeRatio());
+    this.contents.blt(bitmap, sx, sy, pw, ph, x, y, dw, dh);
+};
+
+Window_ShopStatus.prototype.processDrawIcon = function(iconIndex, textState) {
+    if (textState.drawing) {
+        this.drawIcon(iconIndex, textState.x, textState.y + 2);
+    }
+    textState.x += Math.ceil(ImageManager.iconWidth * this.fontSizeRatio());
+    if (this.fontSizeRatio() === 1) textState.x += 4;
+};
+
+Window_ShopStatus.prototype.drawItemKeyData = function(text, x, y, width, label, align) {
+    text = text || '';
+    align = align || 'left';
+    this._resetFontSize = this.itemDataFontSize();
+    this._resetFontColor = label ? ColorManager.systemColor() : this.contents.textColor;
+
+    x += this.itemPadding();
+    width -= this.itemPadding() * 2;
+
+    const size = this.textSizeEx(text);
+    if (align === 'center') {
+        x = x + Math.floor((width - size.width) / 2);
+    } else if (align === 'right') {
+        x = x + width - size.width;
+    }
+    y += (this.lineHeight() - size.height) / 2;
+    this.drawTextEx(text, x, y, width);
+
+    this._resetFontSize = undefined;
+    this._resetFontColor = undefined;
+    this.resetFontSettings();
+};
+
+Window_ShopStatus.prototype.drawItemConsumable = function(x, y, width) {
+    // Return checks
+    if (!DataManager.isItem(this._item)) return false;
+
+    // Label
+    const label = this.getItemConsumableLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemConsumableText();
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemConsumableLabel = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelConsume;
+};
+
+Window_ShopStatus.prototype.getItemConsumableText = function() {
+    // Check for custom info
+    const infoKey = 'CONSUMABLE';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    if (this.canConsumeItem()) {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.Consumable;
+    } else {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.NotConsumable;
+    }
+};
+
+Window_ShopStatus.prototype.canConsumeItem = function() {
+    if (VisuMZ.CoreEngine && VisuMZ.CoreEngine.Settings.QoL.KeyItemProtect && DataManager.isKeyItem(this._item)) {
+        return false;
+    } else {
+        return this._item.consumable;
+    }
+};
+
+Window_ShopStatus.prototype.drawItemQuantity = function(x, y, width) {
+    // Return checks
+    if (!this.isEquipItem() && !DataManager.isItem(this._item)) return false;
+
+    // Check Opt Key Item
+    if (DataManager.isKeyItem(this._item) && !$dataSystem.optKeyItemsNumber) {
+        // KeyItem
+        const KeyItem = TextManager.keyItem;
+        this.drawItemKeyData(KeyItem, x, y, width, true, 'center');
+
+    } else {
+        // Label
+        const label = TextManager.possession;
+        this.drawItemKeyData(label, x, y, width, true);
+        // Result
+        const result = this.getItemQuantityText();
+        this.drawItemKeyData(result, x, y, width, false, 'right');
+    }
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemQuantityText = function() {
+    // Check for custom info
+    const infoKey = 'QUANTITY';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    const fmt = VisuMZ.ItemsEquipsCore.Settings.ItemScene.ItemQuantityFmt;
+    return fmt.format($gameParty.numItems(this._item));
+};
+
+Window_ShopStatus.prototype.drawItemOccasion = function(x, y, width) {
+    // Result
+    const result = this.getItemOccasionText();
+    this.drawItemKeyData(result, x, y, width, false, 'center');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemOccasionText = function() {
+    // Check for custom info
+    const infoKey = 'OCCASION';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    const settings = VisuMZ.ItemsEquipsCore.Settings.StatusWindow;
+    const key = 'Occasion%1'.format(this._item.occasion);
+    return settings[key];
+};
+
+Window_ShopStatus.prototype.drawItemScope = function(x, y, width) {
+    // Result
+    const result = this.getItemScopeText();
+    this.drawItemKeyData(result, x, y, width, false, 'center');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemScopeText = function() {
+    // Check for custom info
+    const infoKey = 'SCOPE';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Declare Constants
+    const settings = VisuMZ.ItemsEquipsCore.Settings.StatusWindow;
+
+    // Battle Engine Core Support
+    if (Imported.VisuMZ_1_BattleCore) {
+        const note = this._item.note;
+        if (note.match(/<TARGET:[ ](.*)>/i)) {
+            const line = String(RegExp.$1);
+            if (line.match(/(\d+) RANDOM ANY/i)) {
+                return settings.ScopeRandomAny.format(Number(RegExp.$1));
+            } else if (line.match(/(\d+) RANDOM (?:ENEMY|ENEMIES|FOE|FOES)/i)) {
+                return settings.ScopeRandomEnemies.format(Number(RegExp.$1));
+            } else if (line.match(/(\d+) RANDOM (?:ALLY|ALLIES|FRIEND|FRIENDS)/i)) {
+                return settings.ScopeRandomAllies.format(Number(RegExp.$1));
+            } else if (line.match(/ALL (?:ALLY|ALLIES|FRIEND|FRIENDS) (?:BUT|EXCEPT) (?:USER|SELF)/i)) {
+                return settings.ScopeAlliesButUser;
+            }
+        }
+    }
+
+    // Otherwise
+    const key = 'Scope%1'.format(this._item.scope);
+    return settings[key];
+};
+
+Window_ShopStatus.prototype.drawItemSpeed = function(x, y, width) {
+    // Label
+    const label = this.getItemSpeedLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemSpeedText();
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemSpeedLabel = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelSpeed;
+};
+
+Window_ShopStatus.prototype.getItemSpeedText = function() {
+    // Check for custom info
+    const infoKey = 'SPEED';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    const speed = this._item.speed;
+    if (speed >= 2000) {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.Speed2000;
+    } else if (speed >= 1000) {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.Speed1000;
+    } else if (speed > 0) {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.Speed1;
+    } else if (speed === 0) {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.Speed0;
+    } else if (speed > -1000) {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.SpeedNeg999;
+    } else if (speed > -2000) {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.SpeedNeg1999;
+    } else if (speed <= -2000) {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.SpeedNeg2000;
+    } else {
+        return '?????';
+    }
+};
+
+Window_ShopStatus.prototype.drawItemSuccessRate = function(x, y, width) {
+    // Label
+    const label = this.getItemSuccessRateLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemSuccessRateText();
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemSuccessRateLabel = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelSuccessRate;
+};
+
+Window_ShopStatus.prototype.getItemSuccessRateText = function() {
+    // Check for custom info
+    const infoKey = 'SUCCESS RATE';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    if (Imported.VisuMZ_1_BattleCore) {
+        const note = this._item.note;
+        if (note.match(/<ALWAYS HIT>/i)) {
+            return '100%';
+        } else if (note.match(/<ALWAYS HIT RATE: (\d+)([%％])>/i)) {
+            return '%1%'.format(Number(RegExp.$1));
+        }
+    }
+
+    // Otherwise
+    return '%1%'.format(this._item.successRate)
+};
+
+Window_ShopStatus.prototype.drawItemRepeats = function(x, y, width) {
+    // Label
+    const label = this.getItemRepeatsLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemRepeatsText();
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemRepeatsLabel = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelRepeats;
+};
+
+Window_ShopStatus.prototype.getItemRepeatsText = function() {
+    // Check for custom info
+    const infoKey = 'REPEAT';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    const fmt = '×%1';
+    return fmt.format(this._item.repeats);
+};
+
+Window_ShopStatus.prototype.drawItemHitType = function(x, y, width) {
+    // Label
+    const label = this.getItemHitTypeLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemHitTypeText();
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemHitTypeLabel = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelHitType;
+};
+
+Window_ShopStatus.prototype.getItemHitTypeText = function() {
+    // Check for custom info
+    const infoKey = 'HIT TYPE';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    const settings = VisuMZ.ItemsEquipsCore.Settings.StatusWindow;
+    const key = 'HitType%1'.format(this._item.hitType);
+    return settings[key];
+};
+
+//-----------------------------------------------------------------------------
+// Draw Item Damage
+//-----------------------------------------------------------------------------
+Window_ShopStatus.prototype.drawItemDamage = function(x, y, width) {
+    // Return checks
+    if (this._item.damage.type <= 0) return y;
+
+    // Draw Aspects
+    if (this.drawItemDamageElement(x, y, width)) y += this.lineHeight();
+    if (this.drawItemDamageAmount(x, y, width)) y += this.lineHeight();
+
+    // Cleanup
+    this.resetFontSettings();
+    return y;
+};
+
+Window_ShopStatus.prototype.drawItemDamageElement = function(x, y, width) {
+    // Label
+    const label = this.getItemDamageElementLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemDamageElementText();
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemDamageElementLabel = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelElement;
+};
+
+Window_ShopStatus.prototype.getItemDamageElementText = function() {
+    // Check for custom info
+    const infoKey = 'ELEMENT';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    if (this._item.damage.elementId <= -1) {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.ElementWeapon;
+    } else if (this._item.damage.elementId === 0) {
+        return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.ElementNone;
+    } else {
+        return $dataSystem.elements[this._item.damage.elementId];
+    }
+};
+
+Window_ShopStatus.prototype.drawItemDamageAmount = function(x, y, width) {
+    // Label
+    const label = this.getItemDamageAmountLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    this.setupItemDamageTempActors();
+    const result = this.getItemDamageAmountText();
+    const color = ColorManager.damageColor([0,0,2,1,3,1,3][this._item.damage.type]);
+    this.changeTextColor(color);
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemDamageAmountLabel = function() {
+    if (Imported.VisuMZ_1_BattleCore && DataManager.getDamageStyle(this._item) !== 'MANUAL') {
+        return this.getItemDamageAmountLabelBattleCore();
+    } else {
+        return this.getItemDamageAmountLabelOriginal();
+    }
+};
+
+Window_ShopStatus.prototype.getItemDamageAmountLabelOriginal = function() {
+    const settings = VisuMZ.ItemsEquipsCore.Settings.StatusWindow;
+    const key = 'DamageType%1'.format(this._item.damage.type);
+    const resource = [null,
+        TextManager.hp,TextManager.mp,
+        TextManager.hp,TextManager.mp,
+        TextManager.hp,TextManager.mp
+    ][this._item.damage.type];
+    return settings[key].format(resource);
+};
+
+Window_ShopStatus.prototype.setupItemDamageTempActors = function() {
+    const actor = $gameActors.actor(1);
+    this._tempActorA = JsonEx.makeDeepCopy(actor);
+    this._tempActorB = JsonEx.makeDeepCopy(actor);
+};
+
+Window_ShopStatus.prototype.getItemDamageAmountText = function() {
+    // Check for custom info
+    const infoKey = 'DAMAGE MULTIPLIER';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    if (Imported.VisuMZ_1_BattleCore && DataManager.getDamageStyle(this._item) !== 'MANUAL') {
+        return this.getItemDamageAmountTextBattleCore();
+    } else {
+        return this.getItemDamageAmountTextOriginal();
+    }
+};
+
+Window_ShopStatus.prototype.getItemDamageAmountTextOriginal = function() {
+    // Have to do this in order to make obfuscation work
+    window.a = this._tempActorA;
+    window.b = this._tempActorB;
+    this._tempActorA.setShopStatusWindowMode(true);
+    this._tempActorB.setShopStatusWindowMode([3,4].includes(this._item.damage.type));
+    let formula = this._item.damage.formula;
+    try {
+        const value = Math.max(eval(formula), 0) / window.a.atk;
+        this.revertGlobalNamespaceVariables();
+        if (isNaN(value)) {
+            return '?????';
+        } else {
+            return '%1%'.format(Math.round(value * 100));
+        }
+    } catch (e) {
+        if ($gameTemp.isPlaytest()) {
+            console.log('Damage Formula Error for %1'.format(this._item.name));
+            console.log(e);
+        }
+        this.revertGlobalNamespaceVariables();
+        return '?????';
+    }
+};
+
+Window_ShopStatus.prototype.revertGlobalNamespaceVariables = function() {
+    window.a = undefined;
+    window.b = undefined;
+};
+
+//-----------------------------------------------------------------------------
+// Draw Item Effects
+//-----------------------------------------------------------------------------
+Window_ShopStatus.prototype.drawItemEffects = function(x, y, width) {
+    // Make Item Data
+    if (!this.makeItemData()) return y;
+
+    // Draw Aspects
+    if (this.drawItemEffectsHpRecovery(x, y, width)) y += this.lineHeight();
+    if (this.drawItemEffectsMpRecovery(x, y, width)) y += this.lineHeight();
+    if (this.drawItemEffectsTpRecovery(x, y, width)) y += this.lineHeight();
+    if (this.drawItemEffectsHpDamage(x, y, width)) y += this.lineHeight();
+    if (this.drawItemEffectsMpDamage(x, y, width)) y += this.lineHeight();
+    if (this.drawItemEffectsTpDamage(x, y, width)) y += this.lineHeight();
+    if (this.drawItemEffectsSelfTpGain(x, y, width)) y += this.lineHeight();
+    if (this.drawItemEffectsAddedStatesBuffs(x, y, width)) y += this.lineHeight();
+    if (this.drawItemEffectsRemovedStatesBuffs(x, y, width)) y += this.lineHeight();
+
+    // Cleanup
+    this.resetFontSettings();
+    return y;
+};
+
+// v1.28 added by Olivia
+Window_ShopStatus.prototype.getItemEffects = function() {
+    return this._item.effects;
+};
+
+Window_ShopStatus.prototype.makeItemData = function() {
+    // Declare Item Data
+    let change = false;
+    this._itemData = {
+        rateHP: 0, flatHP: 0,
+        rateMP: 0, flatMP: 0,
+        gainTP: 0,
+        selfTP: 0,
+        addState: [],
+        removeState: [],
+        changeBuff: [0,0,0,0,0,0,0,0],
+        removeBuff: [],
+        removeDebuff: [],
+        addStateBuffChanges: false,
+        removeStateBuffChanges: false,
+    };
+
+    // v1.28 added by Olivia
+    const effects = this.getItemEffects();
+
+    for (const effect of effects) {
+        switch (effect.code) {
+            case Game_Action.EFFECT_RECOVER_HP:
+                this._itemData.rateHP += effect.value1;
+                this._itemData.flatHP += effect.value2;
+                change = true;
+                break;
+            case Game_Action.EFFECT_RECOVER_MP:
+                this._itemData.rateMP += effect.value1;
+                this._itemData.flatMP += effect.value2;
+                change = true;
+                break;
+            case Game_Action.EFFECT_GAIN_TP:
+                this._itemData.gainTP += effect.value1;
+                change = true;
+                break;
+            case Game_Action.EFFECT_ADD_STATE:
+                this._itemData.addState.push(effect.dataId);
+                change = true;
+                break;
+            case Game_Action.EFFECT_REMOVE_STATE:
+                this._itemData.removeState.push(effect.dataId);
+                this._itemData.removeStateBuffChanges = true;
+                change = true;
+                break;
+            case Game_Action.EFFECT_ADD_BUFF:
+                this._itemData.changeBuff[effect.dataId] += 1;
+                change = true;
+                break;
+            case Game_Action.EFFECT_ADD_DEBUFF:
+                this._itemData.changeBuff[effect.dataId] -= 1;
+                change = true;
+                break;
+            case Game_Action.EFFECT_REMOVE_BUFF:
+                this._itemData.removeBuff.push(effect.dataId);
+                this._itemData.removeStateBuffChanges = true;
+                change = true;
+                break;
+            case Game_Action.EFFECT_REMOVE_DEBUFF:
+                this._itemData.removeDebuff.push(effect.dataId);
+                this._itemData.removeStateBuffChanges = true;
+                change = true;
+                break;
+        }
+    }
+    if (this._itemData.addState.length > 0) this._itemData.addStateBuffChanges = true;
+    for (let i = 0; i < this._itemData.changeBuff.length; i++) {
+        if (this._itemData.changeBuff[i] !== 0) this._itemData.addStateBuffChanges = true;
+    }
+    if (this._item.tpGain !== 0) {
+        this._itemData.selfTP = this._item.tpGain;
+        change = true;
+    }
+    const customKeys = [
+        'HP RECOVERY','MP RECOVERY','TP RECOVERY',
+        'HP DAMAGE','MP DAMAGE', 'TP DAMAGE',
+        'USER TP GAIN','ADDED EFFECTS','REMOVED EFFECTS',
+    ];
+    for (const key of customKeys) {
+        if (this._customItemInfo[key]) {
+            change = true;
+            break;
+        }
+    }
+    return change;
+};
+
+Window_ShopStatus.prototype.drawItemEffectsHpRecovery = function(x, y, width) {
+    // Return Check
+    const infoKey = 'HP RECOVERY';
+    if (this._itemData.rateHP <= 0 && this._itemData.flatHP <= 0 && !this._customItemInfo[infoKey]) return false;
+
+    // Label
+    const label = this.getItemEffectsHpRecoveryLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemEffectsHpRecoveryText();
+    this.changeTextColor(ColorManager.damageColor(1));
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemEffectsHpRecoveryLabel = function() {
+    const fmt = VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelRecoverHP;
+    return fmt.format(TextManager.hp);
+};
+
+Window_ShopStatus.prototype.getItemEffectsHpRecoveryText = function() {
+    // Check for custom info
+    const infoKey = 'HP RECOVERY';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    let text = '';
+    if (this._itemData.rateHP > 0) text += '+%1%'.format(Math.floor(this._itemData.rateHP * 100));
+    if (this._itemData.rateHP > 0 && this._itemData.flatHP > 0) text += ' ';
+    if (this._itemData.flatHP > 0) text += '+%1'.format(this._itemData.flatHP);
+    return text;
+};
+
+Window_ShopStatus.prototype.drawItemEffectsMpRecovery = function(x, y, width) {
+    // Return Check
+    const infoKey = 'MP RECOVERY';
+    if (this._itemData.rateMP <= 0 && this._itemData.flatMP <= 0 && !this._customItemInfo[infoKey]) return false;
+
+    // Label
+    const label = this.getItemEffectsMpRecoveryLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemEffectsMpRecoveryText();
+    this.changeTextColor(ColorManager.damageColor(3));
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemEffectsMpRecoveryLabel = function() {
+    const fmt = VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelRecoverMP;
+    return fmt.format(TextManager.mp);
+};
+
+Window_ShopStatus.prototype.getItemEffectsMpRecoveryText = function() {
+    // Check for custom info
+    const infoKey = 'MP RECOVERY';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    let text = '';
+    if (this._itemData.rateMP > 0) text += '+%1%'.format(Math.floor(this._itemData.rateMP * 100));
+    if (this._itemData.rateMP > 0 && this._itemData.flatMP > 0) text += ' ';
+    if (this._itemData.flatMP > 0) text += '+%1'.format(this._itemData.flatMP);
+    return text;
+};
+
+Window_ShopStatus.prototype.drawItemEffectsTpRecovery = function(x, y, width) {
+    // Return Check
+    const infoKey = 'TP RECOVERY';
+    if (this._itemData.gainTP <= 0 && !this._customItemInfo[infoKey]) return false;
+
+    // Label
+    const label = this.getItemEffectsTpRecoveryLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemEffectsTpRecoveryText();
+    this.changeTextColor(ColorManager.powerUpColor());
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemEffectsTpRecoveryLabel = function() {
+    const fmt = VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelRecoverTP;
+    return fmt.format(TextManager.tp);
+};
+
+Window_ShopStatus.prototype.getItemEffectsTpRecoveryText = function() {
+    // Check for custom info
+    const infoKey = 'TP RECOVERY';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    let text = '';
+    text += '+%1'.format(this._itemData.gainTP);
+    return text;
+};
+
+Window_ShopStatus.prototype.drawItemEffectsSelfTpGain = function(x, y, width) {
+    // Return Check
+    const infoKey = 'USER TP GAIN';
+    if (this._itemData.selfTP === 0 && !this._customItemInfo[infoKey]) return false;
+
+    // Label
+    const label = this.getItemEffectsSelfTpGainLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemEffectsSelfTpGainText();
+    if (this._itemData.selfTP > 0) {
+        this.changeTextColor(ColorManager.powerUpColor());
+    } else {
+        this.changeTextColor(ColorManager.powerDownColor());
+    }
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemEffectsSelfTpGainLabel = function() {
+    const fmt = VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelSelfGainTP;
+    return fmt.format(TextManager.tp);
+};
+
+Window_ShopStatus.prototype.getItemEffectsSelfTpGainText = function() {
+    // Check for custom info
+    const infoKey = 'USER TP GAIN';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    let text = '';
+    if (this._itemData.selfTP > 0) {
+        text += '+%1'.format(this._itemData.selfTP);
+    } else {
+        text += '%1'.format(this._itemData.selfTP);
+    }
+    return text;
+};
+
+Window_ShopStatus.prototype.drawItemEffectsHpDamage = function(x, y, width) {
+    // Return Check
+    const infoKey = 'HP DAMAGE';
+    if (this._itemData.rateHP >= 0 && this._itemData.flatHP >= 0 && !this._customItemInfo[infoKey]) return false;
+
+    // Label
+    const label = this.getItemEffectsHpDamageLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemEffectsHpDamageText();
+    this.changeTextColor(ColorManager.damageColor(0));
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemEffectsHpDamageLabel = function() {
+    const fmt = VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelDamageHP;
+    return fmt.format(TextManager.hp);
+};
+
+Window_ShopStatus.prototype.getItemEffectsHpDamageText = function() {
+    // Check for custom info
+    const infoKey = 'HP DAMAGE';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    let text = '';
+    if (this._itemData.rateHP < 0) text += '%1%'.format(Math.floor(this._itemData.rateHP * 100));
+    if (this._itemData.rateHP < 0 && this._itemData.flatHP < 0) text += ' ';
+    if (this._itemData.flatHP < 0) text += '%1'.format(this._itemData.flatHP);
+    return text;
+};
+
+Window_ShopStatus.prototype.drawItemEffectsMpDamage = function(x, y, width) {
+    // Return Check
+    const infoKey = 'MP DAMAGE';
+    if (this._itemData.rateMP >= 0 && this._itemData.flatMP >= 0 && !this._customItemInfo[infoKey]) return false;
+
+    // Label
+    const label = this.getItemEffectsMpDamageLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemEffectsMpDamageText();
+    this.changeTextColor(ColorManager.damageColor(2));
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemEffectsMpDamageLabel = function() {
+    const fmt = VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelDamageMP;
+    return fmt.format(TextManager.mp);
+};
+
+Window_ShopStatus.prototype.getItemEffectsMpDamageText = function() {
+    // Check for custom info
+    const infoKey = 'MP DAMAGE';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    let text = '';
+    if (this._itemData.rateMP < 0) text += '%1%'.format(Math.floor(this._itemData.rateMP * 100));
+    if (this._itemData.rateMP < 0 && this._itemData.flatMP < 0) text += ' ';
+    if (this._itemData.flatMP < 0) text += '%1'.format(this._itemData.flatMP);
+    return text;
+};
+
+Window_ShopStatus.prototype.drawItemEffectsTpDamage = function(x, y, width) {
+    // Return Check
+    const infoKey = 'TP DAMAGE';
+    if (this._itemData.gainTP >= 0 && !this._customItemInfo[infoKey]) return false;
+
+    // Label
+    const label = this.getItemEffectsTpDamageLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemEffectsTpDamageText();
+    this.changeTextColor(ColorManager.powerDownColor());
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemEffectsTpDamageLabel = function() {
+    const fmt = VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelDamageTP;
+    return fmt.format(TextManager.tp);
+};
+
+Window_ShopStatus.prototype.getItemEffectsTpDamageText = function() {
+    // Check for custom info
+    const infoKey = 'TP DAMAGE';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    let text = '';
+    text += '%1'.format(this._itemData.gainTP);
+    return text;
+};
+
+Window_ShopStatus.prototype.drawItemEffectsAddedStatesBuffs = function(x, y, width) {
+    // Return Check
+    const infoKey = 'ADDED EFFECTS';
+    if (!this._itemData.addStateBuffChanges && !this._customItemInfo[infoKey]) return false;
+
+    // Label
+    const label = this.getItemEffectsAddedStatesBuffsLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemEffectsAddedStatesBuffsText();
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemEffectsAddedStatesBuffsLabel = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelApply;
+};
+
+Window_ShopStatus.prototype.getItemEffectsAddedStatesBuffsText = function() {
+    // Check for custom info
+    const infoKey = 'ADDED EFFECTS';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    let text = '';
+    let count = 0;
+    const countMax = 8;
+    for (const stateId of this._itemData.addState) {
+        const state = $dataStates[stateId];
+        if (state && state.iconIndex > 0) {
+            text += '\\I[%1]'.format(state.iconIndex);
+            count++;
+            if (count >= countMax) return text;
+        }
+    }
+    for (let i = 0; i < this._itemData.changeBuff.length; i++) {
+        const buffLevel = this._itemData.changeBuff[i];
+        const iconIndex = Game_BattlerBase.prototype.buffIconIndex(buffLevel, i);
+        if (iconIndex > 0) {
+            text += '\\I[%1]'.format(iconIndex);
+            count++;
+            if (count >= countMax) return text;
+        }
+    }
+    return text;
+};
+
+Window_ShopStatus.prototype.drawItemEffectsRemovedStatesBuffs = function(x, y, width) {
+    // Return Check
+    const infoKey = 'REMOVED EFFECTS';
+    if (!this._itemData.removeStateBuffChanges && !this._customItemInfo[infoKey]) return false;
+
+    // Label
+    const label = this.getItemEffectsRemovedStatesBuffsLabel();
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    const result = this.getItemEffectsRemovedStatesBuffsText();
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+    return true;
+};
+
+Window_ShopStatus.prototype.getItemEffectsRemovedStatesBuffsLabel = function() {
+    return VisuMZ.ItemsEquipsCore.Settings.StatusWindow.LabelRemove;
+};
+
+Window_ShopStatus.prototype.getItemEffectsRemovedStatesBuffsText = function() {
+    // Check for custom info
+    const infoKey = 'REMOVED EFFECTS';
+    if (this._customItemInfo[infoKey]) return this._customItemInfo[infoKey];
+
+    // Otherwise
+    let text = '';
+    let count = 0;
+    const countMax = VisuMZ.ItemsEquipsCore.Settings.StatusWindow.MaxIcons;
+    for (const stateId of this._itemData.removeState) {
+        const state = $dataStates[stateId];
+        if (state && state.iconIndex > 0) {
+            text += '\\I[%1]'.format(state.iconIndex);
+            count++;
+            if (count >= countMax) return text;
+        }
+    }
+    for (let i = 0; i < this._itemData.removeBuff.length; i++) {
+        const paramID = this._itemData.removeBuff[i]; // v1.47 fixed by Olivia
+        const iconIndex = Game_BattlerBase.prototype.buffIconIndex(1, paramID);
+        if (iconIndex > 0) {
+            text += '\\I[%1]'.format(iconIndex);
+            count++;
+            if (count >= countMax) return text;
+        }
+    }
+    for (let i = 0; i < this._itemData.removeDebuff.length; i++) {
+        const paramID = this._itemData.removeDebuff[i]; // v1.47 fixed by Olivia
+        const iconIndex = Game_BattlerBase.prototype.buffIconIndex(-1, paramID); // v1.47 fixed by Olivia
+        if (iconIndex > 0) {
+            text += '\\I[%1]'.format(iconIndex);
+            count++;
+            if (count >= countMax) return text;
+        }
+    }
+    return text;
+};
+
+//-----------------------------------------------------------------------------
+// Draw Item Custom Entries
+//-----------------------------------------------------------------------------
+Window_ShopStatus.prototype.drawItemCustomEntries = function(x, y, width) {
+    // Loop through Notetags
+    if (this._item.note.match(/<CUSTOM STATUS INFO>\s*([\s\S]*)\s*<\/CUSTOM STATUS INFO>/i)) {
+        const batch = String(RegExp.$1).split(/[\r\n]+/);
+        for (const line of batch) {
+            if (line.match(/(.*):[ ](.*)/i)) {
+                const key = String(RegExp.$1).trim();
+                const data = String(RegExp.$2).trim();
+                this.drawItemCustomEntryLine(key, data, x, y, width);
+                y += this.lineHeight();
+            }
+        }
+    }
+
+    // Cleanup
+    this.resetFontSettings();
+    return y;
+};
+
+Window_ShopStatus.prototype.drawItemCustomEntryLine = function(label, result, x, y, width) {
+    // Label
+    this.drawItemKeyData(label, x, y, width, true);
+
+    // Result
+    this.drawItemKeyData(result, x, y, width, false, 'right');
+
+    // Dark Rect
+    this.drawItemDarkRect(x, y, width);
+
+    // Cleanup
+    this.resetFontSettings();
+};
+
+//-----------------------------------------------------------------------------
+// Custom Shop Graphic
+//-----------------------------------------------------------------------------
+
+// v1.26 added by Irina
+Window_ShopStatus.prototype.drawCustomShopGraphic = function() {
+    if (!this._item) return;
+    const note = this._item.note;
+    const tag = /<SHOP (?:PICTURE|IMAGE|PICTURE NAME|PICTURE FILENAME|IMAGE NAME|IMAGE FILENAME):[ ](.*)>/gi;
+    const matches = note.match(tag);
+    if (matches) {
+        for (const match of matches) {
+            match.match(tag);
+
+            const filename = String(RegExp.$1).trim() || '';
+            if (filename === '') continue;
+
+            const bitmap = ImageManager.loadPicture(filename);
+            bitmap.addLoadListener(this.drawCustomShopGraphicLoad.bind(this, bitmap, this._item));
+        }
+    }
+};
+
+// v1.26 added by Irina
+Window_ShopStatus.prototype.drawCustomShopGraphicLoad = function(source, item) {
+    // Return Check
+    if (this._item !== item) return;
+    if (!source) return;
+    if (source.width <= 0 || source.height <= 0) return;
+
+    //-------------
+    // Declare Note
+    //-------------
+    const note = item.note;
+
+    //--------------
+    // Declare Layer
+    //--------------
+    let layer = 'background';
+    if (note.match(/<SHOP (?:PICTURE|IMAGE) LAYER:[ ]FOREGROUND>/i)) {
+        layer = 'foreground';
+    }
+    const target = layer === 'background' ? this.contentsBack : this.contents;
+
+    //-----------------
+    // Declare Max Size
+    //-----------------
+    let maxWidth = this.innerWidth;
+    let maxHeight = this.innerHeight;
+    if (note.match(/<SHOP (?:PICTURE|IMAGE) MAX WIDTH:[ ](\d+)>/i)) {
+        maxWidth = Number(RegExp.$1);
+    }
+    if (note.match(/<SHOP (?:PICTURE|IMAGE) MAX HEIGHT:[ ](\d+)>/i)) {
+        maxHeight = Number(RegExp.$1);
+    }
+    if (note.match(/<SHOP (?:PICTURE|IMAGE) MAX DIMENSIONS:[ ](\d+),[ ]*(\d+)>/i)) {
+        maxWidth = Number(RegExp.$1);
+        maxHeight = Number(RegExp.$2);
+    }
+    const ratio = Math.min(1, maxWidth / source.width, maxHeight / source.height);
+
+    //-------------------
+    // Declare Dimensions
+    //-------------------
+    let x = 0;
+    let y = 0;
+    let width = Math.floor(source.width * ratio);
+    let height = Math.floor(source.height * ratio);
+
+    //---------------------
+    // Calculate X Position
+    //---------------------
+    let align = 'center';
+    if (note.match(/<SHOP (?:PICTURE|IMAGE) (?:ALIGN|ALIGNMENT):[ ](LEFT|CENTER|RIGHT)>/i)) {
+        align = String(RegExp.$1).toLowerCase().trim();
+    }
+    if (align === 'left') {
+        x = 0;
+    } else if (align === 'center') {
+        x = Math.round((this.innerWidth - width) / 2);
+    } else {
+        x = this.innerWidth - width;
+    }
+
+    //---------------------
+    // Calculate Y Position
+    //---------------------
+    let position = 'middle';
+    if (note.match(/<SHOP (?:PICTURE|IMAGE) POSITION:[ ](TOP|MIDDLE|BOTTOM)>/i)) {
+        position = String(RegExp.$1).toLowerCase().trim();
+    }
+    if (position === 'top') {
+        y = 0;
+    } else if (position === 'middle') {
+        y = Math.round((this.innerHeight - height) / 2);
+    } else {
+        y = this.innerHeight - height;
+    }
+
+    //----------------
+    // Offset Position
+    //----------------
+    if (note.match(/<SHOP (?:PICTURE|IMAGE) OFFSET X:[ ]([\+\-]\d+)>/i)) {
+        x += Number(RegExp.$1);
+    }
+    if (note.match(/<SHOP (?:PICTURE|IMAGE) OFFSET Y:[ ]([\+\-]\d+)>/i)) {
+        y += Number(RegExp.$1);
+    }
+    if (note.match(/<SHOP (?:PICTURE|IMAGE) OFFSET:[ ]([\+\-]\d+),[ ]*([\+\-]\d+)>/i)) {
+        x += Number(RegExp.$1);
+        y += Number(RegExp.$2);
+    }
+
+    // Opacity
+    let opacity = 255;
+    if (note.match(/<SHOP (?:PICTURE|IMAGE) OPACITY:[ ](\d+)>/i)) {
+        opacity = Number(RegExp.$1);
+    } else if (note.match(/<SHOP (?:PICTURE|IMAGE) OPACITY:[ ](\d+)([%％])>/i)) {
+        opacity = Math.round(Number(RegExp.$1) * 0.01 * 255).clamp(0, 255);
+    }
+
+    // Final
+    target.paintOpacity = opacity;
+    target.blt(source, 0, 0, source.width, source.height, x, y, width, height);
+    target.paintOpacity = 255;
+};
+
+// v1.48 added by Irina
+VisuMZ.ItemsEquipsCore.deepCopy = function(obj) {
+    if (obj === null || typeof obj !== 'object') return obj;
+  
+    const copy = Array.isArray(obj) ? [] : Object.create(Object.getPrototypeOf(obj));
+  
+    for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            copy[key] = (typeof obj[key] === 'object' && obj[key] !== null) ? VisuMZ.ItemsEquipsCore.deepCopy(obj[key]) : obj[key];
+        }
+    }
+    
+    return copy;
+};
+
+//=============================================================================
+// End of File
+//=============================================================================
