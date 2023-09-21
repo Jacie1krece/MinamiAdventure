@@ -326,6 +326,10 @@
 	"Item.QUIBoosterDesc":"Use to get 5 random Stat Boosters.\n\"Remember that one monster girl card game? Well, it also got 5-card booster packs. Why I'm telling you it, though? No idea.\"",
 	"Item.DesertSand":"Desert Sand",
 	"Item.DesertSandDesc":"A small amount of sand from the Great Desert.\n\"Yeah, it's just sand. Don't put it into sandwiches, or you'll be sand.\"",
+	"Item.SweetSleepPillows":"Team-sized Enchanted Pillow Pack",
+	"Item.SweetSleepPillowsDesc":"Fully restores your entire team. Strangely, it's one-use.\n\"Wake up feeling like a brand new you!\"",
+	"Item.ThrowingPillow":"Throwable Pillow",
+	"Item.ThrowingPillowDesc":"Puts one enemy to sleep.\n\"This thing would be busted in pillow fights.\"",
 	
 	"State.Poison":"Posion",
 	"State.PoisonDesc":"Deals 2.5% of your HP as damage per turn.\n\"Unless you find an antidote, poison is a harbinger of death.\"",
