@@ -1,10 +1,10 @@
 //===========================================================================
-// Open Digital World - Multi-Language System Plugin v1.0.1
+// Open Digital World - Multi-Language System Plugin v1.0.3
 //===========================================================================
 
 /*:
  * @target MZ
- * @plugindesc [v1.0.1] - Manage game texts in multiple languages.
+ * @plugindesc [v1.0.3] - Manage game texts in multiple languages.
  * @author Open Digital World
  * @url https://opendigitalworld.itch.io/rmmz-multi-language-system-plugin
  * @orderAfter VisuMZ_1_OptionsCore
@@ -158,6 +158,8 @@
  *
  * 21.10.2021 v1.0.0 - Initial release.
  * 19.09.2022 v1.0.1 - Fixed a processing bug when the text has the ${} pattern twice or more.
+ * 03.08.2023 v1.0.2 - Fixed a syntax error in the $.updateIndex() function.
+ * 01.09.2023 v1.0.3 - Rewrite the text database load process.
  *
  *------------------------------------------------------------------------------
  * Overrides of core functions
@@ -258,7 +260,7 @@ Imported.ODW_MultiLanguageSystem = true;
 var ODW = ODW || {};
 ODW.MLS = ODW.MLS || {};
 ODW.MLS.pluginName = "ODW_MultiLanguageSystem";
-ODW.MLS.pluginVersion = [1, 0, 1];
+ODW.MLS.pluginVersion = [1, 0, 3];
 
 (($) => {
 
@@ -372,7 +374,7 @@ ODW.MLS.pluginVersion = [1, 0, 1];
 	 */
 	$.updateIndex = function(newIndex) {
 		if (this._languages.length > 0) {
-			if (newIndex < this._levels.length) {
+			if (newIndex < this._languages.length) {
 				ConfigManager["languageIndex"] = newIndex;
 				ConfigManager.save();
 			} else {
@@ -832,17 +834,13 @@ Game_Message.prototype.setChoices = function(choices, defaultType, cancelType) {
 // Scene_Boot
 //===========================================================================
 
-const ODW_MLS_Scene_Boot_isPlayerDataLoaded = Scene_Boot.prototype.isPlayerDataLoaded;
-Scene_Boot.prototype.isPlayerDataLoaded = function() {
-	const isCoreLoaded = ODW_MLS_Scene_Boot_isPlayerDataLoaded.call(this);
-	if (isCoreLoaded) {
-		if (ODW.MLS.isDatabaseLoaded()) {
-			return true;
-		} else {
-			ODW.MLS.loadDatabase();
-		}
-	}
-	return false;
+const ODW_MLS_Scene_Boot_onDatabaseLoaded = Scene_Boot.prototype.onDatabaseLoaded;
+Scene_Boot.prototype.onDatabaseLoaded = function() {
+	ODW_MLS_Scene_Boot_onDatabaseLoaded.call(this);
+	ODW.MLS.loadDatabase();
+	setTimeout(function(){
+		ODW.MLS.updateGameTitle();
+	}, 100);
 };
 
 // Redraw.
