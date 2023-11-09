@@ -1,7 +1,3 @@
-- Updated plugins
-- Added a few NPCs! (Yeah, I know, it's an absolutely amazing addition)
-- Fixed issues with unwalkable regions in Nijisaki City
-- Changed some dialogue
-- Added the Team Pillow Pack, alongside the Throwing Pillows - the former to allow Minami's team to rest, while the latter to allow putting foes to sleep!
-- Introduced Online Shopping, a new function on the Phone that allows you to buy things from Nakata at any time in the game!
-- Rebalanced stats a little, making Luck actually useful
+- Slightly built on the mines
+- Updated the Polish translation
+- Made the characters barefoot when entering a location marked as "Home", and normal otherwise.

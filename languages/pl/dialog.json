@@ -3,7 +3,7 @@
 	"Goodbye":"Do widzenia!",
 	"Nothing":"Nic się nie stało.",
 	"NoSaveReminder":"Wchodzisz do miejsca, gdzie ${Text.Calamity}nie można zapisywać${Text.Normal}. Czy chcesz kontynuować?",
-	
+
 	"Story1":"Genji, mógłbyś mi opowiedzieć historię? Proszę!",
 	"Story2":"Okej. Ostatnio odnalazłem pewną opartą na faktach. Jestem pewien, że ci się spodoba!",
 	"Story3":"W dawnych czasach, sześć narodów żyło ze sobą w pokoju.",
@@ -24,7 +24,7 @@
 	"Story18":"Przepraszam, ale nie jest to czas na historię. Dobranoc!",
 	"Story19":"Dobranoc...",
 	"Story20":"Następnego dnia\\|.\\|.\\|.",
-	
+
 	"Check1":"Mój laptop. Mam na nim gry i ważne pliki.",
 	"Check2":"(Dlaczego... to powiedziałam?)",
 	"Check3":"Genjiro ma całkiem szybki internet.",
@@ -67,7 +67,7 @@
 	"Check41":"Dywan, na którym ja i Genjiro robiliśmy jakieś przywołujące rytuały zeszłej nocy.",
 	"Check42":"Dywan, na którym ja i Genjiro robiliśmy jakieś przywołujące rytuały jakiś czas temu.",
 	"Check43":"Myślę, że zrobiliśmy to dobrze, i ta istota powinna być dobra, ale nic nie wiadomo.",
-	
+
 	"Bookshelf1":"Jest na niej pierwszy tom mangi „Hiroki w szkole Yōkai”.",
 	"Bookshelf2":"Czytaliśmy tą serię mnóstwo razy.",
 	"Bookshelf3":"Jest na niej książka o programowaniu w Malbolge.",
@@ -85,7 +85,7 @@
 	"Bookshelf15":"Jest na niej kartka z zapisaną historią.",
 	"Bookshelf16":"Hej, to ta sama historia, którą opowiadał mi Genjiro!",
 	"Bookshelf17":"Nie kojarzę tej historii.",
-	
+
 	"MinamiDate":"25 czerwca 510 r.",
 	"MinamiRoom1":"Nya~ Nareszcie! Pokonany! Jeszcze tylko sprawdzę godzinę~",
 	"MinamiRoom2":"Zaraz, już czternasta? To ile ja się z tym bossem tłukłam?",
@@ -136,7 +136,7 @@
 	"OkimotoBirthday11":"Genialne! Dokładnie tak słodkie, jak lubię!",
 	"OkimotoBirthday12":"Wow, i do tego nie przesadziłem aż tak bardzo z cukrem... Takiego ciasta to szef kuchni by się nie powstydził!",
 	"OkimotoBirthday13":"To nie były urodziny, których się spodziewałam, ale takie, na które zasłużyłaś.",
-	
+
 	"NijisakiSteph1":"Hej, dlaczego Stephen zrobił swoją bazę dla dronów na styl bazy wojskowej?",
 	"NijisakiSteph2":"Nie wiem. Zapytaj się go. Prawdopodobnie ci odpowie.",
 	"NijisakiDrone1":"Myślę, że powinniśmy zapytać Stephena, zanim weźmiemy jego drona – do tego nie wiem, jak nimi sterować",
@@ -166,6 +166,14 @@
 	"NijisakiShop19":"Podpowiedź: Kod do dwóch ostatnich gwiazd to pewien specjalny kod. Dam cztery słowa: Winda, Piknik, Druga Strona.",
 	"NijisakiShop20":"Podpowiedź: Spróbuj sprawdzać od 1 do 10, zapamiętując, co daje odpowiedni rezultat.",
 	"NijisakiShop21":"Cóż, to wszystko z szafek. Spróbuj poszukać pozostałych gdzieś indziej.",
+	"NijisakiShop22":"Dzień dobry, co będzie dzisiaj?",
+	"NijisakiShop23":"Zauważyłem i zapisałem dość ciekawą reklamę, ale ma za dużo marketingowego slangu. Czy pani coś o tym wie?",
+	"NijisakiShop24":"Interesujące. Ta reklama nie dość, że nie ma ani krzty kłamstwa czy manipulacji, to jeszcze jest bardzo chwytliwa.",
+	"NijisakiShop25":"Skontaktuję się z moją przyjaciółką z uniwersytetu, która produkuje te poduszki, i zapytam się, czy mogę je sprzedawać.",
+	"NijisakiShop26":"Witam! Jeśli chodzi o te poduszki, to tak, mogę je sprzedawać. Oh, i dowiedziałam się o nowej technice.",
+	"NijisakiShop27":"W taki sam sposób, w jak \\C[13]Magiczny magazyn\\C[0] całkowicie wyparł z użytku plecaki i inne konwencjonalne sposoby przechowywania, \\C[13]Magiczna wymiana\\C[0] zmienia zwyczajne dostawy w coś z przeszłości.",
+	"NijisakiShop28":"I, dzięki temu mogę w końcu otworzyć swój sklep internetowy! Tutaj jest link. Postaram się sprostać z transferem towarów, równocześnie upewniając się, że mój sklep internetowy stanie się popularny przynajmniej w Mieście Nijisaki.",
+	"NijisakiShop29":"Bardzo dziękuję.",
 	"NijisakiShelf1":"To jest ",
 	"NijisakiShelf2":" półka. Czy mam ją przeszukać?",
 	"NijisakiShelf3":"Coś się... stało?",
@@ -174,7 +182,7 @@
 	"NijisakiShelf6":"Z tej półki wypadły dwie gwiazdy!",
 	"NijisakiShelf7":"Oh, no i widzę, gdzie są inne gwiazdy.",
 	"NijisakiShelf8":"To na pewno mi pomoże z ich zbieraniem!",
-	
+
 	"DesertDrone1":"Oh, Wielka Pustynia. Przed Kataklizmem sprzed 600 lat było to perfekcyjne miejsce zamieszkania.",
 	"DesertDrone2":"Teraz tutaj są w większości piach i skały.",
 	"DesertDrone3":"ZARAZ!",
@@ -227,7 +235,7 @@
 	"DesertLeader13":"Nie martwcie się, jeszcze was dopadnę!",
 	"DesertLeader14":"Heh. Naszyjniczek już jest mój!",
 	"DesertLeader15":"POŻAŁUJESZ JAK GO DOTKNIESZ.",
-	
+
 	"Tutorial1":"Hej! Poczekaj aż wylądujemy!!",
 	"Tutorial2":"Minami myślę że to dobry czas nauczyć się walczyć.",
 	"Tutorial3":"Jak nie chcesz samouczka to ucieknij z bitwy.",
@@ -247,7 +255,7 @@
 	"Tutorial17":"Ale przynajmniej wiemy, jak ich pokonać!",
 	"Tutorial18":"Okej. Nie przejmujmy się tym atakiem z zaskoczenia i idźmy dalej.",
 	"Tutorial19":"Do tego jest wiele przeciwników w pobliżu, na których możemy poćwiczyć. Jednak nie powinniśmy walczyć za dużo - czuję jakby ktoś liczył te straty.",
-	
+
 	"Opportunist1":"(Nareszcie, ktoś inny niż ci bandyci jest zainteresowany)",
 	"Opportunist2":"Oh, cześć podróżnicy! Witajcie w moim sklepie!",
 	"Opportunist3":"Jestem Weronika, i sprzedaję najlepsze produkty na całej Wielkiej Pustyni!",
@@ -257,7 +265,6 @@
 	"Opportunist6":"Oh, witajcie ponownie! Widzę, że macie z sobą nowych ludzi!",
 	"Opportunist7":"(Cóż, to nie tak że odebrali mi licencję na sprzedaż ponieważ moje produkty otruły kilku ludzi)",
 	"Opportunist8":"(Jakimś spodobem kłamie gorzej ode mnie...)",
-	"Opportunist8":"No, na co czekacie, kupcie coś! Takie towary nie są darmowe!",
 	"Opportunist9":"Więc, co chcecie zrobić?",
 	"Opportunist10":"Coś kupić!",
 	"Opportunist11":"Zadać pytania...",
@@ -275,7 +282,7 @@
 	"Opportunist23":"Oh tak, oczywiście! Co powiecie na legendarną Pustynną Królową? Ona UWIELBIA moje produkty!",
 	"Opportunist24":"Cóż jeśli moje obliczenia są poprawne i ty razem z twoją rodziną macie normalną ludzką długość życia to ona umarła zanim twoja babcia się urodziła.",
 	"Opportunist25":"(cholera, są lepsze z historii niż myślałam)",
-	
+
 	"TelarArrival":"Jesteśmy na miejscu. To tutaj był położony główny plac powierzchniowego Narodu Pary.",
 	"TelarPlacement1":"(Odłożyć naszyjnik?)",
 	"TelarPlacement2":"Oto i jest!",
@@ -300,7 +307,7 @@
 	"TelarAlive19":"Ej, a może zamiast tego zadzwonię po podwózkę? Oby Stephen miał jakiegoś sprawnego drona.",
 	"TelarAlive20":"Nie znam znaczenia niektórych z twoich słów, ale brzmi dobrze.",
 	"TelarAlive21":"To też dobry pomysł.",
-	
+
 	"MineDarkness1":"Jest za ciemno! Nic nie widzę!",
 	"MineDarkness2":"Przecież widzisz w ciemnościach?",
 	"MineDarkness3":"No tak, ale tu nie ma ani odrobiny światła!",
@@ -319,13 +326,13 @@
 	"MineWay12":"A, i przy okazji - weźcie to, może wam się to przydać.",
 	"MineWay13":"To są notatki, jakie znalazłem w kopalniach. Myślę, że ich użycie doda trochę EXPa całej twojej drużynie.",
 	"MineWay14":"Uważajcie na siebie w tych kopalniach!",
-	
+
 	"ForestChest1":"Hmm? Czy coś się pojawiło w okolicy wejścia?",
 	"ForestChest2":"Skąd to wiedziałaś, Minami?",
 	"ForestChest3":"Usłyszałam, jak ta skrzynka się pojawia.",
 	"ForestChest4":"Ja tego nie słyszałam. Ale przecież masz najlepszy słuch z nas wszystkich.",
 	"ForestChest5":"Hmm? Czy coś się pojawiło w okolicy jeziorka?",
-	
+
 	"DebowiecBlock1":"Ktoś zablokował ścieżkę.",
 	"DebowiecSasin1":"Kim jesteście? Nie wiecie, że nienależy przeszkadzać komuś, kto robi kopalnię odkrywkową?",
 	"DebowiecSasin2":"Po jaką cholerę robisz kopalnię odkrywkową na środku chodnika?",
@@ -351,7 +358,7 @@
 	"DebowiecSasin22":"No to cóż, jak mnie ponownie pokonacie, odblokuję ścieżkę. Jak nie, to wracać do siebie i mi nie przeskadzać!",
 	"DebowiecSasin23":"Wcześniej pokonałyście mnie bez żadnych problemów, a teraz to ja pokonałem was? Huh, wygląda na to, że się nieźle wzmocniłem.",
 	"DebowiecSasin24":"To jest to, czego się tak szczerze spodziewałem. Odblokuję wam ścieżkę.",
-	
+
 	"MaximilianPoster":"Potrzebna pomoc",
 	"MaximilianPoster1":"Dostałem od kolegi małe demko gry, ale jestem słaby w grach video. Chcę mu pomóc, więc czy ktoś mógłby mi pomóc z ocenieniem jej? - Maksymilian",
 	"MaximilianPoster2":"To brzmi dość szczerze... Co myślicie, pomożemy?",
@@ -412,7 +419,7 @@
 	"MaximilianScarlet6":"I, skoro przegrałem z nią 1-2, to będzie świetny rewanż! Wchodzę w to!",
 	"MaximilianScarlet7":"<center><b>NOWY SOJUSZNIK ODBLOKOWANY</b><br>Bokser Maksymilian</center>",
 	"MaximilianScarlet8":"Przy okazji, ostatnio też odnalazłem coś takiego. Może kiedyś odkryjemy tego zastosowanie.",
-	
+
 	"AmberPeaksBerries":"Patrzcie, jagody!",
 	"AmberPeaksBus1":"Przystanek autobusowy.",
 	"AmberPeaksBus2":"To jest jego końcowy przystanek, a więc tym moglibyśmy się tylko cofnąć. Do tego wolę drony Stephena.",
@@ -422,7 +429,7 @@
 	"AmberPeaksSign3":"Jest też narysowana mała strzałka w prawo.",
 	"AmberPeaksSign4":"„Cały ten wysiłek włożony w aktywację lamp musi zostać wynagrodzony. Wejdź do tej jaskini i wybierz jedną skrzynię za każdą zapaloną lampę.”",
 	"AmberPeaksSign5":"\"Ta ścieżka prowadzi prosto do Katoszawy.\"",
-	
+
 	"AuctionIntroduction":"Witajcie w moim domu aukcyjnym! Tutaj ludzie sprzedają jedne z najbardziej prestiżowych przedmiotów na świecie, a nawet wy możecie zarówno kupować, jak i sprzedawać!",
 	"AuctionLightbulbsBane":"To jest ${Weapon.LightbulbsBane}. To de facto nie jest broń, ale jej możliwość oślepienia wrogów przydaje się w bitwie!",
 	"AuctionEmeraldStaff":"To jest ${Weapon.EmeraldStaff}. Jego wolframowa rączka i szmaragdowa główka sprawiają, że jest to ciężka, ale potężna broń!",
@@ -469,6 +476,21 @@
 	"Aster3":"Chcesz je wziąść?",
 	"Aster4":"Dzięki. Ten eksperyment wygląda na bardzo, bardzo interesujący.",
 	"Aster5":"...szkoda. Cóż, przynajmniej się nie zmarnuje, jak zamiast do eksperymentu użyję go do zrobienia jedzenia.",
+	
+	"DoremyResponse1":"...właśnie miałam dziwny sen.",
+	"DoremyResponse2":"O czym on był?",
+	"DoremyResponse3":"Niebieskowłosa osoba do mnie podeszła do mnie i dała mi to. Co dziwniejsze... nie czułam się zdenerwowana, tak jakbym już ją znała.",
+	"DoremyResponse4":"Nie martw się, dziwne sny się zdarzają. Przynajmniej dostaliśmy kilka Powiększeń ze snów!",
+	"DoremyResponse5Telar":"Tej nocy też przyśniła mi się ta niebiesko-włosa osoba, o której też śniła Minami.",
+	"DoremyResponse6Telar":"I też dała mi Powiększenia. Nie jestem pewna, co o tym myśleć.",
+	"DoremyResponse5Genjiro":"Hej, Minami! Pamiętasz tę niebieskowłosą postać z twoich snów?",
+	"DoremyResponse6Genjiro":"Widziałem ją tej nocy, i również dała mi kilka Powiększeń.",
+	"DoremyResponse5Maximilian":"...pamiętam, jak mówiłaś o tej niebieskowłosej postaci.",
+	"DoremyResponse6Maximilian":"Też ją widziałem tej nocy. Cóż, kto by nie chciał darmowych Powiększeń?",
+	"DoremyResponseMinami":"Hej, ta niebieskowłosa postać się znowu mi przyśniła~",
+	"DoremyResponseTelar":"Tak z ciekawości, co jest w tych poduszkach? Cały czas dostaję Powiększenia od tej niebieskowłosej osoby.",
+	"DoremyResponseGenijro":"Myślę, że ta niebieskowłosa dziewczyna używa techniki „Magicznej Wymiany”, która pozwala jej na przekazanie Powiększaczy osobom, które odwiedza w ich snach. Bardzo mądre z jej strony!",
+	"DoremyResponseMaximilian":"Kolejny darmowy Powiększacz. No cóż, kto by takiego nie chciał?",
 	
 	"Phone.Ring":"Dzyń... Dzyń...",
 	"Phone.Start":"Wybierz aplikację.",
@@ -541,9 +563,9 @@
 	"Crafting.Recipe":"Wymagane: ",
 	"Crafting.NotEnough":"Nie masz wystarczająco dużo przedmiotów.",
 	"Crafting.Craft":"Stwórz",
-	
+
 	"Demo.End":"Uwaga: To jest już koniec.",
-	
+
 	"Credits.By":"Autorstwa Jacie_krece",
 	"Credits.Production":"Production",
 	"Credits.Producer":"Producer",
@@ -567,17 +589,14 @@
 	"Credits.MainProgrammer":"Main Programmer",
 	"Credits.GameplayDesigner":"Gameplay Designer",
 	"Credits.BattleDesigner":"Battle Designer",
-	"Credits.BattleDesigner":"Battle Designer",
 	"Credits.Plugins":"Plugins",
 	"Credits.Special":"Special",
 	"Credits.SpecialThanks":"Special Thanks",
 	"Credits.Dev":"Główny programista: Jan „Jacie_krece” Chudzikowski",
 	"Credits.Tool":"Silnik: Gotcha Gotcha Games",
-	"Credits.Plugins":"Pluginy: Open Digital World, VisuStella",
+	"Credits.Plugins2":"Pluginy: Open Digital World, VisuStella",
 	"Credits.Tiles":"Płytki: Gotcha Gotcha Games",
-	"Credits.Icons":"Ikony: CadWolf",
-	"Credits.Music":"Muzyka: Gotcha Gotcha Games",
-	"Credits.ThankYa":"Dzięki za grę!",
-	
-	"Cap":""
+	"Credits.Icons2":"Ikony: CadWolf",
+	"Credits.Music2":"Muzyka: Gotcha Gotcha Games",
+	"Credits.ThankYa":"Dzięki za grę!"
 }

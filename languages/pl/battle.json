@@ -25,7 +25,7 @@
 	"Battle.SkillHelp":"Otwiera listę umiejętności w kategorii \"\\C[16]%1\\C[0]\".",
 	"Battle.ItemHelp":"Otwiera listę przedmiotów, których możesz użyć.",
 	"Battle.AutoHelp2":"Automatycznie wybiera akcję do użycia w bitwie.",
-	
+
 	"Weapon.Yarn":"Kulki włóczki",
 	"Weapon.YarnDesc":"Ukochana włóczka Minami, którą odnalazła jako małe dziecko.\n„Trzy rzeczy, jakie uwielbiałam za dziecka: Włóczka, kartony, i moja mama, Amy.”",
 	"Weapon.DystopiaWand":"Nieprzewidywalna różdżka",
@@ -64,7 +64,15 @@
 	"Weapon.DiamondStaffDesc":"Zrobiony z dobrej jakości platyny i diamentów, jest w stane bez problemu pokonać każdego wroga.\n„Na pewno lepszy od Szmaragdowego, który sprzedaje Dorota.”",
 	"Weapon.MMAGloves":"Rękawice do MMA",
 	"Weapon.MMAGlovesDesc":"Używany przez wiele znanych osób, przydają się do każdej techniki sztuk walki.\n„Najczęściej używane w tym jednym wydarzeniu, gdzie internetowi celebryci walczą ze sobą na pięści”",
-	
+	"Weapon.EiKunai":"Kunai wieczności",
+	"Weapon.EiKunaiDesc":"Fioletowy Kunai z ogromnym przywiązaniem do grzmotów.\n„Czy kiedykolwiek zastanawiałeś się, dlaczego bronie Rzucane się nigdy nie kończą?”",
+	"Weapon.BaseballBat":"Kij baseballowy",
+	"Weapon.BaseballBatDesc":"Wyspecjalizowany kij, który swoją mocą może ogłuszać wrogów.\n„Ganianie za kosmitą przez czas i przestrzeń z tym jako broń to nie jest dobry pomysł...”",
+	"Weapon.TechnoWand":"Techno-różdżka",
+	"Weapon.TechnoWandDesc":"Różdżka w kształcie długopisu, która może z daleka paraliżować wrogów.\n„Magiczna elektryczność jest tak samo niebezpieczna jak ta prawdziwa.”",
+	"Weapon.Railgun":"Działo elektromagnetyczne",
+	"Weapon.RailgunDesc":"Za pomocą potężnych elektromagnesów, potrawi zadawać Elektromagnetyczne (Fizyczne+Elektryczne) obrażenia.\n„Przypomina ci o pewnej postaci...”",
+
 	"Armor.TelarNecklace":"Bursztynowy naszyjnik",
 	"Armor.TelarNecklaceDesc":"Tajemniczy naszyjnik z olbrzymią mocą, przekazywany przez rodzinę Jriaed z pokolenia na pokolenie.\n„Oryginalnie należał do Telar. Odłożenie go na jej grób brzmi jak dobry pomysł.”",
 	"Armor.ElementalCharm":"Amulet żywiołów",
@@ -119,7 +127,7 @@
 	"Armor.ForestHeadbandDesc":"Prosta, efektywna, i wykonana wyłącznie z naturalnych surowców prosto z Lasu Węglowego.\n„Za każde drzewo zużyte do stworzenia opasek są sadzone 2 następne!”",
 	"Armor.HussarArmor":"Zbroja husarska",
 	"Armor.HussarArmorDesc":"Z parą skrzydeł na plecach, potrafisz sobie wyobrazić jak to epicko wygląda na kawalerii.\n„Niektórzy mówią, że Flügel były inspiracją do tych skrzydeł - choć to nie wyjaśnia, dlaczego są ustawione pionowo.”",
-	
+
 	"Skill.DesertWindstorm":"Pustynny wicher",
 	"Skill.DesertWindstormDesc":"Przywołuje burzę piaskową, zadając obrażenia wszystkim przeciwnikom.\n„Czy pustynny wicher to nie po prostu burza piaskowa?”",
 	"Skill.HealthSwipe":"Kradzież zdrowia",
@@ -187,9 +195,7 @@
 	"Skill.BoulderRainDesc":"Przyzywa deszcz głazów, który uderza w losowych przeciwników i może ich ogłuszyć.\n„Jak ktoś ma amnestię, uderzenie go w głowię głazem to najlepszy sposób, aby wrócił do siebie. /s”",
 	"Skill.Distraction":"Rozproszenie",
 	"Skill.DistractionDesc":"Rozprasza przeciwnika, zabierając mu turę i zdolność do uników.\n„To tylko zwykły Taniec Rozpraszający, ale daje radę jak mało który.”",
-	"State.Targetted":"Nacelowany!",
-	"State.TargettedDesc":"Powiększa twoją zaczepność o niesamowitą wartość, praktycznie gwarantując, że zostaniesz trafiony.\n„...czy to oznacza pożegnanie?”",
-	
+
 	"Item.Consumable":" (Jednorazowa)",
 	"Item.SpellNote":"Notatka z zaklęciem",
 	"Item.SkillNote":"Notatka z umiejętnością",
@@ -215,7 +221,7 @@
 	"Item.Rosol":"Rosół błyskawiczny",
 	"Item.RosolDesc":"Odnawia 300 HP.\n„Legendy głoszą, że zupy błyskawiczne były wynalazkiem Romana Kluskowskiego, dlatego w tym regionie nazywane są „Zupą Romana”.”",
 	"Item.Bomb":"Bomba",
-	"Item.BombDesc":"Eksploduje i zadaje obrażenia wszystkim przeciwnikom. Jest silniejsza, gdy użyta przez kogoś z dobrymi umiejętnościami rzucania.\n„Jej wynalazca chciał tylko przyśpieszenia górnictwa, a wyszło jak zwykle.”",
+	"Item.BombDesc":"Eksploduje i zadaje Eksplodujące (Fizyczne+Ogniste) obrażenia wszystkim przeciwnikom.\n„Jej wynalazca chciał tylko przyśpieszenia górnictwa, a wyszło jak zwykle.”",
 	"Item.Gem":"Klejnot",
 	"Item.GemDesc":"Daje 500G po sprzedaniu.\n„Bezużyteczne, no chyba że znajdziesz miejsce, gdzie ci za to zapłacą.”",
 	"Item.EXPNote1":"Porada wędrowca",
@@ -250,7 +256,7 @@
 	"Item.GreenBalloonDesc":"Zadaje średnią ilość wodnych obrażeń.\n„To coś z pewnością zrobi spory plusk, gdy tylko w coś uderzy...”",
 	"Item.Pierogi":"Pierogi",
 	"Item.PierogiDesc":"Odnawiają 5% + 100 HP.\n„Typowy posiłek z Narodu Minerałów, teraz w wersji gotowej do gotowania.”",
-	"Item.GachaNote1Desc":"Notatka zawierająca potężne zaklęcie, a mianowicie „Deszcz głazów”.\n„Jak ktoś ma amnestię, uderzenie go w głowię głazem to najlepszy sposób, aby wrócił do siebie.”",
+	"Item.GachaNote1Desc":"Notatka zawierająca potężne zaklęcie, a mianowicie „Deszcz głazów”.\n„Jak ktoś ma amnestię, uderzenie go w głowię głazem to najlepszy sposób, aby wrócił do siebie. /s”",
 	"Item.GachaNote2Desc":"Notatka zawierająca potężną umiejętność, a mianowicie „Rozproszenie”\n„To tylko zwykły Taniec Rozpraszający, ale daje radę jak mało który.”",
 	"Item.ManaPotion":"Mikstura many",
 	"Item.ManaPotionDesc":"Odnawia 100 Many.\n„Do stworzenia Many potrzebujesz magii, do użycia magii musisz użyć Many. Energii przecież nie można stworzyć.”",
@@ -295,9 +301,9 @@
 	"Item.Shuriken":"Shuriken",
 	"Item.ShurikenDesc":"Zadaje trochę obrażeń przeciwnikowi, ignorując część obrony.\n„Shinobi, przypomnijcie sobie, ukryjcie wasze serca...”",
 	"Item.Rice":"Worek z ryżem",
-	"Item.RiceDesc":"Odnawia 250 HP.\n\"Podstawa w wielu potrawach kuchni Narodu Elektryzacji.\"",
+	"Item.RiceDesc":"Odnawia 250 HP.\n„Podstawa w wielu potrawach kuchni Narodu Elektryzacji.”",
 	"Item.Fish":"Ryba",
-	"Item.FishDesc":"Odnawia 200 HP i ma szansę na spowodowanie zatrucia pokarmowego.\n\"Coś tu śmierdzi...\"",
+	"Item.FishDesc":"Odnawia 200 HP i ma szansę na spowodowanie zatrucia pokarmowego.\n„Coś tu śmierdzi...”",
 	"Item.VeronicaFood":"Cudowne jedzenie Weroniki",
 	"Item.VeronicaFoodDesc":"Odnawia 225 HP.\n„Spróbuj! Jest to zrobione z świeżych, lokalnych, i jadalnych składników!”",
 	"Item.VeronicaGummy":"Żelek many Weroniki",
@@ -305,7 +311,7 @@
 	"Item.SandBomb":"Bomba piaskowa",
 	"Item.SandBombDesc":"Zadaje małe obrażenia wszystkim przeciwnikom, równocześnie ich oślepiając.\n„Ten piach dostaje się wszędzie, a szczególnie w oczy.”",
 	"Item.MHPBooster":"Powiększenie Maks. HP",
-	"Item.MHPBoosterDesc":"Na stałe powiększa twoje maksymalne HP o 5.\n„Mówisz, że powinien to być kwiat?\"",
+	"Item.MHPBoosterDesc":"Na stałe powiększa twoje maksymalne HP o 5.\n„Mówisz, że powinien to być kwiat?”",
 	"Item.MMPBooster":"Powiększenie Maks. Many",
 	"Item.MMPBoosterDesc":"Na stałe powiększa twoją maksymalną Manę o 2.\n„Zbierz gdzieś tak z tuzin i będziesz mógł użyć zaklęcia o jeden raz więcej!”",
 	"Item.ATKBooster":"Powiększenie Ataku",
@@ -328,7 +334,11 @@
 	"Item.QUIBoosterDesc":"Użyj, aby zdobyć 5 losowych powiększeń.\n„Pamiętasz tę starą grę karcianą? Też miała paczki z pięcioma kartami. Czemu ci to mówię? Nie wiem.”",
 	"Item.DesertSand":"Pustynny piach",
 	"Item.DesertSandDesc":"Trochę piachu z Wielkiej Pustyni.\n„Do zrobienia zamku z piasku potrzebujesz go znacznie więcej.”",
-	
+	"Item.SweetSleepPillows":"Pakiet zaczarowanych poduszek",
+	"Item.SweetSleepPillowsDesc":"W pełni odnawia twoją drużynę. Z jakiegoś powodu jest jednorazowy.\n„Obudź się jak nowonarodzony!”",
+	"Item.ThrowingPillow":"Poduszka do rzucania",
+	"Item.ThrowingPillowDesc":"Usypia jednego przeciwnika.\n„To coś byłoby przekokszone w bitwach na poduszki.”",
+
 	"State.Poison":"Otrucie",
 	"State.PoisonDesc":"Zadaje 2.5% twojego HP jako obrażenia co turę.\n„Jeżeli nie masz antidotum, trucizna prowadzi tylko do zguby.”",
 	"State.Blind":"Oślepienie",
@@ -393,7 +403,23 @@
 	"State.TrapPhaseViolentPhaseDesc":"Forces to attack the enemy.\n„*dźwięk ataku*”",
 	"State.Distracted":"Rozproszony",
 	"State.DistractedDesc":"Zabiera ci następną turę i zdolność do robienia uników.\n„*bezmyślne tańczenie do rytmu*”",
-	
+	"State.Targetted":"Nacelowany!",
+	"State.TargettedDesc":"Powiększa twoją zaczepność o niesamowitą wartość, praktycznie gwarantując, że zostaniesz trafiony.\n„...czy to oznacza pożegnanie?”",
+	"State.Strength":"Siła",
+	"State.StrengthDesc":"Zwiększa twój Atak o 20%.\n„Rzucaj dalej! Machaj szybciej! Uderzaj mocniej! Strzelaj... lepiej?”",
+	"State.Endurance":"Wytrzymałość",
+	"State.EnduranceDesc":"Zwiększa twoją Obronę 20%.\n„Jak ssiesz w omijaniu, to to może ci pomóc przetrwać.”",
+	"State.MagicPower":"Magiczna Moc",
+	"State.MagicPowerDesc":"Zwiększa twój Magiczny Atak o 20%.\n„Świetne przy użyciu dużej ilości magii!”",
+	"State.MagicImmunity":"Magiczna Odporność",
+	"State.MagicImmunityDesc":"Zwiększa twoją Magiczną Obronę o 20%.\n„Nie powoduje pełnej odporności na magię, ale zawsze coś.”",
+	"State.Swiftness":"Szybkość",
+	"State.SwiftnessDesc":"Zwiększa twoją Zwinność o 20%.\n„Chcesz (być może) mieć więcej ataków na cykl?”",
+	"State.Luck":"Szczęście",
+	"State.LuckDesc":"Zwiększa twoje Szczęście 20%.\n„W zasadzie inna wersja mikstury siły, jak często zadajesz uderzenia krytyczne.”",
+	"State.ShortCircuit":"Zwarcie!",
+	"State.ShortCircuitDesc":"Tymczasowo zatrzymuje Naemi, aby nie uszkodziła się z powodu zbyt dużej ilości prądu.\n„Na całe szczęście, Naemi uruchomi się ponownie, jak już nie będzie ryzyka uszkodzenia.”",
+
 	"Enemy.DesertBandit":"Pustynny bandyta",
 	"Enemy.DesertBanditMage":"Pustynna czarownica",
 	"Enemy.DesertScout":"Zwiadowca bandytów",
@@ -408,7 +434,7 @@
 	"Enemy.BanditWater":"Bandywa hydraulik",
 	"Enemy.ForestBandit":"Forest Bandit",
 	"Enemy.Lamp":"Lampa",
-	
+
 	"TP.Mode":"Tryb TP",
 	"TP.Default":"Domyślny",
 	"TP.DefaultDesc":"Otrzymujesz TP przy Atakowaniu, Obranianiu się, albo otrzymywaniu obrażeń.",
@@ -420,12 +446,10 @@
 	"TP.TPBoostDesc":"Otrzymujesz małe ilości TP przy zadawaniu lub dostawaniu obrażeń, z zwiększonym limitem. Możesz też trzymać TP pomiędzy bitwami.",
 	"TP.Passive":"Regenerator",
 	"TP.PassiveDesc":"Otrzymujesz małe ilości TP pasywnie co turę, nie ważne co robisz.",
-	
+
 	"Category.Select1":"Wybierz przedmiot(y) typu:",
 	"Category.Select2":"(Ilość:",
 	"Category.Selected":"(Selected)",
 	"Category.None":"Bez kategorii",
-	"Category.Note":"Notatka",
-	
-	"Cap":""
+	"Category.Note":"Notatka"
 }

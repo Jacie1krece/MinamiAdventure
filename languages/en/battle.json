@@ -221,7 +221,7 @@
 	"Item.Rosol":"Instant Rosół",
 	"Item.RosolDesc":"Restores 300 HP.\n\"Stories say that instant soups were the invention of Roman Kluskowski, and thus they are called \"Roman's Soup\" in this region.\"",
 	"Item.Bomb":"Bomb",
-	"Item.BombDesc":"Explodes and deals damage to every enemy. Has increased power if used by someone with good throwing abilities.\n\"Its inventor only wanted this to be used in mining, but obviously, it's also damn strong in fighting.\"",
+	"Item.BombDesc":"Explodes and deals Bomb (Physical+Fire) damage to every enemy.\n\"Its inventor only wanted this to be used in mining, but obviously, it's also damn strong in fighting.\"",
 	"Item.Gem":"Gemstone",
 	"Item.GemDesc":"Grants a total of 500G if sold.\n\"Better find a place where they can pay you for this...\"",
 	"Item.EXPNote1":"Wanderer's Advice",
@@ -256,7 +256,7 @@
 	"Item.GreenBalloonDesc":"Deals a medium amount of Water damage.\n\"You can feel the potential splash this could make when hitting something...\"",
 	"Item.Pierogi":"Pierogi",
 	"Item.PierogiDesc":"Recovers 5% + 100 HP.\n\"A typical Mineral Nation dish, now in a version that's ready to cook.\"",
-	"Item.GachaNote1Desc":"A note containing a powerful spell - Boulder Rain.\n\"If someone has amnesia, hitting them in the head with a boulder is the best way to bring them to their senses.\"",
+	"Item.GachaNote1Desc":"A note containing a powerful spell - Boulder Rain.\n\"If someone has amnesia, hitting them in the head with a boulder is the best way to bring them to their senses. /s\"",
 	"Item.GachaNote2Desc":"A note containing a powerful skill - Distraction.\n\"Just a normal Distraction Dance, that's all.\"",
 	"Item.ManaPotion":"Mana Potion",
 	"Item.ManaPotionDesc":"Restores 100 Mana.\n\"Using magic to restore Mana, which is used to cast magic. Energy can't be created, after all.\"",
@@ -405,6 +405,20 @@
 	"State.DistractedDesc":"Makes you lose your turn and the ability to dodge attacks.\n\"*cluelessly dancing to the beat*\"",
 	"State.Targetted":"Targetted!",
 	"State.TargettedDesc":"Increases you aggro by an insane amoung, basically guaranteeing that you'll get hit.\n\"...does it mean farewell?\"",
+	"State.Strength":"Strength",
+	"State.StrengthDesc":"Increases your Attack by 20%.\n\"Throw further! Swing faster! Punch harder! Shoot... better?\"",
+	"State.Endurance":"Endurance",
+	"State.EnduranceDesc":"Increases your Defence by 20%.\n\"If you suck at dodging, maybe this will save your life.\"",
+	"State.MagicPower":"Magic Power",
+	"State.MagicPowerDesc":"Increases your Magical Attack by 20%.\n\"Perfect when you're going to use magic a lot.\"",
+	"State.MagicImmunity":"Magic Immunity",
+	"State.MagicImmunityDesc":"Increases your Magical Defence by 20%.\n\"Doesn't make you fully immune to magic, but still, this is something.\"",
+	"State.Swiftness":"Swiftness",
+	"State.SwiftnessDesc":"Increases your Agility by 20%.\n\"Want to (maybe) do more attacks per cycle?\"",
+	"State.Luck":"Luck",
+	"State.LuckDesc":"Increases your Luck by 20%.\n\"Essentially a variant of Strength if you have high Crit.\"",
+	"State.ShortCircuit":"Short Circuit!",
+	"State.ShortCircuitDesc":"Temporarily stops Naemi to reduce the damage done by too much electricity.\n\"Thankfully, Naemi will turn herself on again after the risk of short-circuiting is over.\"",
 	
 	"Enemy.DesertBandit":"Desert Bandit",
 	"Enemy.DesertBanditMage":"Desert Witch",
@@ -430,7 +444,7 @@
 	"Enemy.SummonBanditIce":"Iceworker Bandit",
 	"Enemy.SummonBanditElectricity":"Electrican Bandit",
 	"Enemy.SummonBanditWater":"Waterworker Bandit",
-	"Enemy.ForestBandit":"Forest Bandit",
+	"Enemy.RogueMiner":"Rogue Miner",
 	"Enemy.Lamp":"Lamp",
 	
 	"TP.Mode":"TP Mode",
@@ -449,7 +463,5 @@
 	"Category.Select2":"(Quantity:",
 	"Category.Selected":"(Selected)",
 	"Category.None":"Uncategorised",
-	"Category.Note":"Note",
-	
-	"Cap":""
+	"Category.Note":"Note"
 }

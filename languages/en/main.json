@@ -9,7 +9,7 @@
 	"nd":"nd",
 	"rd":"rd",
 	"th":"th",
-	
+
 	"WInfo":"Please do not change the tags below, doing that will break the text.",
 	"W":"<WordWrap>",
 	"Text.PissedOff":"\\{\\C[18]",
@@ -17,7 +17,7 @@
 	"Text.Calamity":"\\C[18]",
 	"Text.Dystopia":"\\C[23]",
 	"Text.BadEnd":"\\C[30]",
-	
+
 	"Param.Level":"Level",
 	"Param.Experience":"Experience",
 	"Param.EXP":"EXP",
@@ -49,7 +49,7 @@
 	"Param.MagicalDMG":"Magical DMG",
 	"Param.FloorDMG":"Floor DMG",
 	"Param.EXPGain":"EXP Gain",
-	
+
 	"Option.Language":"Language",
 	"Option.AlwaysDash":"Always Dash",
 	"Option.ShowCompass":"Minimap",
@@ -126,12 +126,12 @@
 	"Option.ArmorSpawn":"Spawn Armour",
 	"Option.Debug":"Advanced",
 	"Option.DebugMenu":"Edit Switches And Variables",
-	
+
 	"Button.Category":"Switch Category",
 	"Button.Ally":"Switch Character",
 	"Button.Cancel":"Back",
 	"Button.Select":"Select",
-	
+
 	"Menu.SaveSelect":"Which file would you like to save to?",
 	"Menu.LoadSelect":"Which file would you like to load?",
 	"Menu.SaveSuccess":"Save Successful!",
@@ -189,7 +189,7 @@
 	"Menu.DurationTurns":"Turns:",
 	"Menu.Passive":"Passive",
 	"Menu.Phone":"Phone",
-	
+
 	"Shop.Anytime":"Anytime",
 	"Shop.Battle":"In battle",
 	"Shop.Map":"On field",
@@ -253,16 +253,16 @@
 	"Shop.Change":"Change",
 	"Shop.Net":"Net",
 	"Shop.Craft":"Craft",
-	
+
 	"Element.Physical":"\\I[76]Physical",
 	"Element.Fire":"\\I[64]Fire",
 	"Element.Ice":"\\I[65]Ice",
 	"Element.Electricity":"\\I[66]Electricity",
 	"Element.Water":"\\I[67]Water",
-	
+
 	"Skill.Skill":"Skill",
 	"Skill.Magic":"Magic",
-	
+
 	"Weapon.Throwing":"Throwing",
 	"Weapon.Wand":"Wand",
 	"Weapon.Gun":"Gun",
@@ -278,7 +278,7 @@
 	"Weapon.Nishi":"Nishi's",
 	"Weapon.Alonzo":"Alonzo's",
 	"Weapon.Scarlet":"Scarlet's",
-	
+
 	"Armor.Bracelet":"Bracelet",
 	"Armor.Necklace":"Necklace",
 	"Armor.Orb":"Orb",
@@ -289,9 +289,9 @@
 	"Armor.Shield":"Shield",
 	"Armor.Boots":"Boots",
 	"Armor.BulletPouch":"Bullet Pouch",
-	
+
 	"Item.Nev":"NEW!",
-	
+
 	"Chara.Birthday":"Birthday: ",
 	"Minami":"Minami",
 	"Chara.Minami.Class":"Catgirl",
@@ -319,7 +319,7 @@
 	"Chara.Maximilian.Profile1":"Professional brawler - He won many times, he lost even more times, and in both cases, he'll congratulate the opponent, as he's a chill guy.",
 	"Chara.Maximilian.Birthday":"23th Febuary",
 	"Chara.Maximilian.Bio":"Maximilian is pretty known for the entire world, as he was in various boxing contests around the world. Due to years of training, his punches and blocks are both as excellent as they can be. After being defeated by a mysterious, red-haired girl at the last match, he now waits for the next big tournament.",
-	
+
 	"Trait.Gender":"Gender",
 	"Trait.Gender.IDK":"Unknown",
 	"Trait.Gender.Female":"Female",
@@ -364,7 +364,7 @@
 	"Trait.Nature.Jolly":"Jolly",
 	"Trait.Nature.Naive":"Naive",
 	"Trait.Nature.Serious":"Serious",
-	
+
 	"NPC.Nakata":"Nakata the Saleswoman",
 	"NPC.Jozef":"Józef the Salesman",
 	"NPC.Sasin":"Sasin the Bandit Leader",
@@ -373,7 +373,7 @@
 	"NPC.Aster":"Aster",
 	"NPC.SusDealer":"McCache",
 	"NPC.Opportunist":"Veronica, the Opportunist",
-	
+
 	"Save.Unknown":"GOD FUCKING damnit PLAYER where the FUCK are you!?",
 	"Save1":"${Save.Unknown}",
 	"Save2":"${Save.Unknown}",
@@ -392,12 +392,12 @@
 	"Save15":"Okimoto Mansion\nGenjiro's Room",
 	"Save16":"Ziemowit Town",
 	"Save17":"Ziemowit Town\nJózef's Shop",
-	"Save18":"Ziemowit Town\nMineshaft",
+	"Save18":"${Save.Unknown}",
 	"Save19":"Mineral Nation Mines\nLift",
 	"Save20":"Mineral Nation\nShaft Area",
-	"Save21":"Mineral Nation Mines\nMiner Bunker",
-	"Save22":"Mineral Nation Mines\nOld Mine",
-	"Save23":"Mineral Nation Mines\nBandit Mine",
+	"Save21":"${Save.Unknown}",
+	"Save22":"${Save.Unknown}",
+	"Save23":"${Save.Unknown}",
 	"Save24":"Mineral Nation\nThe Coal Forest",
 	"Save25":"Dębowiec City",
 	"Save26":"Dębowiec City\n7th Floor",
@@ -416,7 +416,14 @@
 	"Save39":"Mineral Nation Mines\nThe First Crossroad",
 	"Save40":"Mineral Nation Mines\nLift",
 	"Save41":"Mineral Nation Mines\nMiners' Base",
-	
+	"Save42":"Debug Room",
+	"Save43":"Mineral Nation Mines\nMiner's Storage",
+	"Save44":"Mineral Nation Mines\nMinetrack Crater",
+	"Save45":"Mineral Nation Mines\nCrystal Room",
+	"Save46":"Mineral Nation Mines\nLoss",
+	"Save47":"Mineral Nation Mines\nThe Mine Continues",
+	"Save48":"Mineral Nation Mines\nRemnants of an Tunnel",
+
 	"Drone.SelectLocation":"Select the place where you want to travel.",
 	"Drone.Nowhere":"how did you click that",
 	"Drone.AlreadyThere":"We're already here.",
@@ -424,7 +431,7 @@
 	"Drone.ZiemowitTown":"Ziemowit Town",
 	"Drone.DebowiecCity":"Dębowiec City",
 	"Drone.KatoszawaCity":"Katoszawa City",
-	
+
 	"World.Find":"Found ",
 	"World.Get":"Received ",
 	"World.Team":" joins the team!",
@@ -433,12 +440,12 @@
 	"World.Detonate":"This rock pile looks like something that I could detonate.",
 	"World.DetonateNoBombs":"This rock pile looks like something that I could detonate... but I'm outta bombs.",
 	"World.DetonateQuestion":"(Detonate the rocks?)",
-	
+
 	"Reid":"Reid",
 	"Priscilla":"Priscilla",
 	"Bandit":"Bandit",
 	"LeaderBandit":"Bandit Leader",
-	
+
 	"Achievement.ElectrificationNation":"The Land of Electricity",
 	"Achievement.ElectrificationNationDesc":"Leave your house.",
 	"Achievement.MineralNation":"The Land of Minerals",
@@ -448,15 +455,15 @@
 	"Achievement.MaximilianAlly":"Punching Out",
 	"Achievement.MaximilianAllyDesc":"Take a brawler as your ally.",
 	"Achievement.SasinI":"Bandit Troubles",
-	"Achievement.SasinIDesc":"Defeat Sasin in the Great Desert.",
-	"Achievement.SasinII":"Open Pit Pavement Mine",
-	"Achievement.SasinIIDesc":"Defeat Sasin in the Mineral Nation.",
+	"Achievement.SasinIDesc":"Defeat Sasin on the Great Desert.",
+	"Achievement.MisakiI":"Rival Danger",
+	"Achievement.MisakiIDesc":"Meet and defeat Misaki in the Mineral Nation.",
 	"Achievement.Lucky":"Lucky!",
 	"Achievement.LuckyDesc":"Find the Lucky Clover.",
 	"Achievement.Badge.SweetSleepPillows":"Unbeatable Experience",
 	"Achievement.Badge.SweetSleepPillowsDesc":"You'll know we're the best after one night's rest!",
 	"Achievement.Badge.DoremyVisit":"Dream Gift",
 	"Achievement.Badge.DoremyVisitDesc":"You've slept on them all and dreamt many dreams...",
-	
-	"Cap":""
+	"Achievement.Badge.EffectGet":"Mysterious Effects",
+	"Achievement.Badge.EffectGetDesc":"Please, don't turn it into a walking sim..."
 }

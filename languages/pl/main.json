@@ -9,7 +9,7 @@
 	"nd":".",
 	"rd":".",
 	"th":".",
-	
+
 	"Info":"Proszę nie zmieniać tych tagów poniżej, ponieważ zepsuje to tekst",
 	"W":"<WordWrap>",
 	"Text.PissedOff":"\\{\\C[18]",
@@ -17,7 +17,7 @@
 	"Text.Calamity":"\\C[18]",
 	"Text.Dystopia":"\\C[23]",
 	"Text.BadEnd":"\\C[30]",
-	
+
 	"Param.Level":"Poziom",
 	"Param.Experience":"Doświadczenie",
 	"Param.EXP":"PD",
@@ -49,7 +49,7 @@
 	"Param.MagicalDMG":"Obrażenia magiczne",
 	"Param.FloorDMG":"Obrażenia od podłogi",
 	"Param.EXPGain":"Moc zbierania PD",
-	
+
 	"Option.Language":"Język",
 	"Option.AlwaysDash":"Ciągłe bieganie",
 	"Option.ShowCompass":"Minimapa",
@@ -127,12 +127,12 @@
 	"Option.ArmorSpawn":"Stwórz zbroję",
 	"Option.Debug":"Zaawansowane",
 	"Option.DebugMenu":"Edytuj przełączniki i zmienne",
-	
+
 	"Button.Category":"Zmień kategorię",
 	"Button.Ally":"Zmień postać",
 	"Button.Cancel":"Powrót",
 	"Button.Select":"Wybierz",
-	
+
 	"Menu.SaveSelect":"Do którego pliku chcesz zapisać?",
 	"Menu.LoadSelect":"Który plik chcesz wczytać?",
 	"Menu.SaveSuccess":"Zapisano!",
@@ -190,7 +190,7 @@
 	"Menu.DurationTurns":"Tury:",
 	"Menu.Passive":"Pasywne",
 	"Menu.Phone":"Telefon",
-	
+
 	"Shop.Anytime":"Kiedykolwiek",
 	"Shop.Battle":"W bitwie",
 	"Shop.Map":"Na mapie",
@@ -254,16 +254,16 @@
 	"Shop.Change":"Zmiana",
 	"Shop.Net":"Wynik",
 	"Shop.Craft":"Stwórz",
-	
+
 	"Element.Physical":"\\I[76]Fizyczne",
 	"Element.Fire":"\\I[64]Ogień",
 	"Element.Ice":"\\I[65]Lód",
 	"Element.Electricity":"\\I[66]Elektryczność",
 	"Element.Water":"\\I[67]Woda",
-	
+
 	"Skill.Skill":"Umiejętność",
 	"Skill.Magic":"Magia",
-	
+
 	"Weapon.Throwing":"Rzucane",
 	"Weapon.Wand":"Różdżka",
 	"Weapon.Gun":"Pistolet",
@@ -279,7 +279,7 @@
 	"Weapon.Nishi":"Nishi",
 	"Weapon.Alonzo":"Alonza",
 	"Weapon.Scarlet":"Scarlet",
-	
+
 	"Armor.Bracelet":"Bransoletka",
 	"Armor.Necklace":"Naszyjnik",
 	"Armor.Orb":"Kula",
@@ -289,10 +289,10 @@
 	"Armor.Helmet":"Hełm",
 	"Armor.Shield":"Tarcza",
 	"Armor.Boots":"Buty",
-	"Armor.BulletPouch":"Sakwa kul",  
-	
+	"Armor.BulletPouch":"Sakwa kul",
+
 	"Item.Nev":"NOWE!",
-	
+
 	"Chara.Birthday":"Urodziny: ",
 	"Minami":"Minami",
 	"Chara.Minami.Class":"Kotodziewczyna",
@@ -320,7 +320,7 @@
 	"Chara.Maximilian.Profile1":"Profesjonalny bokser - Wygrał wiele razy, przegrał jeszcze więcej razy, ale zawsze po bitwie pogratuluje przeciwnikowi, bo to spoko koleś.",
 	"Chara.Maximilian.Birthday":"24. lutego",
 	"Chara.Maximilian.Bio":"Maksymilian jest znany na cały świat za swoje uczestnictwo w turniejach bokserskich z całego świata. Przez lata treningu jego ciosy i bloki są tak dobre, jak tylko mogą być. Został pokonanym przez tajemniczą, czerwono-włosą dziewczynę podczas jednej z bitw i teraz oczekuje na następny wielki turniej",
-	
+
 	"Trait.Gender":"Płeć",
 	"Trait.Gender.IDK":"Nieznana",
 	"Trait.Gender.Female":"Żeńska",
@@ -365,7 +365,7 @@
 	"Trait.Nature.Jolly":"Wesoły",
 	"Trait.Nature.Naive":"Naiwny",
 	"Trait.Nature.Serious":"Poważny",
-	
+
 	"NPC.Nakata":"Sprzedawczyni Nakata",
 	"NPC.Jozef":"Sprzedawca Józef",
 	"NPC.Sasin":"Lider bandytów Sasin",
@@ -375,7 +375,7 @@
 	"NPC.AlchShop":"Alchemist Emporium Shopkeeper",
 	"NPC.SusDealer":"McCache",
 	"NPC.Opportunist":"Oportunistka Weronika",
-	
+
 	"Save.Unknown":"BOŻE KURWA do cholery GRACZU gdzie ty KURWA jesteś!?",
 	"Save1":"${Save.Unknown}",
 	"Save2":"${Save.Unknown}",
@@ -397,9 +397,9 @@
 	"Save18":"Miasteczko Ziemowit\nSzyb kopalniany",
 	"Save19":"Kopalnie Narodu Minerałów\nWinda",
 	"Save20":"Naród Minerałów\nOkolice Szybu",
-	"Save21":"Kopalnie Narodu Minerałów\nBunkier górników",
-	"Save22":"Kopalnie Narodu Minerałów\nStara kopalnia",
-	"Save23":"Kopalnie Narodu Minerałów\nKopalnia bandytów",
+	"Save21":"${Save.Unknown}",
+	"Save22":"${Save.Unknown}",
+	"Save23":"${Save.Unknown}",
 	"Save24":"Naród Minerałów\nWęglowy Las",
 	"Save25":"Miasto Dębowiec",
 	"Save26":"Miasto Dębowiec\n7. piętro",
@@ -409,16 +409,30 @@
 	"Save30":"Bursztynowe Szczyty\nJaskinia",
 	"Save31":"Bursztynowe Szczyty\nPrzejście",
 	"Save32":"${Save.Unknown}",
-	"Save31":"Bursztynowe Szczyty\nZagadka w jakini",
-	"Save31":"Bursztynowe Szczyty\nNormalne pomieszczenie",
-	
+	"Save33":"Bursztynowe Szczyty\nZagadka w jakini",
+	"Save34":"Bursztynowe Szczyty\nNormalne pomieszczenie",
+	"Save35":"Bursztynowe Szczyty\nJaskinia z lampą",
+	"Save36":"Kopalnie Narodu Minerałów\nPoczątek Kopalni",
+	"Save37":"Miasto Katoszawa",
+	"Save38":"Miasto Katoszawa\nCentrum handlowe",
+	"Save39":"Kopalnie Narodu Minerałów\nPierwsze skrzyżowanie",
+	"Save40":"Kopalnie Narodu Minerałów\nWinda",
+	"Save41":"Kopalnie Narodu Minerałów\nBaza górników",
+	"Save42":"Debug Room",
+	"Save43":"Kopalnie Narodu Minerałów\nSkładzik górników",
+	"Save44":"Kopalnie Narodu Minerałów\nKrater przy kolejce",
+	"Save45":"Kopalnie Narodu Minerałów\nPokój kryształowy",
+	"Save46":"Kopalnie Narodu Minerałów\nLoss",
+	"Save47":"Kopalnie Narodu Minerałów\nKontynuacja kopalni",
+	"Save48":"Kopalnie Narodu Minerałów\nResztki tunelu",
+
 	"Drone.SelectLocation":"Wybierz miejsce, do którego chcesz się udać.",
 	"Drone.Nowhere":"jak ty to kliknąłeś",
 	"Drone.AlreadyThere":"Jesteśmy już tutaj.",
 	"Drone.NijisakiCity":"Miasto Nijisaki",
 	"Drone.ZiemowitTown":"Miasteczko Ziemowit",
 	"Drone.DebowiecCity":"Miasto Dębowiec",
-	
+
 	"World.Find":"Znaleziono: ",
 	"World.Get":"Otrzymano: ",
 	"World.Team":" dołącza do drużyny!",
@@ -427,11 +441,30 @@
 	"World.Detonate":"Te kamienie wyglądają jak coś stworzonego do zdetonowania.",
 	"World.DetonateNoBombs":"Te kamienie wyglądają jak coś stworzonego do zdetonowania... ale nie mam bomb.",
 	"World.DetonateQuestion":"(Zdetonować kamienie?)",
-	
+
 	"Reid":"Reid",
 	"Priscilla":"Priscilla",
 	"Bandit":"Bandyta",
 	"LeaderBandit":"Lider bandytów",
-	
-	"Cap":""
+
+	"Achievement.ElectrificationNation":"Kraina Elektryczności",
+	"Achievement.ElectrificationNationDesc":"Wyjdź z domu.",
+	"Achievement.MineralNation":"Kraina Minerałów",
+	"Achievement.MineralNationDesc":"Wejdź do Narodu Minerałów.",
+	"Achievement.RinneTensei":"Wskrzeszenie legendy",
+	"Achievement.RinneTenseiDesc":"Wskrześ Telar.",
+	"Achievement.MaximilianAlly":"Wybij to sobie z głowy",
+	"Achievement.MaximilianAllyDesc":"Weź boksera na sojusznika.",
+	"Achievement.SasinI":"Problemy z bandytami",
+	"Achievement.SasinIDesc":"Pokonaj Sasina na Wielkiej Pustyni.",
+	"Achievement.MisakiI":"Rywalizacja rozpoczęta",
+	"Achievement.MisakiIDesc":"Poznaj i pokonaj Misaki w Narodzie Minerałów.",
+	"Achievement.Lucky":"Szczęściarz!",
+	"Achievement.LuckyDesc":"Odnajdź Szczęśliwą Koniczynę.",
+	"Achievement.Badge.SweetSleepPillows":"Bezkonkurencyjne doświadczenie",
+	"Achievement.Badge.SweetSleepPillowsDesc":"Po jednej nocy przekonasz się, że jesteśmy najlepsi!",
+	"Achievement.Badge.DoremyVisit":"Senny podarunek",
+	"Achievement.Badge.DoremyVisitDesc":"Spałeś na nich wszystkich i śniłeś wiele snów...",
+	"Achievement.Badge.EffectGet":"Tajemnicze efekty",
+	"Achievement.Badge.EffectGetDesc":"Proszę, nie zmieniaj się w symulator chodzenia..."
 }

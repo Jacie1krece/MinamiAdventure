@@ -172,9 +172,9 @@
 	"NijisakiShop22":"Hello, what it will be today?",
 	"NijisakiShop23":"I saw and saved an interesting ad, but it has a lot of marketing jargon. Do you know something about it?",
 	"NijisakiShop24":"Interesting. This is probably the most truthful ad that I've seen, on top of being catchy.",
-	"NijisakiShop25":"I'll contact the manufacturer and see if I can sell these pillows.",
+	"NijisakiShop25":"I'll contact my college best friend- the manufacturer of these - and see if I can sell these pillows.",
 	"NijisakiShop26":"Welcome! As for the pillows, yes, I can sell them, and I also learned a new thing when it comes to selling.",
-	"NijisakiShop27":"Just as the \\C[13]Magical Storage \\C[0]completely overshadowed backpacks and other storage means, the \\C[13]Magical Storage Transfer \\C[0]makes standard deliveries a thing of the past.",
+	"NijisakiShop27":"Just as the \\C[13]Magical Storage \\C[0]completely overshadowed backpacks and other ordinary storage means, the \\C[13]Magical Storage Transfer \\C[0]makes standard deliveries a thing of the past.",
 	"NijisakiShop28":"And, it's the final piece to finally get my online shop running! Here's the link. I'll try to keep up with transfering the goods while making sure that my online store gets popular at least in Nijisaki City.",
 	"NijisakiShop29":"Thank you very much.",
 	"NijisakiShelf1":"This is the ",
@@ -279,7 +279,6 @@
 	"Opportunist6":"Oh, hi again! I see that you brought some new people!",
 	"Opportunist7":"(Well, it's not like that I got my selling licence revoked cause of a few causes of my products poisoning some people)",
 	"Opportunist8":"(She's somehow worse in lying than me...)",
-	"Opportunist8":"So, go on and buy something! Wares like these ain't free, ya know!",
 	"Opportunist9":"So, what do you want to do?",
 	"Opportunist10":"Buy something!",
 	"Opportunist11":"Ask questions...",
@@ -323,10 +322,10 @@
 	"TelarAlive20":"I don't know the meaning of some of your words, but it sounds good.",
 	"TelarAlive21":"That's also good idea.",
 	
-	"MineDarkness1":"It's so dark that I can't see anything!",
-	"MineDarkness2":"Don't you see well in the dark?",
-	"MineDarkness3":"Yeah, but not when it's dark as hell!",
-	"MineDarkness4":"Good thing that we have our phones.",
+	"MineDarkness1":"So, we're in the mines.",
+	"MineDarkness2":"I feel like we should not run down here - we might hit something, or cause something to fall, blocking an exit or even worse, killing us.",
+	"MineDarkness3":"...that makes sense...",
+	"MineDarkness4":"Naemi is entirely right. We shouldn't risk our life for the sake of leaving these mines an hour faster.",
 	"MineWay1":"Which way we should go?",
 	"MineWay2":"That depends on what we are going to do. If we're gonna go forward with our adventure, we should go along the tracks. If we're gonna find treasure and secrets, then we shouldn't go along the tracks.",
 	"MineWay3":"(Why I didn't think about it earlier...?)",
@@ -503,6 +502,8 @@
 	"NPC7":"That new song made by Raintime Sky is a banger.",
 	"NPC8":"I think that this statue looks like it could activate something.",
 	"NPC9":"Wait, you did WHAT?! Resurrecting her? I thought that it's impossible!",
+	"NPC10":"Ziemowit Town is such a tranquil place...",
+	"NPC11":"Hello! What can I do for you today?",
 	
 	"Aster1":"Hello, Minami. I'm Aster, one of the scientists here.",
 	"Aster2":"I needed some eggs for my next experiment, but I miscalculated and bought one too much.",
@@ -628,7 +629,6 @@
 	"Credits.MainProgrammer":"Main Programmer",
 	"Credits.GameplayDesigner":"Gameplay Designer",
 	"Credits.BattleDesigner":"Battle Designer",
-	"Credits.BattleDesigner":"Battle Designer",
 	"Credits.Plugins":"Plugins",
 	"Credits.Special":"Special",
 	"Credits.SpecialThanks":"Special Thanks",
@@ -638,7 +638,5 @@
 	"Credits.Tiles":"Tilesets: Gotcha Gotcha Games",
 	"Credits.Icoons":"Icons: CadWolf",
 	"Credits.Musicc":"Music: Gotcha Gotcha Games",
-	"Credits.ThankYa":"Thanks for playing!",
-	
-	"Cap":""
+	"Credits.ThankYa":"Thanks for playing!"
 }
