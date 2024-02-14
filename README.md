@@ -20,8 +20,10 @@ As of version v0.1.2, the following content is avaliable:
 If everything goes smoothly, I plan on reworking the Mineral Nation Mines, including making it based on multiple "maps" rather than a single big one - I'll be starting with the 1st part, and go to the 2nd one slightly later. All alongside other bug fixes and freshly-introduced items.
 ## Downloading
 This code right here isn't able to be run without RPG Maker MZ, but in Releases, there's a .zip file containing the actual game, ready to be played.
+## Discord Server
+I made an (rather amateur) Discord server for this game: https://discord.gg/ZjDVVN4mFR
 ## Feedback
-You can use Github's Issues function, and I'll try to look at the issue and fix it. Report anything - bugs, problems, bad decisions.
+You can use Github's Issues function or the Discord server, and I'll try to look at the issue and fix it. You can also give suggestions if you want.
 ## Credits
 Software used to make this: RPG Maker MZ, by Gotcha Gotcha Games<br>
 Plugins: Open Digital World, VisuStella<br>
