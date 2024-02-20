@@ -292,6 +292,8 @@
 	"Armor.BulletPouch": "Bullet Pouch",
 
 	"Item.Nev": "NEW!",
+	"Item.Cursed1": "has cursed equipment:",
+	"Item.Cursed2": "You can't unequip that until you Purify it!",
 
 	"Chara.Birthday": "Birthday: ",
 	"Minami": "Minami",

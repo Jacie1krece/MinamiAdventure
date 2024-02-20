@@ -353,7 +353,9 @@
 	"Item.Matcha": "Matcha",
 	"Item.MatchaDesc": "Restores 1% of Max HP every turn for 5 turns.\n\"Drink your greens!\"",
 	"Item.Cola": "Cola",
-	"Item.ColaDesc": "Slightly increases your Agility, Evasion, and grants a small amount of TP.\n\"The ungodly amounts of sugar and a little caffeine surely give you a boost...\"",
+	"Item.ColaDesc": "Slightly increases your Agility, Evasion, and grants a small amount of TP.\n\"The extreme amounts of sugar and a little caffeine surely give you a boost...\"",
+	"Item.ShadowyDrink": "Shadowy Drink",
+	"Item.ShadowyDrinkDesc": "Slightly increases your evasion chance.\n\"I heard a rumor that one poet from the Mineral Nation really likes it...\"",
 
 	"State.Poison": "Posion",
 	"State.PoisonDesc": "Deals 2.5% of your HP as damage per turn.\n\"Unless you find an antidote, poison is a harbinger of death.\"",
@@ -443,8 +445,10 @@
 	"State.DarkMirageDesc": "Increases Evasion by 25%.\n\"A little dark magic and you are... wait, why I did not use this when I was about to be assassinated?\"",
 	"State.Matcha": "Matcha Power",
 	"State.MatchaDesc": "Restores 1% of Max HP every turn.\n\"Drink your greens!\"",
-	"State.Cola": "Cola",
-	"State.ColaDesc": "Slightly increases your Agility and Evasion.\n\"The ungodly amounts of sugar and a little caffeine surely give you a boost...\"",
+	"State.Cola": "Energy Surge",
+	"State.ColaDesc": "Slightly increases your Agility and Evasion.\n\"The extreme amounts of sugar and a little caffeine surely give you a boost...\"",
+	"State.ShadowyDrink": "Shadowy Boost",
+	"State.ShadowyDrinkDesc": "Slightly increases your evasion chance.\n\"I heard a rumor that one poet from the Mineral Nation really likes it...\"",
 
 	"Enemy.DesertBandit": "Desert Bandit",
 	"Enemy.DesertBanditMage": "Desert Witch",

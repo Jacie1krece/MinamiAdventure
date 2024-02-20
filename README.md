@@ -26,7 +26,7 @@ I made an (rather amateur) Discord server for this game: https://discord.gg/ZjDV
 You can use Github's Issues function or the Discord server, and I'll try to look at the issue and fix it. You can also give suggestions if you want.
 ## Credits
 Software used to make this: RPG Maker MZ, by Gotcha Gotcha Games<br>
-Plugins: Open Digital World, VisuStella<br>
+Plugins: Open Digital World, Team VisuStella<br>
 Tilesets: Gotcha Gotcha Games, with some edits by me<br>
 Icons: CadWolf, with some edits by me<br>
 Music: Gotcha Gotcha Games
