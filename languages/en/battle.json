@@ -203,6 +203,10 @@
 	"Skill.DefenceBreakDesc": "Damages the enemy's Defence and Magical Defence, allowing the whole party to deal more damage.\n\"You're lucky that I don't have the Rending Blade.\"",
 	"Skill.DarkMirage": "Dark Mirage",
 	"Skill.DarkMirageDesc": "Greatly increases the evasion of an ally.\n\"A little dark magic and you are... wait, why I did not use this when I was about to be assassinated?\"",
+	"Skill.LeaderCommand": "Leader's Command",
+	"Skill.LeaderCommandDesc": "Allows an ally to immediately act, while also granting them combat boosts for that turn.\n\"Even if I'm not the best in combat, I can make others even better!\"",
+	"Skill.ElectricMishaps": "Electric Mishaps",
+	"Skill.ElectricMishapsDesc": "Attacks the target enemy with an electrical spark, that has a chance of bouncing to other enemies.\n\"Even if I'm not from the Okimoto family, Genjiro taught me how to tame electricity~\"",
 
 	"Item.Consumable": " (Consumable)",
 	"Item.SpellNote": "Spell Note",
@@ -449,6 +453,8 @@
 	"State.ColaDesc": "Slightly increases your Agility and Evasion.\n\"The extreme amounts of sugar and a little caffeine surely give you a boost...\"",
 	"State.ShadowyDrink": "Shadowy Boost",
 	"State.ShadowyDrinkDesc": "Slightly increases your evasion chance.\n\"I heard a rumor that one poet from the Mineral Nation really likes it...\"",
+	"State.LeaderCommand": "Leader's Command",
+	"State.LeaderCommandDesc": "Grants a 5% boost to Attack, Magical Attack, Luck, Hit Rate, Crit Rate, and DMG Dealt.\n\"Even if I'm not the best in combat, I can make others even better!\"",
 
 	"Enemy.DesertBandit": "Desert Bandit",
 	"Enemy.DesertBanditMage": "Desert Witch",

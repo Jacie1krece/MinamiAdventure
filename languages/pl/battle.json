@@ -199,6 +199,14 @@
 	"Skill.DistractionDesc": "Rozprasza przeciwnika, zabierając mu turę i zdolność do uników.\n„To tylko zwykły Taniec Rozpraszający, ale daje radę jak mało który.”",
 	"Skill.Overdrive": "Podkręcenie",
 	"Skill.OverdriveDesc": "Podkręca swoje podzespoły, powodując powiększenie Zwinności i ewazji przy równoczenym pomniejszeniu Obrony, Magicznej obrony i celności.\n„Podkręcanie zawsze może coś zepsuć - w tym wypadku jest to moja obrona.”",
+	"Skill.DefenceBreak": "Rozbicie defensywy",
+	"Skill.DefenceBreakDesc": "Uszkadza Obronę i Magiczną Obronę przeciwnika, pozwalając innym na zadanie mu więcej obrażeń.\n„Masz szczęście że nie mam Ostrza Rozdarcia.”",
+	"Skill.DarkMirage": "Ciemny miraż",
+	"Skill.DarkMirageDesc": "Zdecydownie powiększa Unik sojusznika.\n„Trochę czarnej magii i... zaraz, czemu nie użyłam tego zaraz przed tym, jak zostałam zamordowana?”",
+	"Skill.LeaderCommand": "Komenda lidera",
+	"Skill.LeaderCommandDesc": "Pozwala sojusznikowi natychmiast wykonać akcję i daje im bonus do statystyk związanych z atakiem.\n„Nawet jak nie jestem najlepsza, to mogę pomóc innym być jeszcze lepszym!”",
+	"Skill.ElectricMishaps": "Zabawa z prądem",
+	"Skill.ElectricMishapsDesc": "Atakuje wroga elektryczną iskrą, która ma szansę przeskakiwać na innych wrogów.\n„Nawet jeśli nie jestem z rodziny Okimoto, to i tak Genjiro nauczył mnie okiełznać elektryczność~”",
 
 	"Item.Consumable": " (Jednorazowa)",
 	"Item.SpellNote": "Notatka z zaklęciem",
@@ -441,6 +449,8 @@
 	"State.ColaDesc": "Trochę powiększa Zwinność, szansę na unik, i regeneruje trochę TP.\n„Ekstremalne ilości cukru i trochę kofeiny na pewno dodadzą ci energii...”",
 	"State.ShadowyDrink": "Wzmocnienie cieniste",
 	"State.ShadowyDrinkDesc": "Trochę powiększa szansę na unik.\n„Słyszałem, że poeta z Narodu Minerałów bardzo to lubi...”",
+	"State.LeaderCommand": "Komenda lidera",
+	"State.LeaderCommandDesc": "Powiększa Atak, Magiczny Atak, Szczęście, celność, szansę na uderzenie krytyczne, i zadawane obrażenia o 5%.\n„Nawet jak nie jestem najlepsza, to mogę pomóc innym być jeszcze lepszym!”",
 
 	"Enemy.DesertBandit": "Pustynny bandyta",
 	"Enemy.DesertBanditMage": "Pustynna czarownica",
